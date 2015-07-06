@@ -31,11 +31,14 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Chronometer;
 import android.widget.DigitalClock;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-public class HomeActivity extends Activity{
+public class HomeActivity extends Activity implements OnClickListener{
 
 	final boolean DEBUG = false;
 
@@ -67,9 +70,11 @@ public class HomeActivity extends Activity{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.activity_home);
+		registEvent();
 		this.registerReceiver(mBatteryReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-
 	}
 	
 	@Override
@@ -80,7 +85,27 @@ public class HomeActivity extends Activity{
 		super.onResume();
 	}
 	
+	@Override
+	protected void onPause() {
+		// TRAVEL TIME, DISTANCE, AVG SPEED
+		
+		// TODO Auto-generated method stub
+		super.onPause();
+	}
 	
+	@Override
+	protected void onDestroy() {
+		this.unregisterReceiver(mBatteryReceiver);
+		super.onDestroy();
+	}
+	
+	private void registEvent() {
+		View view = findViewById(R.id.iv_play_stop);
+		view.setOnClickListener(this);
+		view = findViewById(R.id.iv_pause);
+		view.setOnClickListener(this);
+	}
+
 	private void initView(){
 		context = getApplicationContext();
 		id_tv_current_speed = (TextView)findViewById(R.id.id_tv_current_speed);
@@ -91,7 +116,6 @@ public class HomeActivity extends Activity{
 		id_cm = (Chronometer)findViewById(R.id.id_cm);
 		id_dc = (DigitalClock)findViewById(R.id.id_dc);
 
-		id_cm.start();
 		
 		IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
 		Intent batteryStatus = context.registerReceiver(null, ifilter);
@@ -126,7 +150,7 @@ public class HomeActivity extends Activity{
 			@Override
 			public void onLocationChanged(Location location) {
 				Log.d("jiho", "onLocationChanged speed : "+location.getSpeed()+", altitude : "+location.getAltitude()+", lati : "+location.getLatitude()+", long : "+location.getLongitude());
-				id_tv_current_speed.setText(String.valueOf(location.getSpeed()*3.6f));
+				id_tv_current_speed.setText(String.format("%.1f", location.getSpeed()*3.6f));
 				id_tv_latitude.setText(String.valueOf(location.getLatitude()));
 				id_tv_longitude.setText(String.valueOf(location.getLongitude()));
 				id_tv_current_altitude.setText(String.valueOf(location.getAltitude()));
@@ -197,14 +221,14 @@ public class HomeActivity extends Activity{
 	
 		return list;
 	}
+
 	private void checkGPS(LocationManager locationManager){
-		TextView id_tv_gps_enable = (TextView)findViewById(R.id.id_tv_gps_enable);
+		ImageView id_iv_gps_enable = (ImageView)findViewById(R.id.id_iv_gps_enable);
 		if ( locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ){
-			id_tv_gps_enable.setVisibility(View.GONE);
+			id_iv_gps_enable.setVisibility(View.GONE);
 		}else{
-			id_tv_gps_enable.setVisibility(View.VISIBLE);
-			id_tv_gps_enable.setOnClickListener(new OnClickListener() {
-				
+			id_iv_gps_enable.setVisibility(View.VISIBLE);
+			id_iv_gps_enable.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					Intent callGPSSettingIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
@@ -213,7 +237,6 @@ public class HomeActivity extends Activity{
 			});
 		}
 	}
-	
 	
 	public class SimulationTask extends AsyncTask<String, Void, String>{
 
@@ -233,6 +256,21 @@ public class HomeActivity extends Activity{
 			// TODO Auto-generated method stub
 			return null;
 		}
+		
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.iv_play_stop:
+			// TRAVEL TIME, DISTANCE, AVG SPEED
+			id_cm.start();
+			break;
+
+		default:
+			break;
+		}
+		// TODO Auto-generated method stub
 		
 	}
 }

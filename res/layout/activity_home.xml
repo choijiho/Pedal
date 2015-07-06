@@ -10,12 +10,13 @@
     android:orientation="vertical"
     tools:context="net.gringrid.pedal.HomeActivity" >
 
-    <TextView
-        android:id="@+id/id_tv_gps_enable"
+    <ImageView 
+        android:id="@+id/id_iv_gps_enable"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-       	android:text="@string/gps_disabled" 
-       	android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_location_off_white_48dp"
+        android:visibility="gone"
         />
 	<LinearLayout
 	    android:layout_width="match_parent"
@@ -25,13 +26,14 @@
 	   	<LinearLayout
 	   	    android:layout_width="0dp" 
 	   	    android:layout_height="wrap_content"
-	   	    android:layout_weight="1"
+	   	    android:layout_weight="6"
 	   	    android:orientation="vertical"
 	   	    >
 	   	    <TextView 
 	   	        android:layout_width="match_parent"
 	   	        android:layout_height="wrap_content"
-	   	        android:text="SPEED"
+	   	        style="@style/title"
+	   	        android:text="@string/title_speed"
 	   	        />
 	   	    <LinearLayout 
 	   	        android:layout_width="match_parent"
@@ -42,8 +44,9 @@
 		   	        android:layout_width="0dp"
 		   	        android:layout_height="wrap_content"
 		   	        android:layout_weight="7"
-		   	        android:textSize="50sp"
+		   	        android:textSize="70sp"
 		   	        android:id="@+id/id_tv_current_speed"
+		   	        android:gravity="right"
 		   	        android:text="32.2"
 		   	        />
 		   	    <TextView 
@@ -51,25 +54,28 @@
 		   	        android:layout_height="wrap_content"
 		   	        android:layout_weight="3"
 		   	        android:textSize="17sp"
-		   	        android:text="KPH"
+		   	        android:text="@string/unit_kmh"
 		   	        />
 	   	    </LinearLayout>
 	   	</LinearLayout> 
 	   	<LinearLayout
 	   	    android:layout_width="0dp" 
 	   	    android:layout_height="wrap_content"
-	   	    android:layout_weight="1"
+	   	    android:layout_weight="4"
 	   	    android:orientation="vertical"
 	   	    >
+	   	    <!-- AVG SPEED START -->
 		   	<LinearLayout
 		   	    android:layout_width="match_parent" 
 		   	    android:layout_height="wrap_content"
 		   	    android:orientation="vertical"
+		   	    android:layout_marginBottom="5dp"
 		   	    >
 		   	    <TextView 
 		   	        android:layout_width="match_parent"
 		   	        android:layout_height="wrap_content"
-		   	        android:text="AVG SPEED"
+		   	        style="@style/title"
+		   	        android:text="@string/title_avg_speed"
 		   	        />
 		   	    <LinearLayout 
 		   	        android:layout_width="match_parent"
@@ -80,7 +86,8 @@
 			   	        android:layout_width="0dp"
 			   	        android:layout_height="wrap_content"
 			   	        android:layout_weight="7"
-			   	        android:textSize="50sp"
+			   	        android:textSize="30sp"
+			   	        android:gravity="right"
 			   	        android:text="29.1"
 			   	        />
 			   	    <TextView 
@@ -88,11 +95,12 @@
 			   	        android:layout_height="wrap_content"
 			   	        android:layout_weight="3"
 			   	        android:textSize="15sp"
-			   	        android:text="KPH"
+			   	        android:text="@string/unit_kmh"
 			   	        />
 		   	        
 		   	    </LinearLayout>
 		   	</LinearLayout> 
+	   	    <!-- AVG SPEED END -->
 		   	<LinearLayout
 		   	    android:layout_width="match_parent" 
 		   	    android:layout_height="wrap_content"
@@ -101,7 +109,8 @@
 		   	    <TextView 
 		   	        android:layout_width="match_parent"
 		   	        android:layout_height="wrap_content"
-		   	        android:text="ALTITUDE"
+		   	        style="@style/title"
+		   	        android:text="@string/title_altitude"
 		   	        />
 		   	    <LinearLayout 
 		   	        android:layout_width="match_parent"
@@ -113,7 +122,8 @@
 			   	        android:layout_width="0dp"
 			   	        android:layout_height="wrap_content"
 			   	        android:layout_weight="7"
-			   	        android:textSize="50sp"
+			   	        android:textSize="30sp"
+			   	        android:gravity="right"
 			   	        android:text="605"
 			   	        />
 			   	    <TextView 
@@ -121,7 +131,7 @@
 			   	        android:layout_height="wrap_content"
 			   	        android:layout_weight="3"
 			   	        android:textSize="15sp"
-			   	        android:text="M"
+			   	        android:text="@string/unit_m"
 			   	        />
 		   	        
 		   	    </LinearLayout>
@@ -144,25 +154,127 @@
         android:textSize="10sp"
         android:text="0"/>
 
-	<Chronometer
-	    android:id="@+id/id_cm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:textSize="21sp" />
-       
-	<DigitalClock
-	    android:id="@+id/id_dc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+	<LinearLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal"
+	    >
+	   	<LinearLayout 
+	   	    android:layout_width="0dp"
+	   	    android:layout_height="wrap_content"
+	   	    android:layout_weight="1"
+	   	    android:orientation="vertical">
+	   	   	<TextView 
+	   	   	    android:layout_width="match_parent"
+	   	   	    android:layout_height="wrap_content"
+	   	   	    style="@style/title"
+	   	   	    android:text="@string/title_distance"/> 
+	   	    <LinearLayout 
+	   	        android:layout_width="match_parent"
+	   	        android:layout_height="wrap_content"
+	   	        android:orientation="horizontal"
+	   	        android:gravity="center_horizontal"
+	   	        >
+		   	    <TextView 
+		   	        android:id="@+id/id_tv_"
+		   	        android:layout_width="wrap_content"
+		   	        android:layout_height="wrap_content"
+		   	        android:textSize="30sp"
+		   	        android:gravity="right"
+		   	        android:text="605"
+		   	        />
+		   	    <TextView 
+		   	        android:layout_width="wrap_content"
+		   	        android:layout_height="wrap_content"
+		   	        android:textSize="15sp"
+		   	        android:text="@string/unit_m"
+		   	        />
+	   	        
+	   	    </LinearLayout>
+	   	</LinearLayout>
+	   	<LinearLayout 
+	   	    android:layout_width="0dp"
+	   	    android:layout_height="wrap_content"
+	   	    android:layout_weight="1"
+	   	    android:orientation="vertical">
+	   	   	<TextView 
+	   	   	    android:layout_width="match_parent"
+	   	   	    android:layout_height="wrap_content"
+	   	   	    style="@style/title"
+	   	   	    android:text="@string/title_travel_time"/> 
+			<Chronometer
+			    android:id="@+id/id_cm"
+        		android:layout_width="match_parent"
+   				android:layout_height="wrap_content" 
+	   	   	    android:gravity="center"
+        		android:textSize="30sp" />
+	   	</LinearLayout>
+	    
+	</LinearLayout>
+	<LinearLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal"
+	    android:gravity="center"
+	    >
+	   	<View 
+	   	    android:layout_width="0dp"
+	   	    android:layout_height="0dp"
+	   	    android:layout_weight="1"/>
+	   	<ImageView 
+	   	    android:layout_width="wrap_content"
+	   	    android:layout_height="wrap_content"
+	   	    android:src="@drawable/ic_watch_white_24dp"/>
+		<DigitalClock
+		    android:id="@+id/id_dc"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textSize="24sp" />
+	   	<View 
+	   	    android:layout_width="0dp"
+	   	    android:layout_height="0dp"
+	   	    android:layout_weight="1"/>
+	   	<ImageView 
+	   	    android:layout_width="wrap_content"
+	   	    android:layout_height="wrap_content"
+	   	    android:src="@drawable/ic_battery_std_white_24dp"/>
+		<TextView
+	        android:id="@+id/id_tv_battery_status"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" 
+	        android:textSize="24sp"
+	        android:text="92%"
+	        />
+	   	<View 
+	   	    android:layout_width="0dp"
+	   	    android:layout_height="0dp"
+	   	    android:layout_weight="1"/>
+	</LinearLayout>
+	<LinearLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="1"
+	    >
+	</LinearLayout>
 
-	<TextView
-        android:id="@+id/id_tv_battery_status"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:textSize="21sp"
-        android:text="92%"
-        />
-        
+	<LinearLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal"
+	    >
+	   	<ImageView 
+	   	    android:id="@+id/iv_play_stop"
+	   	    android:layout_width="0dp"
+	   	    android:layout_height="match_parent"
+	   	    android:layout_weight="1"
+	   	    android:src="@drawable/ic_play_circle_outline_white_48dp"/>
+	   	<ImageView 
+	   	    android:id="@+id/iv_pause"
+	   	    android:layout_width="0dp"
+	   	    android:layout_height="match_parent"
+	   	    android:layout_weight="1"
+	   	    android:src="@drawable/ic_pause_circle_outline_white_48dp"/>
+	    
+	</LinearLayout>
 
 </LinearLayout>

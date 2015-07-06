@@ -126,10 +126,10 @@ public class HomeActivity extends Activity{
 			@Override
 			public void onLocationChanged(Location location) {
 				Log.d("jiho", "onLocationChanged speed : "+location.getSpeed()+", altitude : "+location.getAltitude()+", lati : "+location.getLatitude()+", long : "+location.getLongitude());
-				id_tv_current_speed.setText(String.valueOf(location.getSpeed()*3.6f)+"Kph");
+				id_tv_current_speed.setText(String.valueOf(location.getSpeed()*3.6f));
 				id_tv_latitude.setText(String.valueOf(location.getLatitude()));
 				id_tv_longitude.setText(String.valueOf(location.getLongitude()));
-				id_tv_current_altitude.setText(String.valueOf(location.getAltitude())+"m");
+				id_tv_current_altitude.setText(String.valueOf(location.getAltitude()));
 			}
 		};
 		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, mLocationListener);

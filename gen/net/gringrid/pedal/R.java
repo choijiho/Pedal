@@ -28,11 +28,11 @@ public final class R {
         public static final int id_cm=0x7f070005;
         public static final int id_dc=0x7f070006;
         public static final int id_tv_battery_status=0x7f070007;
-        public static final int id_tv_current_altitude=0x7f070004;
+        public static final int id_tv_current_altitude=0x7f070002;
         public static final int id_tv_current_speed=0x7f070001;
         public static final int id_tv_gps_enable=0x7f070000;
-        public static final int id_tv_latitude=0x7f070002;
-        public static final int id_tv_longitude=0x7f070003;
+        public static final int id_tv_latitude=0x7f070003;
+        public static final int id_tv_longitude=0x7f070004;
     }
     public static final class layout {
         public static final int activity_home=0x7f030000;

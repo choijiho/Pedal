@@ -384,7 +384,7 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 			float speedFromLastLocation = distanceFromLastLocation / (locationTime - mLastLocationTime) * 3600;
 		
 			// 평균속도를 계산하기 위해 멈춰있는경우는 제외한다. 
-			if ( speedFromLastLocation <= 2 ){
+			if ( speedFromLastLocation <= 3 ){
 				currentStatus = "STOP";
 			// 속도가 100km 가 넘는경우는 GPS가 튄것으로 판단하여 제외한다.
 			}else if ( speedFromLastLocation > 150 ){

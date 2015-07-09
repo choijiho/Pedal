@@ -13,4 +13,8 @@
     <string name="unit_m">M</string>
     <string name="default_value_m">000</string>
     <string name="default_value_kmh">00.0</string>
+    <string name="alert_title">ALERT</string>
+    <string name="alert_reset">Do you want to reset?</string>
+    <string name="alert_confirm">Confirm</string>
+    <string name="alert_cancel">Cancel</string>
 </resources>

@@ -335,10 +335,13 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 		// 최초실행인경우 필터링
 		if ( mLastLocationTime != 0 ){
 			float distanceFromLastLocation = location.distanceTo(mLastLocation);
+			long elapsedTime = SystemClock.elapsedRealtime() - id_cm.getBase();
+
 			// 속도가 100km 넘는경우는 거리에 포함시키지 않음. GPS 튀는 현상때문에 
 			if ( distanceFromLastLocation / (locationTime - mLastLocationTime) * 3600 < 100000 ){
 				mTotalDistance += distanceFromLastLocation;
-				mAvgSpeed = mTotalDistance / locationTime - mStartTime * 3600;
+				mAvgSpeed = mTotalDistance / (elapsedTime / 1000) * 3600 / 1000;
+				id_tv_distance.setText(String.format("%.1f", mTotalDistance));
 				id_tv_avg_speed.setText(String.format("%.1f", mAvgSpeed));
 			}else{
 			}

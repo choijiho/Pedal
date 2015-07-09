@@ -17,8 +17,10 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.location.Location;
@@ -35,9 +37,9 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Chronometer;
-import android.widget.DigitalClock;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class HomeActivity extends Activity implements OnClickListener, LocationListener{
 
@@ -46,25 +48,23 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 	/**
 	 * 현재속도, 평균속도, 누적거리, 누적시간, 현재시간, 배터리 상태
 	 */
-	Context context;
-	TextView id_tv_current_speed;
-	TextView id_tv_avg_speed;
-	TextView id_tv_latitude;
-	TextView id_tv_longitude;
-	TextView id_tv_current_altitude;
-	TextView id_tv_distance;
-	TextView id_tv_battery_status;
-	ImageView id_iv_bike;
-	Chronometer id_cm;
-	DigitalClock id_dc;
-	LocationManager mLocationManager;
-	MockLocationProvider mock;
+	private Context context;
+	private TextView id_tv_current_speed;
+	private TextView id_tv_avg_speed;
+	private TextView id_tv_current_altitude;
+	private TextView id_tv_distance;
+	private TextView id_tv_battery_status;
+	private Chronometer id_cm;
+	private LocationManager mLocationManager;
+	private MockLocationProvider mock;
 	private long mTravelTime;
-	private long mStartTime;
 	private long mLastLocationTime;
+	private long mMoveTime;
 	private Location mLastLocation;
 	private float mAvgSpeed;
 	private float mTotalDistance;
+	private long mFirstBackButtonPressedTime;
+	private final int EXIT_TIME_INTERVAL = 2000;
 	
 	private BroadcastReceiver mBatteryReceiver = new BroadcastReceiver(){
 
@@ -102,12 +102,12 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 		iF.addAction("com.android.music.playbackcomplete");
 		iF.addAction("com.android.music.queuechanged");
 		registerReceiver(mMusicReceiver, iF);
+		initView();
 		
 	}
 	
 	@Override
 	protected void onResume() {
-		initView();
 		initLocation();
 		if ( DEBUG ) startSimulation();
 		super.onResume();
@@ -123,7 +123,9 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 	
 	@Override
 	protected void onDestroy() {
+		reset();
 		this.unregisterReceiver(mBatteryReceiver);
+		this.unregisterReceiver(mMusicReceiver);
 		super.onDestroy();
 	}
 	
@@ -132,27 +134,27 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 		view.setOnClickListener(this);
 		view = findViewById(R.id.id_iv_delete);
 		view.setOnClickListener(this);
+		view = findViewById(R.id.id_iv_setting);
+		view.setOnClickListener(this);
+		view = findViewById(R.id.id_iv_bike);
+		view.setOnClickListener(this);
 	}
 
 	private void initView(){
 		context = getApplicationContext();
 		id_tv_current_speed = (TextView)findViewById(R.id.id_tv_current_speed);
 		id_tv_avg_speed = (TextView)findViewById(R.id.id_tv_avg_speed);
-		id_tv_latitude = (TextView)findViewById(R.id.id_tv_latitude);
-		id_tv_longitude = (TextView)findViewById(R.id.id_tv_longitude);
 		id_tv_current_altitude = (TextView)findViewById(R.id.id_tv_current_altitude);
 		id_tv_distance = (TextView)findViewById(R.id.id_tv_distance);
 		id_tv_battery_status = (TextView)findViewById(R.id.id_tv_battery_status);
-		id_iv_bike = (ImageView)findViewById(R.id.id_iv_bike);
 		id_cm = (Chronometer)findViewById(R.id.id_cm);
-		id_dc = (DigitalClock)findViewById(R.id.id_dc);
 		
+		// Toggle 기본값
 		findViewById(R.id.id_iv_play_stop).setTag(R.drawable.ic_play_circle_outline_white_48dp);
-		
 		
 		IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
 		Intent batteryStatus = context.registerReceiver(null, ifilter);
-				int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+		int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
 		int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
 
 		float batteryPct = level / (float)scale;
@@ -180,11 +182,9 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 	
 	int mIdx = 0;
 
-
 	private void executeSimilation(List<Location> list){
 	    mock.pushLocation(list.get(mIdx++));
 	}
-
 	
 	private List<Location> readTextGPXFile(){
 		List<Location> list = new ArrayList<Location>();
@@ -254,12 +254,9 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 					Thread.sleep(1000);
 					onLocationChanged(location);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
 			}
-			// TODO Auto-generated method stub
 			return null;
 		}
 	}
@@ -282,18 +279,49 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 		id_cm.stop();
 		mLocationManager.removeUpdates(this);
 	}
-	
+
 	private void resetPedal(){
-		// TODO 의사물어보기
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(R.string.alert_title);
+		builder.setMessage(R.string.alert_reset);
+		builder.setPositiveButton(R.string.alert_confirm,
+				new android.content.DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						reset();
+					}
+				});
+		builder.setNegativeButton(R.string.alert_cancel,
+				new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						return;
+					}
+				});
+		builder.show();
+	}
+	
+	private void reset(){
 		pausePedal();
 		mTravelTime = 0;
+		mLastLocationTime = 0;
 		id_cm.setBase(SystemClock.elapsedRealtime());
-		
 		id_tv_current_speed.setText("00.0");
 		id_tv_avg_speed.setText("00.0");
 		id_tv_current_altitude.setText("000");
 		id_tv_distance.setText("000");
-		
+	}
+	
+	@Override
+	public void onBackPressed() {
+	    if (mFirstBackButtonPressedTime + EXIT_TIME_INTERVAL > System.currentTimeMillis()){ 
+	        super.onBackPressed(); 
+	        return;
+	    } else { 
+	    	Toast.makeText(getBaseContext(), "Please click BACK again to exit", Toast.LENGTH_SHORT).show(); 
+	    }
+	   	mFirstBackButtonPressedTime = System.currentTimeMillis();
 	}
 
 	@Override
@@ -315,6 +343,23 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 			resetPedal();
 			break;
 
+		case R.id.id_iv_setting:
+			Intent intent = new Intent(this, SettingActivity.class);
+			startActivity(intent);
+			break;
+			
+		case R.id.id_iv_bike:
+			if ( findViewById(R.id.id_iv_play_stop).getVisibility() == View.INVISIBLE){
+				findViewById(R.id.id_iv_play_stop).setVisibility(View.VISIBLE);
+				findViewById(R.id.id_iv_delete).setVisibility(View.VISIBLE);
+				findViewById(R.id.id_iv_setting).setVisibility(View.VISIBLE);
+			}else{
+				findViewById(R.id.id_iv_play_stop).setVisibility(View.INVISIBLE);
+				findViewById(R.id.id_iv_delete).setVisibility(View.INVISIBLE);
+				findViewById(R.id.id_iv_setting).setVisibility(View.INVISIBLE);
+			}
+			break;
+			
 		default:
 			break;
 		}
@@ -327,24 +372,40 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 		// 	저장된 Location과 변경된 location 거리계산
 		// 	누적거리에 add
 		// 평균속도
-		//  속도가 5 이상인 경우만 계산
+		//  속도가 2 이상인 경우만 계산
 		//	마지막 Location과 변경된 Location 거리계산
 		//  변경된 Location 시간 - 마지막 저장된 시간
 		long locationTime = location.getTime();
+		String currentStatus = null;
 		
 		// 최초실행인경우 필터링
 		if ( mLastLocationTime != 0 ){
 			float distanceFromLastLocation = location.distanceTo(mLastLocation);
-			long elapsedTime = SystemClock.elapsedRealtime() - id_cm.getBase();
-
-			// 속도가 100km 넘는경우는 거리에 포함시키지 않음. GPS 튀는 현상때문에 
-			if ( distanceFromLastLocation / (locationTime - mLastLocationTime) * 3600 < 100000 ){
+			float speedFromLastLocation = distanceFromLastLocation / (locationTime - mLastLocationTime) * 3600;
+		
+			// 평균속도를 계산하기 위해 멈춰있는경우는 제외한다. 
+			if ( speedFromLastLocation <= 2 ){
+				currentStatus = "STOP";
+			// 속도가 100km 가 넘는경우는 GPS가 튄것으로 판단하여 제외한다.
+			}else if ( speedFromLastLocation > 150 ){
+				currentStatus = "GPS ERROR";
+			}else{
+				currentStatus = "Riding";
+				mMoveTime++;// += locationTime - mLastLocationTime;
 				mTotalDistance += distanceFromLastLocation;
-				mAvgSpeed = mTotalDistance / (elapsedTime / 1000) * 3600 / 1000;
+				mAvgSpeed = mTotalDistance / mMoveTime * 3600 / 1000;
 				id_tv_distance.setText(String.format("%.1f", mTotalDistance));
 				id_tv_avg_speed.setText(String.format("%.1f", mAvgSpeed));
-			}else{
 			}
+		
+			((TextView)findViewById(R.id.id_tv_accuracy)).setText(String.valueOf(location.getAccuracy()));
+			((TextView)findViewById(R.id.id_tv_move_time)).setText(String.valueOf(mMoveTime));
+			((TextView)findViewById(R.id.id_tv_speed_from_last_location)).setText(String.valueOf(speedFromLastLocation));
+			((TextView)findViewById(R.id.id_tv_location_speed)).setText(String.valueOf(location.getSpeed()*3.6f));
+			((TextView)findViewById(R.id.id_tv_last_distance)).setText(String.format("%.1f", distanceFromLastLocation));
+			((TextView)findViewById(R.id.id_tv_latitude)).setText(String.valueOf(location.getLatitude()));
+			((TextView)findViewById(R.id.id_tv_longitude)).setText(String.valueOf(location.getLongitude()));
+			((TextView)findViewById(R.id.id_tv_current_status)).setText(currentStatus);
 		}
 		
 		mLastLocationTime = locationTime;
@@ -352,8 +413,6 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 
 		Log.d("jiho", "onLocationChanged speed : "+location.getSpeed()+", altitude : "+location.getAltitude()+", lati : "+location.getLatitude()+", long : "+location.getLongitude());
 		id_tv_current_speed.setText(String.format("%.1f", location.getSpeed()*3.6f));
-		id_tv_latitude.setText(String.valueOf(location.getLatitude()));
-		id_tv_longitude.setText(String.valueOf(location.getLongitude()));
 		id_tv_current_altitude.setText(String.valueOf(location.getAltitude()));
 	}
 

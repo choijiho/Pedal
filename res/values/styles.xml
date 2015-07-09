@@ -10,5 +10,8 @@
     <item name="android:textStyle">bold</item>
 </style>
 
-
+<color name="custom_theme_color">#ffffff</color>
+<style name="CustomTheme" parent="android:Theme.Black">
+    <item name="android:textColor">@color/custom_theme_color</item>
+</style>
 </resources>

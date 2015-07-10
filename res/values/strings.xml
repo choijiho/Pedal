@@ -11,7 +11,9 @@
     <string name="title_travel_time">TRAVEL TIME</string>
     <string name="unit_kmh">KM/H</string>
     <string name="unit_m">M</string>
+    <string name="unit_km">KM</string>
     <string name="default_value_m">000</string>
+    <string name="default_value_km">0.0</string>
     <string name="default_value_kmh">00.0</string>
     <string name="alert_title">ALERT</string>
     <string name="alert_reset">Do you want to reset?</string>

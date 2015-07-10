@@ -6,7 +6,7 @@
     -->
 
 <style name="title">
-    <item name="android:gravity">center</item>
+    <item name="android:gravity">left</item>
     <item name="android:textStyle">bold</item>
 </style>
 

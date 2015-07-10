@@ -1,20 +1,6 @@
 package net.gringrid.pedal;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
+import java.util.Calendar;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -26,10 +12,8 @@ import android.content.IntentFilter;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.BatteryManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
@@ -44,6 +28,7 @@ import android.widget.Toast;
 public class HomeActivity extends Activity implements OnClickListener, LocationListener{
 
 	final boolean DEBUG = false;
+	final boolean IS_LOG_PRINT = false;
 
 	/**
 	 * 현재속도, 평균속도, 누적거리, 누적시간, 현재시간, 배터리 상태
@@ -56,7 +41,6 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 	private TextView id_tv_battery_status;
 	private Chronometer id_cm;
 	private LocationManager mLocationManager;
-	private MockLocationProvider mock;
 	private long mTravelTime;
 	private long mLastLocationTime;
 	private long mMoveTime;
@@ -66,26 +50,30 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 	private long mFirstBackButtonPressedTime;
 	private final int EXIT_TIME_INTERVAL = 2000;
 	
-	private BroadcastReceiver mBatteryReceiver = new BroadcastReceiver(){
-
+	
+	private BroadcastReceiver mBR = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			int level = intent.getIntExtra("level", 0);
-			id_tv_battery_status.setText(String.valueOf(level) + "%");
+			String action = intent.getAction();
+			
+			if ( action.equals(Intent.ACTION_BATTERY_CHANGED) ){
+				int level = intent.getIntExtra("level", 0);
+				id_tv_battery_status.setText(String.valueOf(level) + "%");
+			}else if( action.equals(Intent.ACTION_DATE_CHANGED) ){
+				setDayInfo();	
+			}else if ( action.equals("com.android.music.metachanged") ||
+					action.equals("com.android.music.playstatechanged") ||
+					action.equals("com.android.music.playbackcomplete") ||
+					action.equals("com.android.music.queuechanged") 
+					){
+				String artist = intent.getStringExtra("artist");
+				String track = intent.getStringExtra("track");
+				((TextView)findViewById(R.id.id_tv_music_artist)).setText(artist);
+				((TextView)findViewById(R.id.id_tv_music_title)).setText(track);
+			}
 		}
 	};
-	
-	private BroadcastReceiver mMusicReceiver = new BroadcastReceiver() {
 
-		@Override
-		public void onReceive(Context context, Intent intent)
-		{
-			String artist = intent.getStringExtra("artist");
-			String track = intent.getStringExtra("track");
-			((TextView)findViewById(R.id.id_tv_music_artist)).setText(artist);
-			((TextView)findViewById(R.id.id_tv_music_title)).setText(track);
-		}
-	};
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -94,29 +82,26 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 		setContentView(R.layout.activity_home);
 		registEvent();
 
-		this.registerReceiver(mBatteryReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-
+		this.registerReceiver(mBR, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+		this.registerReceiver(mBR, new IntentFilter(Intent.ACTION_DATE_CHANGED));
 		IntentFilter iF = new IntentFilter();
 		iF.addAction("com.android.music.metachanged");
 		iF.addAction("com.android.music.playstatechanged");
 		iF.addAction("com.android.music.playbackcomplete");
 		iF.addAction("com.android.music.queuechanged");
-		registerReceiver(mMusicReceiver, iF);
+		this.registerReceiver(mBR, iF);
 		initView();
-		
 	}
 	
 	@Override
 	protected void onResume() {
 		initLocation();
-		if ( DEBUG ) startSimulation();
 		super.onResume();
 	}
 	
 	@Override
 	protected void onPause() {
 		// TRAVEL TIME, DISTANCE, AVG SPEED
-		
 		// TODO Auto-generated method stub
 		super.onPause();
 	}
@@ -124,8 +109,7 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 	@Override
 	protected void onDestroy() {
 		reset();
-		this.unregisterReceiver(mBatteryReceiver);
-		this.unregisterReceiver(mMusicReceiver);
+		this.unregisterReceiver(mBR);
 		super.onDestroy();
 	}
 	
@@ -159,74 +143,31 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 
 		float batteryPct = level / (float)scale;
 		id_tv_battery_status.setText(String.format("%.0f", batteryPct));
+		
+		setDayInfo();
+		if ( IS_LOG_PRINT ){
+			findViewById(R.id.id_sv_log).setVisibility(View.VISIBLE);
+		}else{
+			findViewById(R.id.id_sv_log).setVisibility(View.GONE);
+		}
 	}
 	
+	private void setDayInfo() {
+		Calendar calendar = Calendar.getInstance(); 
+		int months = calendar.get(Calendar.MONTH) + 1;
+		int days = calendar.get(Calendar.DAY_OF_MONTH);
+		int week = calendar.get(calendar.DAY_OF_WEEK) - 1;
+		String weekName = getResources().getStringArray(R.array.week)[week];
+		
+		TextView id_tv_day_info = (TextView)findViewById(R.id.id_tv_day_info);
+		id_tv_day_info.setText(months+"."+days+" ("+weekName+")");
+	}
+
 	private void initLocation(){
 		mLocationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
 		checkGPS(mLocationManager);
 	}
 
-	final Handler handler = new Handler();
-    
-	private void startSimulation(){
-		mock = new MockLocationProvider(LocationManager.GPS_PROVIDER, this);
-		final List<Location> gpxList = readTextGPXFile();	
-		handler.postDelayed(new Runnable() {
-		      @Override
-		      public void run() {
-		    	  handler.postDelayed(this, 1000);
-		    	  executeSimilation(gpxList);
-		      }
-		    }, 1500);
-	}
-	
-	int mIdx = 0;
-
-	private void executeSimilation(List<Location> list){
-	    mock.pushLocation(list.get(mIdx++));
-	}
-	
-	private List<Location> readTextGPXFile(){
-		List<Location> list = new ArrayList<Location>();
-		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-		try {
-			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-			Document document = documentBuilder.parse(getAssets().open("gps_test.gpx"));
-			Element elementRoot = document.getDocumentElement();
-		
-			NodeList nodelist_trkpt = elementRoot.getElementsByTagName("trkpt");
-		
-			for(int i = 0; i < nodelist_trkpt.getLength(); i++){
-		
-				Node node = nodelist_trkpt.item(i);
-				NamedNodeMap attributes = node.getAttributes();
-			
-				String newLatitude = attributes.getNamedItem("lat").getTextContent();
-				Double newLatitude_double = Double.parseDouble(newLatitude);
-				
-				String newLongitude = attributes.getNamedItem("lon").getTextContent();
-				Double newLongitude_double = Double.parseDouble(newLongitude);
-				
-				String newLocationName = newLatitude + ":" + newLongitude;
-				Location newLocation = new Location("Test");
-				newLocation.setLatitude(newLatitude_double);
-				newLocation.setLongitude(newLongitude_double);
-				
-				list.add(newLocation);
-			}
-			
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (SAXException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	
-		return list;
-	}
 
 	private void checkGPS(LocationManager locationManager){
 		ImageView id_iv_gps_enable = (ImageView)findViewById(R.id.id_iv_gps_enable);
@@ -244,31 +185,13 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 		}
 	}
 	
-	public class SimulationTask extends AsyncTask<String, Void, String>{
-
-		@Override
-		protected String doInBackground(String... params) {
-			List<Location> gpxList = readTextGPXFile();	
-			for ( Location location : gpxList ){
-				try {
-					Thread.sleep(1000);
-					onLocationChanged(location);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-			return null;
-		}
-	}
-	
-
 	private void playPedal(){
 		View v = findViewById(R.id.id_iv_play_stop);
 		v.setTag(R.drawable.ic_pause_circle_outline_white_48dp);
 		((ImageView)v).setImageResource(R.drawable.ic_pause_circle_outline_white_48dp);
 		id_cm.setBase(SystemClock.elapsedRealtime() + mTravelTime);
 		id_cm.start();
-		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, this);
+		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 2, this);
 	}
 	
 	private void pausePedal(){
@@ -293,7 +216,6 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 				});
 		builder.setNegativeButton(R.string.alert_cancel,
 				new DialogInterface.OnClickListener() {
-					
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						return;
@@ -367,24 +289,18 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 
 	@Override
 	public void onLocationChanged(Location location) {
-		// 누적거리
-		// 	마지막 Location 저장
-		// 	저장된 Location과 변경된 location 거리계산
-		// 	누적거리에 add
-		// 평균속도
-		//  속도가 2 이상인 경우만 계산
-		//	마지막 Location과 변경된 Location 거리계산
-		//  변경된 Location 시간 - 마지막 저장된 시간
 		long locationTime = location.getTime();
+		float locationSpeed = location.getSpeed();
+		float locationSpeedKm = locationSpeed * 3.6f;
 		String currentStatus = null;
 		
 		// 최초실행인경우 필터링
 		if ( mLastLocationTime != 0 ){
 			float distanceFromLastLocation = location.distanceTo(mLastLocation);
-			float speedFromLastLocation = distanceFromLastLocation / (locationTime - mLastLocationTime) * 3600;
+			float speedFromLastLocation = distanceFromLastLocation * 3.6f;
 		
 			// 평균속도를 계산하기 위해 멈춰있는경우는 제외한다. 
-			if ( speedFromLastLocation <= 3 ){
+			if ( speedFromLastLocation <= 3 || locationSpeedKm < 2 ){
 				currentStatus = "STOP";
 			// 속도가 100km 가 넘는경우는 GPS가 튄것으로 판단하여 제외한다.
 			}else if ( speedFromLastLocation > 150 ){
@@ -393,26 +309,28 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 				currentStatus = "Riding";
 				mMoveTime++;// += locationTime - mLastLocationTime;
 				mTotalDistance += distanceFromLastLocation;
-				mAvgSpeed = mTotalDistance / mMoveTime * 3600 / 1000;
-				id_tv_distance.setText(String.format("%.1f", mTotalDistance));
+				mAvgSpeed = mTotalDistance / mMoveTime * 3.6f;
+				id_tv_distance.setText(String.format("%.1f", mTotalDistance / 100));
 				id_tv_avg_speed.setText(String.format("%.1f", mAvgSpeed));
 			}
 		
-			((TextView)findViewById(R.id.id_tv_accuracy)).setText(String.valueOf(location.getAccuracy()));
-			((TextView)findViewById(R.id.id_tv_move_time)).setText(String.valueOf(mMoveTime));
-			((TextView)findViewById(R.id.id_tv_speed_from_last_location)).setText(String.valueOf(speedFromLastLocation));
-			((TextView)findViewById(R.id.id_tv_location_speed)).setText(String.valueOf(location.getSpeed()*3.6f));
-			((TextView)findViewById(R.id.id_tv_last_distance)).setText(String.format("%.1f", distanceFromLastLocation));
-			((TextView)findViewById(R.id.id_tv_latitude)).setText(String.valueOf(location.getLatitude()));
-			((TextView)findViewById(R.id.id_tv_longitude)).setText(String.valueOf(location.getLongitude()));
-			((TextView)findViewById(R.id.id_tv_current_status)).setText(currentStatus);
+			if ( IS_LOG_PRINT ){
+				((TextView)findViewById(R.id.id_tv_accuracy)).setText(String.valueOf(location.getAccuracy()));
+				((TextView)findViewById(R.id.id_tv_move_time)).setText(String.valueOf(mMoveTime));
+				((TextView)findViewById(R.id.id_tv_speed_from_last_location)).setText(String.valueOf(speedFromLastLocation));
+				((TextView)findViewById(R.id.id_tv_location_speed)).setText(String.valueOf(locationSpeedKm));
+				((TextView)findViewById(R.id.id_tv_last_distance)).setText(String.format("%.1f", distanceFromLastLocation));
+				((TextView)findViewById(R.id.id_tv_latitude)).setText(String.valueOf(location.getLatitude()));
+				((TextView)findViewById(R.id.id_tv_longitude)).setText(String.valueOf(location.getLongitude()));
+				((TextView)findViewById(R.id.id_tv_current_status)).setText(currentStatus);
+			}
 		}
 		
 		mLastLocationTime = locationTime;
 		mLastLocation = location;
 
-		Log.d("jiho", "onLocationChanged speed : "+location.getSpeed()+", altitude : "+location.getAltitude()+", lati : "+location.getLatitude()+", long : "+location.getLongitude());
-		id_tv_current_speed.setText(String.format("%.1f", location.getSpeed()*3.6f));
+		Log.d("jiho", "onLocationChanged speed : "+locationSpeed+", altitude : "+location.getAltitude()+", lati : "+location.getLatitude()+", long : "+location.getLongitude());
+		id_tv_current_speed.setText(String.format("%.1f", locationSpeedKm));
 		id_tv_current_altitude.setText(String.valueOf(location.getAltitude()));
 	}
 

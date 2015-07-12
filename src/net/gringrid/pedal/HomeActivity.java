@@ -28,7 +28,7 @@ import android.widget.Toast;
 public class HomeActivity extends Activity implements OnClickListener, LocationListener{
 
 	final boolean DEBUG = false;
-	final boolean IS_LOG_PRINT = false;
+	final boolean IS_LOG_PRINT = true;
 
 	/**
 	 * 현재속도, 평균속도, 누적거리, 누적시간, 현재시간, 배터리 상태
@@ -310,7 +310,7 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 				mMoveTime++;// += locationTime - mLastLocationTime;
 				mTotalDistance += distanceFromLastLocation;
 				mAvgSpeed = mTotalDistance / mMoveTime * 3.6f;
-				id_tv_distance.setText(String.format("%.1f", mTotalDistance / 100));
+				id_tv_distance.setText(String.format("%.2f", mTotalDistance / 1000));
 				id_tv_avg_speed.setText(String.format("%.1f", mAvgSpeed));
 			}
 		

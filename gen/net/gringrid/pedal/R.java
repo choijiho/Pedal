@@ -9,12 +9,12 @@ package net.gringrid.pedal;
 
 public final class R {
     public static final class array {
-        public static final int week=0x7f040000;
+        public static final int week=0x7f050000;
     }
     public static final class attr {
     }
     public static final class color {
-        public static final int custom_theme_color=0x7f080000;
+        public static final int custom_theme_color=0x7f090000;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
@@ -24,8 +24,8 @@ public final class R {
          would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively).
     
          */
-        public static final int activity_horizontal_margin=0x7f050000;
-        public static final int activity_vertical_margin=0x7f050001;
+        public static final int activity_horizontal_margin=0x7f060000;
+        public static final int activity_vertical_margin=0x7f060001;
     }
     public static final class drawable {
         public static final int custom_checkbox=0x7f020000;
@@ -37,73 +37,85 @@ public final class R {
         public static final int ic_directions_bike_white_48dp=0x7f020006;
         public static final int ic_launcher=0x7f020007;
         public static final int ic_location_off_white_48dp=0x7f020008;
-        public static final int ic_pause_circle_outline_white_48dp=0x7f020009;
-        public static final int ic_play_circle_outline_white_48dp=0x7f02000a;
-        public static final int ic_settings_white_36dp=0x7f02000b;
-        public static final int ic_watch_white_24dp=0x7f02000c;
+        public static final int ic_notifications_active_white_48dp=0x7f020009;
+        public static final int ic_notifications_off_white_48dp=0x7f02000a;
+        public static final int ic_pause_circle_outline_white_48dp=0x7f02000b;
+        public static final int ic_play_circle_outline_white_48dp=0x7f02000c;
+        public static final int ic_settings_white_36dp=0x7f02000d;
+        public static final int ic_volume_up_white_48dp=0x7f02000e;
+        public static final int ic_watch_white_24dp=0x7f02000f;
     }
     public static final class id {
-        public static final int chk=0x7f0a0018;
-        public static final int id_cm=0x7f0a0008;
-        public static final int id_dc=0x7f0a0001;
-        public static final int id_iv_bike=0x7f0a0012;
-        public static final int id_iv_delete=0x7f0a0015;
-        public static final int id_iv_gps_enable=0x7f0a0003;
-        public static final int id_iv_play_stop=0x7f0a0016;
-        public static final int id_iv_setting=0x7f0a0017;
-        public static final int id_sv_log=0x7f0a0009;
-        public static final int id_tv_accuracy=0x7f0a000a;
-        public static final int id_tv_avg_speed=0x7f0a0005;
-        public static final int id_tv_battery_status=0x7f0a0002;
-        public static final int id_tv_current_altitude=0x7f0a0006;
-        public static final int id_tv_current_speed=0x7f0a0004;
-        public static final int id_tv_current_status=0x7f0a0011;
-        public static final int id_tv_day_info=0x7f0a0000;
-        public static final int id_tv_distance=0x7f0a0007;
-        public static final int id_tv_last_distance=0x7f0a000c;
-        public static final int id_tv_latitude=0x7f0a000f;
-        public static final int id_tv_location_speed=0x7f0a000e;
-        public static final int id_tv_longitude=0x7f0a0010;
-        public static final int id_tv_move_time=0x7f0a000b;
-        public static final int id_tv_music_artist=0x7f0a0013;
-        public static final int id_tv_music_title=0x7f0a0014;
-        public static final int id_tv_speed_from_last_location=0x7f0a000d;
+        public static final int chk=0x7f0b001a;
+        public static final int id_cm=0x7f0b0008;
+        public static final int id_dc=0x7f0b0001;
+        public static final int id_iv_bike=0x7f0b0012;
+        public static final int id_iv_cadence_alarm=0x7f0b0013;
+        public static final int id_iv_delete=0x7f0b0017;
+        public static final int id_iv_gps_enable=0x7f0b0003;
+        public static final int id_iv_passing=0x7f0b0014;
+        public static final int id_iv_play_stop=0x7f0b0018;
+        public static final int id_iv_setting=0x7f0b0019;
+        public static final int id_sv_log=0x7f0b0009;
+        public static final int id_tv_accuracy=0x7f0b000a;
+        public static final int id_tv_avg_speed=0x7f0b0005;
+        public static final int id_tv_battery_status=0x7f0b0002;
+        public static final int id_tv_current_altitude=0x7f0b0006;
+        public static final int id_tv_current_speed=0x7f0b0004;
+        public static final int id_tv_current_status=0x7f0b0011;
+        public static final int id_tv_day_info=0x7f0b0000;
+        public static final int id_tv_distance=0x7f0b0007;
+        public static final int id_tv_last_distance=0x7f0b000c;
+        public static final int id_tv_latitude=0x7f0b000f;
+        public static final int id_tv_location_speed=0x7f0b000e;
+        public static final int id_tv_longitude=0x7f0b0010;
+        public static final int id_tv_move_time=0x7f0b000b;
+        public static final int id_tv_music_artist=0x7f0b0015;
+        public static final int id_tv_music_title=0x7f0b0016;
+        public static final int id_tv_speed_from_last_location=0x7f0b000d;
     }
     public static final class layout {
         public static final int activity_home=0x7f030000;
-        public static final int activity_setting=0x7f030001;
+        public static final int activity_pedal=0x7f030001;
+        public static final int activity_setting=0x7f030002;
     }
     public static final class menu {
-        public static final int pedal=0x7f090000;
+        public static final int pedal=0x7f0a0000;
+    }
+    public static final class raw {
+        public static final int bp_1=0x7f040000;
+        public static final int bp_1_part=0x7f040001;
+        public static final int bs_11=0x7f040002;
+        public static final int passing=0x7f040003;
     }
     public static final class string {
-        public static final int action_settings=0x7f060002;
-        public static final int alert_cancel=0x7f060012;
-        public static final int alert_confirm=0x7f060011;
-        public static final int alert_reset=0x7f060010;
-        public static final int alert_title=0x7f06000f;
-        public static final int app_name=0x7f060000;
-        public static final int default_value_km=0x7f06000d;
-        public static final int default_value_kmh=0x7f06000e;
-        public static final int default_value_m=0x7f06000c;
-        public static final int gps_disabled=0x7f060003;
-        public static final int hello_world=0x7f060001;
-        public static final int title_altitude=0x7f060006;
-        public static final int title_avg_speed=0x7f060005;
-        public static final int title_distance=0x7f060007;
-        public static final int title_speed=0x7f060004;
-        public static final int title_travel_time=0x7f060008;
-        public static final int unit_km=0x7f06000b;
-        public static final int unit_kmh=0x7f060009;
-        public static final int unit_m=0x7f06000a;
+        public static final int action_settings=0x7f070002;
+        public static final int alert_cancel=0x7f070012;
+        public static final int alert_confirm=0x7f070011;
+        public static final int alert_reset=0x7f070010;
+        public static final int alert_title=0x7f07000f;
+        public static final int app_name=0x7f070000;
+        public static final int default_value_km=0x7f07000d;
+        public static final int default_value_kmh=0x7f07000e;
+        public static final int default_value_m=0x7f07000c;
+        public static final int gps_disabled=0x7f070003;
+        public static final int hello_world=0x7f070001;
+        public static final int title_altitude=0x7f070006;
+        public static final int title_avg_speed=0x7f070005;
+        public static final int title_distance=0x7f070007;
+        public static final int title_speed=0x7f070004;
+        public static final int title_travel_time=0x7f070008;
+        public static final int unit_km=0x7f07000b;
+        public static final int unit_kmh=0x7f070009;
+        public static final int unit_m=0x7f07000a;
     }
     public static final class style {
-        public static final int CustomTheme=0x7f070001;
+        public static final int CustomTheme=0x7f080001;
         /** 
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     
          */
-        public static final int title=0x7f070000;
+        public static final int title=0x7f080000;
     }
 }

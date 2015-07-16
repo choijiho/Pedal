@@ -12,8 +12,10 @@ import android.content.IntentFilter;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.os.BatteryManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
@@ -49,6 +51,9 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 	private float mTotalDistance;
 	private long mFirstBackButtonPressedTime;
 	private final int EXIT_TIME_INTERVAL = 2000;
+	private MediaPlayer mMPCadence;
+	private MediaPlayer mMPPassing;
+	private CountDownTimer mCountDownTimer;
 	
 	
 	private BroadcastReceiver mBR = new BroadcastReceiver() {
@@ -122,6 +127,10 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 		view.setOnClickListener(this);
 		view = findViewById(R.id.id_iv_bike);
 		view.setOnClickListener(this);
+		view = findViewById(R.id.id_iv_cadence_alarm);
+		view.setOnClickListener(this);
+		view = findViewById(R.id.id_iv_passing);
+		view.setOnClickListener(this);
 	}
 
 	private void initView(){
@@ -135,6 +144,7 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 		
 		// Toggle 기본값
 		findViewById(R.id.id_iv_play_stop).setTag(R.drawable.ic_play_circle_outline_white_48dp);
+		findViewById(R.id.id_iv_cadence_alarm).setTag(R.drawable.ic_notifications_off_white_48dp);
 		
 		IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
 		Intent batteryStatus = context.registerReceiver(null, ifilter);
@@ -223,9 +233,41 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 				});
 		builder.show();
 	}
+
+	private void playCadenceAlarm(){
+		View v = findViewById(R.id.id_iv_cadence_alarm);
+		v.setTag(R.drawable.ic_notifications_active_white_48dp);
+		((ImageView)v).setImageResource(R.drawable.ic_notifications_active_white_48dp);
+		mMPCadence = MediaPlayer.create(this, R.raw.bs_11);
+		mMPCadence.setLooping(true);
+		if ( mMPCadence.isPlaying() == false ){
+			mMPCadence.start();
+		}
+	}
+
+	private void stopCadenceAlarm(){
+		View v = findViewById(R.id.id_iv_cadence_alarm);
+		v.setTag(R.drawable.ic_notifications_off_white_48dp);
+		((ImageView)v).setImageResource(R.drawable.ic_notifications_off_white_48dp);
+
+		if ( mMPCadence != null && mMPCadence.isPlaying() ){
+			mMPCadence.stop();
+		}
+	}
+
+	private void playPassing(){
+		if ( mMPPassing == null ){
+			mMPPassing = MediaPlayer.create(this, R.raw.passing);
+		}
+		if ( mMPPassing.isPlaying() == false ){
+			Log.d("jiho", " mMPPassing.isPlaying() == false ");
+			mMPPassing.start();
+		}
+	}
 	
 	private void reset(){
 		pausePedal();
+		stopCadenceAlarm();
 		mTravelTime = 0;
 		mLastLocationTime = 0;
 		id_cm.setBase(SystemClock.elapsedRealtime());
@@ -271,6 +313,7 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 			break;
 			
 		case R.id.id_iv_bike:
+
 			if ( findViewById(R.id.id_iv_play_stop).getVisibility() == View.INVISIBLE){
 				findViewById(R.id.id_iv_play_stop).setVisibility(View.VISIBLE);
 				findViewById(R.id.id_iv_delete).setVisibility(View.VISIBLE);
@@ -280,6 +323,18 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 				findViewById(R.id.id_iv_delete).setVisibility(View.INVISIBLE);
 				findViewById(R.id.id_iv_setting).setVisibility(View.INVISIBLE);
 			}
+			break;
+		case R.id.id_iv_cadence_alarm:
+			
+			if ( (Integer)v.getTag() == R.drawable.ic_notifications_off_white_48dp ){
+				playCadenceAlarm();
+			}else if ( (Integer)v.getTag() == R.drawable.ic_notifications_active_white_48dp ){
+				stopCadenceAlarm();
+			}
+			break;
+			
+		case R.id.id_iv_passing:
+			playPassing();
 			break;
 			
 		default:

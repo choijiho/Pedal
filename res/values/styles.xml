@@ -8,9 +8,10 @@
 <style name="title">
     <item name="android:gravity">left</item>
     <item name="android:textStyle">bold</item>
+    <item name="android:textColor">#666666</item>
 </style>
 
-<color name="custom_theme_color">#ffffff</color>
+<color name="custom_theme_color">#FFFFFF</color>
 <style name="CustomTheme" parent="android:Theme.Black">
     <item name="android:textColor">@color/custom_theme_color</item>
 </style>

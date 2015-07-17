@@ -15,7 +15,6 @@ import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.os.BatteryManager;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
@@ -30,7 +29,7 @@ import android.widget.Toast;
 public class HomeActivity extends Activity implements OnClickListener, LocationListener{
 
 	final boolean DEBUG = false;
-	final boolean IS_LOG_PRINT = true;
+	final boolean IS_LOG_PRINT = false;
 
 	/**
 	 * 현재속도, 평균속도, 누적거리, 누적시간, 현재시간, 배터리 상태
@@ -53,7 +52,7 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 	private final int EXIT_TIME_INTERVAL = 2000;
 	private MediaPlayer mMPCadence;
 	private MediaPlayer mMPPassing;
-	private CountDownTimer mCountDownTimer;
+	private Setting mSetting;
 	
 	
 	private BroadcastReceiver mBR = new BroadcastReceiver() {
@@ -85,17 +84,20 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.activity_home);
+		loadSetting();
+		initView();
 		registEvent();
 
 		this.registerReceiver(mBR, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 		this.registerReceiver(mBR, new IntentFilter(Intent.ACTION_DATE_CHANGED));
-		IntentFilter iF = new IntentFilter();
-		iF.addAction("com.android.music.metachanged");
-		iF.addAction("com.android.music.playstatechanged");
-		iF.addAction("com.android.music.playbackcomplete");
-		iF.addAction("com.android.music.queuechanged");
-		this.registerReceiver(mBR, iF);
-		initView();
+		if ( mSetting.IS_ENABLE_MUSIC ){
+			IntentFilter iF = new IntentFilter();
+			iF.addAction("com.android.music.metachanged");
+			iF.addAction("com.android.music.playstatechanged");
+			iF.addAction("com.android.music.playbackcomplete");
+			iF.addAction("com.android.music.queuechanged");
+			this.registerReceiver(mBR, iF);
+		}
 	}
 	
 	@Override
@@ -118,6 +120,13 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 		super.onDestroy();
 	}
 	
+	private void loadSetting(){
+		mSetting = new Setting(this);
+		if ( SharedData.getInstance(this).getGlobalDataBoolean(Setting.SHARED_KEY_INITIAL_SETTING) == false ){
+			mSetting.initSetting();
+		}
+	}
+
 	private void registEvent() {
 		View view = findViewById(R.id.id_iv_play_stop);
 		view.setOnClickListener(this);

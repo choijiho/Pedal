@@ -46,7 +46,9 @@ public final class R {
         public static final int ic_watch_white_24dp=0x7f02000f;
     }
     public static final class id {
-        public static final int chk=0x7f0b001a;
+        public static final int id_chk_average_speed=0x7f0b001b;
+        public static final int id_chk_current_speed=0x7f0b001a;
+        public static final int id_chk_music=0x7f0b001c;
         public static final int id_cm=0x7f0b0008;
         public static final int id_dc=0x7f0b0001;
         public static final int id_iv_bike=0x7f0b0012;

@@ -2,6 +2,10 @@ package net.gringrid.pedal;
 
 import java.util.Calendar;
 
+import net.gringrid.pedal.db.DBHelper;
+import net.gringrid.pedal.db.GpsLogDao;
+import net.gringrid.pedal.db.vo.GpsLogMaster;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -53,6 +57,8 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 	private MediaPlayer mMPCadence;
 	private MediaPlayer mMPPassing;
 	private Setting mSetting;
+	private boolean mIsSaveGps;
+	private GpsLogDao mGpsLogDao;
 	
 	
 	private BroadcastReceiver mBR = new BroadcastReceiver() {
@@ -124,6 +130,10 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 		mSetting = new Setting(this);
 		if ( SharedData.getInstance(this).getGlobalDataBoolean(Setting.SHARED_KEY_INITIAL_SETTING) == false ){
 			mSetting.initSetting();
+		}
+		if ( SharedData.getInstance(this).getGlobalDataBoolean(Setting.SHARED_KEY_SAVE_GPS) == true){
+			mIsSaveGps = true;
+			mGpsLogDao = GpsLogDao.getInstance(DBHelper.getInstance(this));
 		}
 	}
 
@@ -387,6 +397,14 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 				((TextView)findViewById(R.id.id_tv_latitude)).setText(String.valueOf(location.getLatitude()));
 				((TextView)findViewById(R.id.id_tv_longitude)).setText(String.valueOf(location.getLongitude()));
 				((TextView)findViewById(R.id.id_tv_current_status)).setText(currentStatus);
+			}
+			
+
+			if ( mIsSaveGps ){
+				GpsLogMaster gpsLogMaster = new GpsLogMaster();
+				// TODO
+//				gpsLogMaster.latitude = 
+//				mGpsLogDao.insert(object)
 			}
 		}
 		

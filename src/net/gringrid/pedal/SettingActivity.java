@@ -12,6 +12,7 @@ public class SettingActivity extends Activity implements OnCheckedChangeListener
 	CheckBox id_chk_current_speed;
 	CheckBox id_chk_average_speed;
 	CheckBox id_chk_music;
+	CheckBox id_chk_save_gps;
 	
 	Setting mSetting;
 
@@ -30,10 +31,12 @@ public class SettingActivity extends Activity implements OnCheckedChangeListener
 		id_chk_current_speed = (CheckBox)findViewById(R.id.id_chk_current_speed);
 		id_chk_average_speed = (CheckBox)findViewById(R.id.id_chk_average_speed);
 		id_chk_music = (CheckBox)findViewById(R.id.id_chk_music);
+		id_chk_save_gps = (CheckBox)findViewById(R.id.id_chk_save_gps);
 
 		id_chk_current_speed.setChecked(mSetting.IS_ENABLE_CURRENT_SPEED);
 		id_chk_average_speed.setChecked(mSetting.IS_ENABLE_AVERAGE_SPEED);
 		id_chk_music.setChecked(mSetting.IS_ENABLE_MUSIC);
+		id_chk_save_gps.setChecked(mSetting.IS_ENABLE_SAVE_GPS);
 		
 	}
 	
@@ -55,7 +58,9 @@ public class SettingActivity extends Activity implements OnCheckedChangeListener
 		case R.id.id_chk_music:
 			SharedData.getInstance(this).insertGlobalData(Setting.SHARED_KEY_MUSIC, isChecked);
 			break;
-
+		case R.id.id_chk_save_gps:
+			SharedData.getInstance(this).insertGlobalData(Setting.SHARED_KEY_SAVE_GPS, isChecked);
+			break;
 		default:
 			break;
 		}

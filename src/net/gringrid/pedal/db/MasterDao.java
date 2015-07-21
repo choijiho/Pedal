@@ -6,7 +6,7 @@ public interface MasterDao<T> {
 
 	public void createTable();
 	public void dropTable();
-	public boolean existTable();
+	public boolean existsTable();
 	public long insert(T object);
 	public long[] insert(List<T> objects);
 	public int delete(int id);

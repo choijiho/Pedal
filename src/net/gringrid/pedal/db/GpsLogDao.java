@@ -3,16 +3,17 @@ package net.gringrid.pedal.db;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.gringrid.pedal.db.vo.GpsLogMaster;
+import net.gringrid.pedal.db.vo.GpsLogVO;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.util.Log;
 
 
-public class GpsLogDao extends AbstractMasterDao<GpsLogMaster>{
+public class GpsLogDao extends AbstractMasterDao<GpsLogVO>{
 	public static final String TABLENAME = "gps_log";
 
 	private static GpsLogDao instance;
@@ -20,34 +21,38 @@ public class GpsLogDao extends AbstractMasterDao<GpsLogMaster>{
 	private static final String SQL_CREATE_TABLE =
 			"CREATE TABLE IF NOT EXISTS " + TABLENAME +
 					"(primaryKey INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
-					GpsLogMaster.LATITUDE+ " TEXT , " +
-					GpsLogMaster.LONGITUDE+ " TEXT , " +
-					GpsLogMaster.ELEVATION+ " TEXT , " +
-					GpsLogMaster.GPS_TIME+ " TEXT)";
+					GpsLogVO.PARENT_ID	+ " INTEGER NOT NULL 	, " +
+					GpsLogVO.LATITUDE	+ " TEXT 				, " +
+					GpsLogVO.LONGITUDE	+ " TEXT 				, " +
+					GpsLogVO.ELEVATION	+ " TEXT 				, " +
+					GpsLogVO.GPS_TIME	+ " TEXT				 )";
 
 	private static final String SQL_INSERT =
-			String.format("INSERT INTO %s(%s,%s,%s,%s) VALUES(?,?,?,?)",
+			String.format("INSERT INTO %s(%s, %s,%s,%s,%s) VALUES(?,?,?,?,?)",
 					TABLENAME,
-					GpsLogMaster.LATITUDE,
-					GpsLogMaster.LONGITUDE,
-					GpsLogMaster.ELEVATION,
-					GpsLogMaster.GPS_TIME);
+					GpsLogVO.PARENT_ID,
+					GpsLogVO.LATITUDE,
+					GpsLogVO.LONGITUDE,
+					GpsLogVO.ELEVATION,
+					GpsLogVO.GPS_TIME);
 
     public static GpsLogDao getInstance(DBHelper helper){
-        if(instance == null)
-        {
-        	synchronized(GpsLogMaster.class)
-        	{
+        if(instance == null) {
+        	synchronized(GpsLogVO.class) {
 	            instance = new GpsLogDao();
         	}
         }
-        instance.setDbHelper(helper);
+        
+       	instance.setDbHelper(helper);
+       	if ( !instance.existsTable() ){
+      		instance.createTable();
+       	}
 
         return instance;
     }
     
 	@Override
-	public long insert(GpsLogMaster object) {
+	public long insert(GpsLogVO object) {
 		long result = 0L;
 		SQLiteDatabase db = null;
 		SQLiteStatement stmt = null;
@@ -57,12 +62,12 @@ public class GpsLogDao extends AbstractMasterDao<GpsLogMaster>{
 			db.beginTransaction();
 		
 			stmt = db.compileStatement(SQL_INSERT);
-			
-			stmt.bindString(1, String.format("%.7f", object.latitude));
-			stmt.bindString(2, String.format("%.7f",  object.longitude));
-			stmt.bindString(3, String.format("%.1f", object.elevation));
-			// TODO
-			stmt.bindString(4, String.format("%.7f", object.gpsTime));
+
+			stmt.bindString(1, String.valueOf(object.parentId));
+			stmt.bindString(2, String.format("%.7f", object.latitude));
+			stmt.bindString(3, String.format("%.7f",  object.longitude));
+			stmt.bindString(4, String.format("%.1f", object.elevation));
+			stmt.bindString(5, String.valueOf(object.gpsTime));
 
 			result = stmt.executeInsert();
 
@@ -84,7 +89,7 @@ public class GpsLogDao extends AbstractMasterDao<GpsLogMaster>{
 	}
 
 	@Override
-	public long[] insert(List<GpsLogMaster> objects) {
+	public long[] insert(List<GpsLogVO> objects) {
 		long results[] = new long[objects.size()];
 		SQLiteDatabase db = null;
 		SQLiteStatement stmt = null;
@@ -97,12 +102,12 @@ public class GpsLogDao extends AbstractMasterDao<GpsLogMaster>{
 
 			for(int i=0; i<objects.size(); i++)
 			{
-				GpsLogMaster object = objects.get(i);
-				stmt.bindString(1, String.format("%.7f", object.latitude));
-				stmt.bindString(2, String.format("%.7f",  object.longitude));
-				stmt.bindString(3, String.format("%.1f", object.elevation));
-				// TODO
-				stmt.bindString(4, String.format("%.7f", object.gpsTime));;
+				GpsLogVO object = objects.get(i);
+				stmt.bindString(1, String.valueOf(object.parentId));
+				stmt.bindString(2, String.format("%.7f", object.latitude));
+				stmt.bindString(3, String.format("%.7f",  object.longitude));
+				stmt.bindString(4, String.format("%.1f", object.elevation));
+				stmt.bindString(5, String.valueOf(object.gpsTime));;
 				results[i] = stmt.executeInsert();
 			}
 
@@ -132,7 +137,7 @@ public class GpsLogDao extends AbstractMasterDao<GpsLogMaster>{
 			db = getDbHelper().getWritableDatabase();
 			db.beginTransaction();
 
-			result = db.delete(TABLENAME, GpsLogMaster.PRIMARY_KEY+"="+Integer.toString(id), null);
+			result = db.delete(TABLENAME, GpsLogVO.PRIMARY_KEY+"="+Integer.toString(id), null);
 
 			db.setTransactionSuccessful();
 			
@@ -149,7 +154,7 @@ public class GpsLogDao extends AbstractMasterDao<GpsLogMaster>{
 	}
 
 	@Override
-	public int update(GpsLogMaster object) {
+	public int update(GpsLogVO object) {
 		int result = 0;
 		SQLiteDatabase db = null;
 
@@ -158,13 +163,13 @@ public class GpsLogDao extends AbstractMasterDao<GpsLogMaster>{
 			db.beginTransaction();
 
 			ContentValues values = new ContentValues();
-			values.put(GpsLogMaster.LATITUDE, object.latitude);
-			values.put(GpsLogMaster.LONGITUDE, object.longitude);
-			values.put(GpsLogMaster.ELEVATION, object.elevation);
-			values.put(GpsLogMaster.GPS_TIME, object.gpsTime);
+			values.put(GpsLogVO.LATITUDE, object.latitude);
+			values.put(GpsLogVO.LONGITUDE, object.longitude);
+			values.put(GpsLogVO.ELEVATION, object.elevation);
+			values.put(GpsLogVO.GPS_TIME, object.gpsTime);
 			result = db.update(TABLENAME,
 									values,
-									GpsLogMaster.PRIMARY_KEY+"="+object.primaryKey,
+									GpsLogVO.PRIMARY_KEY+"="+object.primaryKey,
 									null);
 
 			db.setTransactionSuccessful();
@@ -208,8 +213,8 @@ public class GpsLogDao extends AbstractMasterDao<GpsLogMaster>{
 	}
 
 	@Override
-	public GpsLogMaster find(int id) {
-		GpsLogMaster object = null;
+	public GpsLogVO find(int id) {
+		GpsLogVO object = null;
 		SQLiteDatabase db = null;
 
 		try {
@@ -218,10 +223,10 @@ public class GpsLogDao extends AbstractMasterDao<GpsLogMaster>{
 			Cursor cursor = null;
 			try{
 				cursor = db.query(true, TABLENAME, null,
-					GpsLogMaster.PRIMARY_KEY+"="+Integer.toString(id), null, null, null, null, null);
+					GpsLogVO.PRIMARY_KEY+"="+Integer.toString(id), null, null, null, null, null);
 				if (cursor != null) {
 					if(cursor.moveToFirst()) {
-						object = new GpsLogMaster();
+						object = new GpsLogVO();
 						object.primaryKey = cursor.getInt(0); 
 						object.latitude = Double.parseDouble(cursor.getString(1));
 						object.longitude = Double.parseDouble(cursor.getString(2));
@@ -244,8 +249,8 @@ public class GpsLogDao extends AbstractMasterDao<GpsLogMaster>{
 	}
 
 	@Override
-	public List<GpsLogMaster> findAll() {
-		List<GpsLogMaster> objects = new LinkedList<GpsLogMaster>();
+	public List<GpsLogVO> findAll() {
+		List<GpsLogVO> objects = new LinkedList<GpsLogVO>();
 		SQLiteDatabase db = null;
 
 		try {
@@ -253,16 +258,21 @@ public class GpsLogDao extends AbstractMasterDao<GpsLogMaster>{
 
 			Cursor cursor = null;
 			try {
-				cursor = db.query(TABLENAME, null, null, null, null, null, GpsLogMaster.GPS_TIME+ " ASC");
+				cursor = db.query(TABLENAME, null, null, null, null, null, GpsLogVO.GPS_TIME+ " ASC");
 				if(cursor!=null) {
 					if(cursor.moveToFirst()) {
 						do{
-							GpsLogMaster object = new GpsLogMaster();
-							object.primaryKey = cursor.getInt(0); 
-							object.latitude = Double.parseDouble(cursor.getString(1));
-							object.longitude = Double.parseDouble(cursor.getString(2));
-							object.elevation = Double.parseDouble(cursor.getString(3));
-							object.gpsTime = Long.parseLong(cursor.getString(4));
+							GpsLogVO object = new GpsLogVO();
+							object.primaryKey = cursor.getInt(1); 
+							object.latitude = Double.parseDouble(cursor.getString(2));
+							object.longitude = Double.parseDouble(cursor.getString(3));
+							object.elevation = Double.parseDouble(cursor.getString(4));
+							object.gpsTime = Long.parseLong(cursor.getString(5));
+							Log.d("jiho", "cursor.getString(1) : "+cursor.getString(1));
+							Log.d("jiho", "cursor.getString(2) : "+cursor.getString(2));
+							Log.d("jiho", "cursor.getString(3) : "+cursor.getString(3));
+							Log.d("jiho", "cursor.getString(4) : "+cursor.getString(4));
+							Log.d("jiho", "cursor.getString(5) : "+cursor.getString(5));
 							objects.add(object);  
 						} while (cursor.moveToNext());
 					}

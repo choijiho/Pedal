@@ -1,6 +1,6 @@
 package net.gringrid.pedal.db.vo;
 
-public class RideMaster {
+public class RideVO {
 
 	public static final String PRIMARY_KEY 	= "primaryKey";
 	public static final String NAME 		= "name";
@@ -8,5 +8,5 @@ public class RideMaster {
 	
 	public int primaryKey;
 	public String name;
-	public String startTime;
+	public long startTime;
 }

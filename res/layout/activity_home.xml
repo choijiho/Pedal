@@ -8,7 +8,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:keepScreenOn="true"
     android:orientation="vertical"
-    tools:context="net.gringrid.pedal.HomeActivity" >
+    tools:context="net.gringrid.pedal.activity.HomeActivity" >
    
     <TextView
         android:layout_width="match_parent"
@@ -272,143 +272,13 @@
                 android:orientation="horizontal" >
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/id_tv_log"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Accuracy" />
-
-                <TextView
-                    android:id="@+id/id_tv_accuracy"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Move Time" />
-
-                <TextView
-                    android:id="@+id/id_tv_move_time"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Distance" />
-
-                <TextView
-                    android:id="@+id/id_tv_last_distance"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Speed Last Location" />
-
-                <TextView
-                    android:id="@+id/id_tv_speed_from_last_location"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Location Speed" />
-
-                <TextView
-                    android:id="@+id/id_tv_location_speed"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Latitude" />
-
-                <TextView
-                    android:id="@+id/id_tv_latitude"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Longitude" />
-
-                <TextView
-                    android:id="@+id/id_tv_longitude"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Current Status" />
-
-                <TextView
-                    android:id="@+id/id_tv_current_status"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-            </LinearLayout>
+           
         </LinearLayout>
     </ScrollView>
     <!-- LOG END -->
@@ -507,6 +377,17 @@
 	   		    android:layout_weight="1"
 	   		    android:src="@drawable/ic_play_circle_outline_white_48dp"/>
 	   	</LinearLayout>
+	   	<LinearLayout 
+	   	    android:layout_width="0dp"
+	   	    android:layout_height="wrap_content"
+	   	    android:layout_weight="1">
+	   		<ImageView 
+	   		    android:id="@+id/id_iv_list"
+	   		    android:layout_width="0dp"
+	   		    android:layout_height="wrap_content"
+	   		    android:layout_weight="1"
+	   		    android:src="@drawable/ic_list_white_36dp"/>
+   		</LinearLayout>
 	   	<LinearLayout 
 	   	    android:layout_width="0dp"
 	   	    android:layout_height="wrap_content"

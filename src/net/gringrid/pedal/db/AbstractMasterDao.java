@@ -48,7 +48,7 @@ public abstract class AbstractMasterDao<T> implements MasterDao<T> {
 	}
 
 	@Override
-	public boolean existTable() {
+	public boolean existsTable() {
         boolean exists = false;
 
 		SQLiteDatabase db = null;

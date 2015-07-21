@@ -3,7 +3,7 @@ package net.gringrid.pedal.db;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.gringrid.pedal.db.vo.RideMaster;
+import net.gringrid.pedal.db.vo.RideVO;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 
 
-public class RideDao extends AbstractMasterDao<RideMaster>{
+public class RideDao extends AbstractMasterDao<RideVO>{
 	public static final String TABLENAME = "ride";
 
 	private static RideDao instance;
@@ -20,30 +20,32 @@ public class RideDao extends AbstractMasterDao<RideMaster>{
 	private static final String SQL_CREATE_TABLE =
 			"CREATE TABLE IF NOT EXISTS " + TABLENAME +
 					"(primaryKey INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
-					RideMaster.NAME + " TEXT , " +
-					RideMaster.START_TIME + " TEXT NOT NULL UNIQUE)";
+					RideVO.NAME + " TEXT , " +
+					RideVO.START_TIME + " TEXT NOT NULL UNIQUE)";
 
 	private static final String SQL_INSERT =
 			String.format("INSERT INTO %s(%s,%s) VALUES(?,?)",
 					TABLENAME,
-					RideMaster.NAME,
-					RideMaster.START_TIME);
+					RideVO.NAME,
+					RideVO.START_TIME);
 
     public static RideDao getInstance(DBHelper helper){
-        if(instance == null)
-        {
-        	synchronized(RideMaster.class)
-        	{
+        if(instance == null) {
+        	synchronized(RideVO.class) {
 	            instance = new RideDao();
         	}
+
         }
-        instance.setDbHelper(helper);
+       	instance.setDbHelper(helper);
+       	if ( !instance.existsTable() ){
+       		instance.createTable();
+       	}
 
         return instance;
     }
     
 	@Override
-	public long insert(RideMaster object) {
+	public long insert(RideVO object) {
 		long result = 0L;
 		SQLiteDatabase db = null;
 		SQLiteStatement stmt = null;
@@ -55,7 +57,7 @@ public class RideDao extends AbstractMasterDao<RideMaster>{
 			stmt = db.compileStatement(SQL_INSERT);
 			
 			stmt.bindString(1, object.name);
-			stmt.bindString(2, object.startTime);
+			stmt.bindString(2, String.valueOf(object.startTime));
 			result = stmt.executeInsert();
 
 			db.setTransactionSuccessful();
@@ -76,7 +78,7 @@ public class RideDao extends AbstractMasterDao<RideMaster>{
 	}
 
 	@Override
-	public long[] insert(List<RideMaster> objects) {
+	public long[] insert(List<RideVO> objects) {
 		long results[] = new long[objects.size()];
 		SQLiteDatabase db = null;
 		SQLiteStatement stmt = null;
@@ -89,9 +91,9 @@ public class RideDao extends AbstractMasterDao<RideMaster>{
 
 			for(int i=0; i<objects.size(); i++)
 			{
-				RideMaster object = objects.get(i);
+				RideVO object = objects.get(i);
 				stmt.bindString(1, object.name);
-				stmt.bindString(2, object.startTime);
+				stmt.bindString(2, String.valueOf(object.startTime));
 				results[i] = stmt.executeInsert();
 			}
 
@@ -121,7 +123,7 @@ public class RideDao extends AbstractMasterDao<RideMaster>{
 			db = getDbHelper().getWritableDatabase();
 			db.beginTransaction();
 
-			result = db.delete(TABLENAME, RideMaster.PRIMARY_KEY+"="+Integer.toString(id), null);
+			result = db.delete(TABLENAME, RideVO.PRIMARY_KEY+"="+Integer.toString(id), null);
 
 			db.setTransactionSuccessful();
 			
@@ -138,7 +140,7 @@ public class RideDao extends AbstractMasterDao<RideMaster>{
 	}
 
 	@Override
-	public int update(RideMaster object) {
+	public int update(RideVO object) {
 		int result = 0;
 		SQLiteDatabase db = null;
 
@@ -147,11 +149,11 @@ public class RideDao extends AbstractMasterDao<RideMaster>{
 			db.beginTransaction();
 
 			ContentValues values = new ContentValues();
-			values.put(RideMaster.NAME, object.name);
-			values.put(RideMaster.START_TIME, object.startTime);
+			values.put(RideVO.NAME, object.name);
+			values.put(RideVO.START_TIME, object.startTime);
 			result = db.update(TABLENAME,
 									values,
-									RideMaster.PRIMARY_KEY+"="+object.primaryKey,
+									RideVO.PRIMARY_KEY+"="+object.primaryKey,
 									null);
 
 			db.setTransactionSuccessful();
@@ -195,8 +197,8 @@ public class RideDao extends AbstractMasterDao<RideMaster>{
 	}
 
 	@Override
-	public RideMaster find(int id) {
-		RideMaster object = null;
+	public RideVO find(int id) {
+		RideVO object = null;
 		SQLiteDatabase db = null;
 
 		try {
@@ -205,13 +207,13 @@ public class RideDao extends AbstractMasterDao<RideMaster>{
 			Cursor cursor = null;
 			try{
 				cursor = db.query(true, TABLENAME, null,
-					RideMaster.PRIMARY_KEY+"="+Integer.toString(id), null, null, null, null, null);
+					RideVO.PRIMARY_KEY+"="+Integer.toString(id), null, null, null, null, null);
 				if (cursor != null) {
 					if(cursor.moveToFirst()) {
-						object = new RideMaster();
+						object = new RideVO();
 						object.primaryKey = cursor.getInt(0); 
 						object.name = cursor.getString(1);
-						object.startTime = cursor.getString(2);
+						object.startTime = Long.parseLong(cursor.getString(2));
 					}
 		        }
 			} finally {
@@ -229,8 +231,8 @@ public class RideDao extends AbstractMasterDao<RideMaster>{
 	}
 
 	@Override
-	public List<RideMaster> findAll() {
-		List<RideMaster> objects = new LinkedList<RideMaster>();
+	public List<RideVO> findAll() {
+		List<RideVO> objects = new LinkedList<RideVO>();
 		SQLiteDatabase db = null;
 
 		try {
@@ -238,14 +240,14 @@ public class RideDao extends AbstractMasterDao<RideMaster>{
 
 			Cursor cursor = null;
 			try {
-				cursor = db.query(TABLENAME, null, null, null, null, null, RideMaster.START_TIME+ " ASC");
+				cursor = db.query(TABLENAME, null, null, null, null, null, RideVO.START_TIME+ " ASC");
 				if(cursor!=null) {
 					if(cursor.moveToFirst()) {
 						do{
-							RideMaster object = new RideMaster();
+							RideVO object = new RideVO();
 							object.primaryKey = cursor.getInt(0); 
 							object.name = cursor.getString(1);
-							object.startTime = cursor.getString(2);
+							object.startTime = Long.parseLong(cursor.getString(2));
 							objects.add(object);  
 						} while (cursor.moveToNext());
 					}

@@ -1,5 +1,10 @@
-package net.gringrid.pedal;
+package net.gringrid.pedal.activity;
 
+import net.gringrid.pedal.R;
+import net.gringrid.pedal.Setting;
+import net.gringrid.pedal.SharedData;
+import net.gringrid.pedal.R.id;
+import net.gringrid.pedal.R.layout;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Window;

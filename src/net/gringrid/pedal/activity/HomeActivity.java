@@ -1,6 +1,23 @@
-package net.gringrid.pedal;
+package net.gringrid.pedal.activity;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+
+import net.gringrid.pedal.R;
+import net.gringrid.pedal.Setting;
+import net.gringrid.pedal.SharedData;
+import net.gringrid.pedal.R.array;
+import net.gringrid.pedal.R.drawable;
+import net.gringrid.pedal.R.id;
+import net.gringrid.pedal.R.layout;
+import net.gringrid.pedal.R.raw;
+import net.gringrid.pedal.R.string;
+import net.gringrid.pedal.db.DBHelper;
+import net.gringrid.pedal.db.GpsLogDao;
+import net.gringrid.pedal.db.RideDao;
+import net.gringrid.pedal.db.vo.GpsLogVO;
+import net.gringrid.pedal.db.vo.RideVO;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -29,18 +46,26 @@ import android.widget.Toast;
 public class HomeActivity extends Activity implements OnClickListener, LocationListener{
 
 	final boolean DEBUG = false;
-	final boolean IS_LOG_PRINT = false;
+	final boolean IS_LOG_PRINT = true;
 
 	/**
 	 * 현재속도, 평균속도, 누적거리, 누적시간, 현재시간, 배터리 상태
 	 */
 	private Context context;
+	
+	/**
+	 * View
+	 */
 	private TextView id_tv_current_speed;
 	private TextView id_tv_avg_speed;
 	private TextView id_tv_current_altitude;
 	private TextView id_tv_distance;
 	private TextView id_tv_battery_status;
 	private Chronometer id_cm;
+
+	/**
+	 * GPS
+	 */
 	private LocationManager mLocationManager;
 	private long mTravelTime;
 	private long mLastLocationTime;
@@ -48,12 +73,31 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 	private Location mLastLocation;
 	private float mAvgSpeed;
 	private float mTotalDistance;
-	private long mFirstBackButtonPressedTime;
+
+	/**
+	 * Activity
+	 */
 	private final int EXIT_TIME_INTERVAL = 2000;
+	private long mFirstBackButtonPressedTime;
+	
+	/**
+	 * Sound
+	 */
 	private MediaPlayer mMPCadence;
 	private MediaPlayer mMPPassing;
-	private Setting mSetting;
 	
+	/**
+	 * Setting
+	 */
+	private Setting mSetting;
+	private boolean mIsSaveGps;
+
+	/**
+	 * DB
+	 */
+	private RideDao mRideDao;
+	private GpsLogDao mGpsLogDao;
+	private long mRideId;
 	
 	private BroadcastReceiver mBR = new BroadcastReceiver() {
 		@Override
@@ -90,6 +134,7 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 
 		this.registerReceiver(mBR, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 		this.registerReceiver(mBR, new IntentFilter(Intent.ACTION_DATE_CHANGED));
+
 		if ( mSetting.IS_ENABLE_MUSIC ){
 			IntentFilter iF = new IntentFilter();
 			iF.addAction("com.android.music.metachanged");
@@ -125,6 +170,10 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 		if ( SharedData.getInstance(this).getGlobalDataBoolean(Setting.SHARED_KEY_INITIAL_SETTING) == false ){
 			mSetting.initSetting();
 		}
+		if ( SharedData.getInstance(this).getGlobalDataBoolean(Setting.SHARED_KEY_SAVE_GPS) == true){
+			mIsSaveGps = true;
+			mGpsLogDao = GpsLogDao.getInstance(DBHelper.getInstance(this));
+		}
 	}
 
 	private void registEvent() {
@@ -139,6 +188,8 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 		view = findViewById(R.id.id_iv_cadence_alarm);
 		view.setOnClickListener(this);
 		view = findViewById(R.id.id_iv_passing);
+		view.setOnClickListener(this);
+		view = findViewById(R.id.id_iv_list);
 		view.setOnClickListener(this);
 	}
 
@@ -175,7 +226,7 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 		Calendar calendar = Calendar.getInstance(); 
 		int months = calendar.get(Calendar.MONTH) + 1;
 		int days = calendar.get(Calendar.DAY_OF_MONTH);
-		int week = calendar.get(calendar.DAY_OF_WEEK) - 1;
+		int week = calendar.get(Calendar.DAY_OF_WEEK) - 1;
 		String weekName = getResources().getStringArray(R.array.week)[week];
 		
 		TextView id_tv_day_info = (TextView)findViewById(R.id.id_tv_day_info);
@@ -186,7 +237,6 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 		mLocationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
 		checkGPS(mLocationManager);
 	}
-
 
 	private void checkGPS(LocationManager locationManager){
 		ImageView id_iv_gps_enable = (ImageView)findViewById(R.id.id_iv_gps_enable);
@@ -211,6 +261,15 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 		id_cm.setBase(SystemClock.elapsedRealtime() + mTravelTime);
 		id_cm.start();
 		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 2, this);
+		
+		if ( mIsSaveGps && mRideDao == null ){
+			mRideDao = RideDao.getInstance(DBHelper.getInstance(this));
+			RideVO rideVo = new RideVO();
+			rideVo.name = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
+			rideVo.startTime = new Date().getTime();
+			mRideId = mRideDao.insert(rideVo);
+			Log.d("jiho", "mRideId insert : "+mRideId);
+		}
 	}
 	
 	private void pausePedal(){
@@ -269,7 +328,6 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 			mMPPassing = MediaPlayer.create(this, R.raw.passing);
 		}
 		if ( mMPPassing.isPlaying() == false ){
-			Log.d("jiho", " mMPPassing.isPlaying() == false ");
 			mMPPassing.start();
 		}
 	}
@@ -284,6 +342,7 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 		id_tv_avg_speed.setText("00.0");
 		id_tv_current_altitude.setText("000");
 		id_tv_distance.setText("000");
+		mRideDao = null;
 	}
 	
 	@Override
@@ -299,6 +358,8 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 
 	@Override
 	public void onClick(View v) {
+		Intent intent;
+		
 		switch (v.getId()) {
 		case R.id.id_iv_play_stop:
 			// TRAVEL TIME, DISTANCE, AVG SPEED
@@ -316,8 +377,13 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 			resetPedal();
 			break;
 
+		case R.id.id_iv_list:
+			intent = new Intent(this, RideListActivity.class);
+			startActivity(intent);
+			break;
+
 		case R.id.id_iv_setting:
-			Intent intent = new Intent(this, SettingActivity.class);
+			intent = new Intent(this, SettingActivity.class);
 			startActivity(intent);
 			break;
 			
@@ -353,7 +419,8 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 
 	@Override
 	public void onLocationChanged(Location location) {
-		long locationTime = location.getTime();
+		
+		final long locationTime = location.getTime();
 		float locationSpeed = location.getSpeed();
 		float locationSpeedKm = locationSpeed * 3.6f;
 		String currentStatus = null;
@@ -368,7 +435,7 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 				currentStatus = "STOP";
 			// 속도가 100km 가 넘는경우는 GPS가 튄것으로 판단하여 제외한다.
 			}else if ( speedFromLastLocation > 150 ){
-				currentStatus = "GPS ERROR";
+				currentStatus = "GPS ERROR(OVER 150km)";
 			}else{
 				currentStatus = "Riding";
 				mMoveTime++;// += locationTime - mLastLocationTime;
@@ -379,21 +446,41 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 			}
 		
 			if ( IS_LOG_PRINT ){
-				((TextView)findViewById(R.id.id_tv_accuracy)).setText(String.valueOf(location.getAccuracy()));
-				((TextView)findViewById(R.id.id_tv_move_time)).setText(String.valueOf(mMoveTime));
-				((TextView)findViewById(R.id.id_tv_speed_from_last_location)).setText(String.valueOf(speedFromLastLocation));
-				((TextView)findViewById(R.id.id_tv_location_speed)).setText(String.valueOf(locationSpeedKm));
-				((TextView)findViewById(R.id.id_tv_last_distance)).setText(String.format("%.1f", distanceFromLastLocation));
-				((TextView)findViewById(R.id.id_tv_latitude)).setText(String.valueOf(location.getLatitude()));
-				((TextView)findViewById(R.id.id_tv_longitude)).setText(String.valueOf(location.getLongitude()));
-				((TextView)findViewById(R.id.id_tv_current_status)).setText(currentStatus);
+				TextView id_tv_log = (TextView)findViewById(R.id.id_tv_log);
+				String logText = "Accurace : "+String.valueOf(location.getAccuracy());
+				logText += "\nMove time : "+String.valueOf(mMoveTime);
+				logText += "\nSpeed from calculation : "+String.valueOf(speedFromLastLocation);
+				logText += "\nSpeed from location : "+String.valueOf(locationSpeedKm);
+				logText += "\nDistance from last location : "+String.format("%.1f", distanceFromLastLocation);
+				logText += "\nLatitude : "+String.valueOf(location.getLatitude());
+				logText += "\nLongitude : "+String.valueOf(location.getLongitude());
+				logText += "\nCurrent status : "+currentStatus;
+				id_tv_log.setText(logText);
+				
+//				((TextView)findViewById(R.id.id_tv_accuracy)).setText(String.valueOf(location.getAccuracy()));
+//				((TextView)findViewById(R.id.id_tv_move_time)).setText(String.valueOf(mMoveTime));
+//				((TextView)findViewById(R.id.id_tv_speed_from_last_location)).setText(String.valueOf(speedFromLastLocation));
+//				((TextView)findViewById(R.id.id_tv_location_speed)).setText(String.valueOf(locationSpeedKm));
+//				((TextView)findViewById(R.id.id_tv_last_distance)).setText(String.format("%.1f", distanceFromLastLocation));
+//				((TextView)findViewById(R.id.id_tv_latitude)).setText(String.valueOf(location.getLatitude()));
+//				((TextView)findViewById(R.id.id_tv_longitude)).setText(String.valueOf(location.getLongitude()));
+//				((TextView)findViewById(R.id.id_tv_current_status)).setText(currentStatus);
+			}
+
+			if ( mIsSaveGps ){
+				GpsLogVO gpsLogVo = new GpsLogVO();
+				gpsLogVo.parentId = mRideId;
+				gpsLogVo.latitude = location.getLatitude();
+				gpsLogVo.longitude = location.getLongitude();
+				gpsLogVo.elevation = location.getAltitude();
+				gpsLogVo.gpsTime = locationTime;
+				mGpsLogDao.insert(gpsLogVo);
 			}
 		}
 		
 		mLastLocationTime = locationTime;
 		mLastLocation = location;
 
-		Log.d("jiho", "onLocationChanged speed : "+locationSpeed+", altitude : "+location.getAltitude()+", lati : "+location.getLatitude()+", long : "+location.getLongitude());
 		id_tv_current_speed.setText(String.format("%.1f", locationSpeedKm));
 		id_tv_current_altitude.setText(String.valueOf(location.getAltitude()));
 	}

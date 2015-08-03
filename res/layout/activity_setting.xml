@@ -8,13 +8,14 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:keepScreenOn="true"
     android:orientation="vertical"
-    tools:context="net.gringrid.pedal.SettingActivity" >
+    tools:context="net.gringrid.pedal.activity.SettingActivity" >
 
     
 	<LinearLayout 
 	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
+	    android:layout_height="0dp"
 	    android:orientation="vertical"
+	    android:layout_weight="1"
 	    >
 	    <LinearLayout
 	        android:layout_width="match_parent"
@@ -67,6 +68,30 @@
     			android:layout_height="wrap_content" 
     			android:button="@drawable/custom_checkbox"/> 
 	    </LinearLayout>
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" 
+	        android:gravity="center_vertical"
+	        >
+	        <TextView 
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:text="SAVE GPS"/>
+	       <CheckBox
+    			android:id="@+id/id_chk_save_gps"
+    			android:layout_width="wrap_content"
+    			android:layout_height="wrap_content" 
+    			android:button="@drawable/custom_checkbox"/> 
+	    </LinearLayout>
 	</LinearLayout>
+
+	<ImageView 
+	    android:id="@+id/id_iv_strava"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_gravity="center"
+	    android:src="@drawable/connect_with_strava"/>
 
 </LinearLayout>

@@ -5002,6 +5002,7 @@ net.gringrid.pedal.R$color: R$color()
 net.gringrid.pedal.R$dimen: int activity_horizontal_margin
 net.gringrid.pedal.R$dimen: int activity_vertical_margin
 net.gringrid.pedal.R$dimen: R$dimen()
+net.gringrid.pedal.R$drawable: int connect_with_strava
 net.gringrid.pedal.R$drawable: int custom_checkbox
 net.gringrid.pedal.R$drawable: int ic_battery_full_white_24dp
 net.gringrid.pedal.R$drawable: int ic_check_box_outline_blank_white_24dp
@@ -5034,6 +5035,7 @@ net.gringrid.pedal.R$id: int id_iv_list
 net.gringrid.pedal.R$id: int id_iv_passing
 net.gringrid.pedal.R$id: int id_iv_play_stop
 net.gringrid.pedal.R$id: int id_iv_setting
+net.gringrid.pedal.R$id: int id_iv_strava
 net.gringrid.pedal.R$id: int id_lv_list
 net.gringrid.pedal.R$id: int id_sv_log
 net.gringrid.pedal.R$id: int id_tv_avg_speed
@@ -5048,10 +5050,13 @@ net.gringrid.pedal.R$id: int id_tv_music_artist
 net.gringrid.pedal.R$id: int id_tv_music_title
 net.gringrid.pedal.R$id: int id_tv_name
 net.gringrid.pedal.R$id: int id_tv_start_time
+net.gringrid.pedal.R$id: int id_tv_strava
+net.gringrid.pedal.R$id: int id_wv
 net.gringrid.pedal.R$id: R$id()
 net.gringrid.pedal.R$layout: int activity_gps_log_list
 net.gringrid.pedal.R$layout: int activity_home
 net.gringrid.pedal.R$layout: int activity_pedal
+net.gringrid.pedal.R$layout: int activity_popup_browser
 net.gringrid.pedal.R$layout: int activity_ride_list
 net.gringrid.pedal.R$layout: int activity_setting
 net.gringrid.pedal.R$layout: int row_gps_log
@@ -5098,10 +5103,13 @@ net.gringrid.pedal.activity.GpsLogListActivity: GpsLogListActivity()
 net.gringrid.pedal.activity.HomeActivity
 net.gringrid.pedal.activity.HomeActivity: HomeActivity()
 net.gringrid.pedal.activity.HomeActivity: void onClick(android.view.View)
+net.gringrid.pedal.activity.PopupBrowserActivity
+net.gringrid.pedal.activity.PopupBrowserActivity: PopupBrowserActivity()
 net.gringrid.pedal.activity.RideListActivity
 net.gringrid.pedal.activity.RideListActivity: RideListActivity()
 net.gringrid.pedal.activity.SettingActivity
 net.gringrid.pedal.activity.SettingActivity: SettingActivity()
+net.gringrid.pedal.activity.SettingActivity: void onClick(android.view.View)
 net.gringrid.pedal.db.AbstractMasterDao: AbstractMasterDao()
 net.gringrid.pedal.db.GpsLogDao: GpsLogDao()
 net.gringrid.pedal.db.RideDao: RideDao()

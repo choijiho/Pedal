@@ -16,6 +16,10 @@ public class Setting {
 	public static final String SHARED_KEY_AVERAGE_SPEED = "average_speed";
 	public static final String SHARED_KEY_MUSIC = "music";
 	public static final String SHARED_KEY_SAVE_GPS = "save_gps";
+	public static final String SHARED_KEY_STRAVA_USER_ID = "strava_user_id";
+	public static final String SHARED_KEY_STRAVA_ACCESS_TOKEN = "strava_access_token";
+	public static final String SHARED_KEY_STRAVA_EMAIL = "strava_email";
+
 	
 	public Setting(Context context) {
 		mContext = context;

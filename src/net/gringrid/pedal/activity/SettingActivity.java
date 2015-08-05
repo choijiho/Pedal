@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -16,6 +17,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class SettingActivity extends Activity implements OnCheckedChangeListener, OnClickListener {
 	final String STRAVA_CLIENT_ID = "7262";
@@ -26,6 +28,7 @@ public class SettingActivity extends Activity implements OnCheckedChangeListener
 	CheckBox id_chk_average_speed;
 	CheckBox id_chk_music;
 	CheckBox id_chk_save_gps;
+	TextView id_tv_strava;
 	ImageView id_iv_strava;
 	
 	Setting mSetting;
@@ -47,13 +50,20 @@ public class SettingActivity extends Activity implements OnCheckedChangeListener
 		id_chk_music = (CheckBox)findViewById(R.id.id_chk_music);
 		id_chk_save_gps = (CheckBox)findViewById(R.id.id_chk_save_gps);
 		id_iv_strava = (ImageView)findViewById(R.id.id_iv_strava);
+		id_tv_strava = (TextView)findViewById(R.id.id_tv_strava);
 
 		id_chk_current_speed.setChecked(mSetting.IS_ENABLE_CURRENT_SPEED);
 		id_chk_average_speed.setChecked(mSetting.IS_ENABLE_AVERAGE_SPEED);
 		id_chk_music.setChecked(mSetting.IS_ENABLE_MUSIC);
 		id_chk_save_gps.setChecked(mSetting.IS_ENABLE_SAVE_GPS);
 		
-		
+		String stravaEmail = SharedData.getInstance(this).getGlobalDataString(Setting.SHARED_KEY_STRAVA_EMAIL);
+		if ( stravaEmail == null ){
+			id_iv_strava.setVisibility(View.VISIBLE);
+		}else{
+			id_tv_strava.setVisibility(View.VISIBLE);
+			id_tv_strava.setText(stravaEmail);
+		}
 	}
 	
 	private void registEvent(){
@@ -104,8 +114,9 @@ public class SettingActivity extends Activity implements OnCheckedChangeListener
 			  "&scope=write"+
 			  "&state=mystate"+
 			  "&approval_prompt=force";
-		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-		startActivity(browserIntent);
+		Intent intent = new Intent(this, PopupBrowserActivity.class);
+		intent.putExtra("URL", url);
+		startActivity(intent);
 	}
 
 }

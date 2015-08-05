@@ -85,13 +85,31 @@
     			android:layout_height="wrap_content" 
     			android:button="@drawable/custom_checkbox"/> 
 	    </LinearLayout>
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" 
+	        android:gravity="center_vertical"
+	        >
+	        <TextView 
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:text="STRAVA"/>
+	        <TextView 
+	            android:id="@+id/id_tv_strava"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:visibility="gone"
+	            />
+	        <ImageView
+	            android:id="@+id/id_iv_strava"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+			    android:src="@drawable/connect_with_strava"
+			    android:visibility="gone"
+			    />
+	    </LinearLayout>
 	</LinearLayout>
-
-	<ImageView 
-	    android:id="@+id/id_iv_strava"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_gravity="center"
-	    android:src="@drawable/connect_with_strava"/>
 
 </LinearLayout>

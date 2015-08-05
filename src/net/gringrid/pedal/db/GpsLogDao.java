@@ -248,6 +248,50 @@ public class GpsLogDao extends AbstractMasterDao<GpsLogVO>{
         return object;
 	}
 
+	public List<GpsLogVO> findWithParentId(int parentId) {
+		List<GpsLogVO> objects = new LinkedList<GpsLogVO>();
+		SQLiteDatabase db = null;
+
+		try {
+			db = getDbHelper().getReadableDatabase();
+
+			Cursor cursor = null;
+			try {
+				cursor = db.query(true, TABLENAME, null,
+					GpsLogVO.PARENT_ID+"="+Integer.toString(parentId), null, null, null, null, null);
+				if(cursor!=null) {
+					if(cursor.moveToFirst()) {
+						do{
+							GpsLogVO object = new GpsLogVO();
+							object.primaryKey = cursor.getInt(0); 
+							object.latitude = Double.parseDouble(cursor.getString(1));
+							object.longitude = Double.parseDouble(cursor.getString(2));
+							object.elevation = Double.parseDouble(cursor.getString(3));
+							object.gpsTime = Long.parseLong(cursor.getString(4));
+							objects.add(object);  
+
+							Log.d("jiho", "cursor.getString(1) : "+cursor.getString(1));
+							Log.d("jiho", "cursor.getString(2) : "+cursor.getString(2));
+							Log.d("jiho", "cursor.getString(3) : "+cursor.getString(3));
+							Log.d("jiho", "cursor.getString(4) : "+cursor.getString(4));
+							Log.d("jiho", "cursor.getString(5) : "+cursor.getString(5));
+						} while (cursor.moveToNext());
+					}
+				}
+			} finally {
+				if(cursor!=null) cursor.close();
+			}
+		} catch (SQLException e) {
+		} finally {
+			if(db!=null) {
+				db.close();
+				db = null;
+			}
+		}
+			
+		return objects;
+	}
+
 	@Override
 	public List<GpsLogVO> findAll() {
 		List<GpsLogVO> objects = new LinkedList<GpsLogVO>();

@@ -278,7 +278,7 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 			mRideDao = RideDao.getInstance(DBHelper.getInstance(this));
 			RideVO rideVo = new RideVO();
 			rideVo.name = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
-			rideVo.startTime = new Date().getTime();
+			rideVo.startTime = System.currentTimeMillis();
 			mRideId = mRideDao.insert(rideVo);
 			Log.d("jiho", "mRideId insert : "+mRideId);
 		}

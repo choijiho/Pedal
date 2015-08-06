@@ -6,6 +6,7 @@ import net.gringrid.pedal.GPXMaker;
 import net.gringrid.pedal.R;
 import net.gringrid.pedal.R.id;
 import net.gringrid.pedal.R.layout;
+import net.gringrid.pedal.UploadGpxFile;
 import net.gringrid.pedal.db.vo.RideVO;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -44,8 +45,8 @@ public class RideListAdapter extends ArrayAdapter<RideVO>{
 				
 				@Override
 				public void onClick(View v) {
-					GPXMaker gpxMaker = new GPXMaker(mContext);
-					gpxMaker.createGPXFile(vo.primaryKey);
+					UploadGpxFile uploadGpxFile = new UploadGpxFile(mContext);
+					uploadGpxFile.excute(vo.primaryKey);
 				}
 			});
 			id_tv_name.setText(vo.name);

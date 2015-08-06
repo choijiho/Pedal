@@ -18,26 +18,33 @@ import net.gringrid.pedal.db.RideDao;
 import net.gringrid.pedal.db.vo.GpsLogVO;
 import net.gringrid.pedal.db.vo.RideVO;
 import android.content.Context;
+import android.util.Log;
 
 public class GPXMaker {
-
+	public static final String FILENAME = "tmp.gpx";
 	final String HEADER_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 	final String HEADER_CREATOR = "<gpx creator=\"strava.com Android\" version=\"1.1\" xmlns=\"http://www.topografix.com/GPX/1/1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd\">";
 	private Context mContext;
 	RideDao mRideDao;
 	GpsLogDao mGpsLogDao;
 	
-// <metadata>
-//  <time>2015-07-19T11:15:21Z</time>
-// </metadata>
-
 	public GPXMaker(Context context) {
 		mContext = context;
 	}
 
- 	public void createGPXFile(int rideId){
- 		String FILENAME = "tmp.gpx";
+	public File readGPXFile(){
+		String filePath = mContext.getFilesDir().getPath()+"/"+FILENAME;
+		File file = new File(filePath);
+		return file;
+	}
+	
+	private boolean deleteFile(){
+		String filePath = mContext.getFilesDir().getPath()+"/"+FILENAME;
+		File file = new File(filePath);
+		return file.delete();
+	}
 
+ 	public boolean createGPXFile(int rideId){
 		mRideDao = RideDao.getInstance(DBHelper.getInstance(mContext));
 		mGpsLogDao = GpsLogDao.getInstance(DBHelper.getInstance(mContext));
 
@@ -45,29 +52,34 @@ public class GPXMaker {
  		OutputStreamWriter outputStreamWriter = null;
 		try {
 			outputStreamWriter = new OutputStreamWriter(mContext.openFileOutput(FILENAME, Context.MODE_PRIVATE));
-			outputStreamWriter.write(HEADER_XML);
- 			outputStreamWriter.write(HEADER_CREATOR);
- 			outputStreamWriter.write("<metadata>");
- 			outputStreamWriter.write("<time>"+convertUTCtoLocal(rideVO.startTime)+"</time>");
- 			outputStreamWriter.write("</metadata>");
- 			outputStreamWriter.write("<trk>");
- 			outputStreamWriter.write("<name>"+rideVO.name+"</name>");
- 			outputStreamWriter.write("<trkseq>");
+			outputStreamWriter.write(HEADER_XML+"\n");
+ 			outputStreamWriter.write(HEADER_CREATOR+"\n");
+ 			outputStreamWriter.write(" <metadata>"+"\n");
+ 			outputStreamWriter.write("  <time>"+convertUTCtoLocal(rideVO.startTime)+"</time>\n");
+ 			outputStreamWriter.write(" </metadata>"+"\n");
+ 			outputStreamWriter.write(" <trk>"+"\n");
+ 			outputStreamWriter.write("  <name>"+rideVO.name+"</name>"+"\n");
+ 			outputStreamWriter.write("  <trkseq>"+"\n");
  			
  			List<GpsLogVO> results = mGpsLogDao.findWithParentId(rideId);
- 			for ( GpsLogVO gpsLogVO : results){
- 				outputStreamWriter.write("<trkpt lat"+gpsLogVO.latitude+" lon="+gpsLogVO.longitude+">");
- 				outputStreamWriter.write("<ele>"+gpsLogVO.elevation+"</ele>");
- 				outputStreamWriter.write("<time>"+convertUTCtoLocal(gpsLogVO.gpsTime)+"</time>");
- 				outputStreamWriter.write("</trkpt>");
- 			}
 
- 			outputStreamWriter.write("</trk>");
- 			outputStreamWriter.write("</trkseq>");
- 			outputStreamWriter.write("</gpx>");
+ 			if ( results.isEmpty() ){
+ 				deleteFile();
+ 			}else{
+ 				for ( GpsLogVO gpsLogVO : results){
+ 					outputStreamWriter.write("   <trkpt lat=\""+gpsLogVO.latitude+"\" lon=\""+gpsLogVO.longitude+"\">"+"\n");
+ 					outputStreamWriter.write("    <ele>"+gpsLogVO.elevation+"</ele>"+"\n");
+ 					outputStreamWriter.write("    <time>"+convertUTCtoLocal(gpsLogVO.gpsTime)+"</time>"+"\n");
+ 					outputStreamWriter.write("   </trkpt>"+"\n");
+ 				}
+ 				outputStreamWriter.write("  </trkseq>"+"\n");
+ 				outputStreamWriter.write(" </trk>"+"\n");
+ 				outputStreamWriter.write("</gpx>"+"\n");
+ 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			return false;
 		} finally {
 			if ( outputStreamWriter != null ){
 				try {
@@ -77,6 +89,7 @@ public class GPXMaker {
 				}
 			}
 		}
+		return true;
  	}
  	
  	private String convertUTCtoLocal(long utc){

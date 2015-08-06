@@ -5021,6 +5021,11 @@ net.gringrid.pedal.R$drawable: int ic_settings_white_36dp
 net.gringrid.pedal.R$drawable: int ic_volume_up_white_48dp
 net.gringrid.pedal.R$drawable: int ic_watch_white_24dp
 net.gringrid.pedal.R$drawable: R$drawable()
+net.gringrid.pedal.R$id: int bt_create_gpx
+net.gringrid.pedal.R$id: int id_bt_check_upload_status
+net.gringrid.pedal.R$id: int id_bt_get
+net.gringrid.pedal.R$id: int id_bt_post
+net.gringrid.pedal.R$id: int id_bt_post_with_file
 net.gringrid.pedal.R$id: int id_chk_average_speed
 net.gringrid.pedal.R$id: int id_chk_current_speed
 net.gringrid.pedal.R$id: int id_chk_music
@@ -5049,16 +5054,17 @@ net.gringrid.pedal.R$id: int id_tv_log
 net.gringrid.pedal.R$id: int id_tv_music_artist
 net.gringrid.pedal.R$id: int id_tv_music_title
 net.gringrid.pedal.R$id: int id_tv_name
+net.gringrid.pedal.R$id: int id_tv_response
 net.gringrid.pedal.R$id: int id_tv_start_time
 net.gringrid.pedal.R$id: int id_tv_strava
 net.gringrid.pedal.R$id: int id_wv
 net.gringrid.pedal.R$id: R$id()
 net.gringrid.pedal.R$layout: int activity_gps_log_list
 net.gringrid.pedal.R$layout: int activity_home
-net.gringrid.pedal.R$layout: int activity_pedal
 net.gringrid.pedal.R$layout: int activity_popup_browser
 net.gringrid.pedal.R$layout: int activity_ride_list
 net.gringrid.pedal.R$layout: int activity_setting
+net.gringrid.pedal.R$layout: int activity_strava_api_test
 net.gringrid.pedal.R$layout: int row_gps_log
 net.gringrid.pedal.R$layout: int row_ride
 net.gringrid.pedal.R$layout: R$layout()
@@ -5110,8 +5116,38 @@ net.gringrid.pedal.activity.RideListActivity: RideListActivity()
 net.gringrid.pedal.activity.SettingActivity
 net.gringrid.pedal.activity.SettingActivity: SettingActivity()
 net.gringrid.pedal.activity.SettingActivity: void onClick(android.view.View)
+net.gringrid.pedal.activity.StravaAPITestActivity
+net.gringrid.pedal.activity.StravaAPITestActivity: StravaAPITestActivity()
+net.gringrid.pedal.activity.StravaAPITestActivity: void onClick(android.view.View)
 net.gringrid.pedal.db.AbstractMasterDao: AbstractMasterDao()
 net.gringrid.pedal.db.GpsLogDao: GpsLogDao()
 net.gringrid.pedal.db.RideDao: RideDao()
 net.gringrid.pedal.db.vo.GpsLogVO: GpsLogVO()
 net.gringrid.pedal.db.vo.RideVO: RideVO()
+org.apache.http.client.config.RequestConfig$Builder: RequestConfig$Builder()
+org.apache.http.client.utils.DateUtils$DateFormatHolder: DateUtils$DateFormatHolder()
+org.apache.http.client.utils.DateUtils$DateFormatHolder$1: DateUtils$DateFormatHolder$1()
+org.apache.http.client.utils.JdkIdn: JdkIdn()
+org.apache.http.client.utils.Punycode: Punycode()
+org.apache.http.client.utils.Rfc3492Idn: Rfc3492Idn()
+org.apache.http.client.utils.URIBuilder: URIBuilder()
+org.apache.http.config.ConnectionConfig$Builder: ConnectionConfig$Builder()
+org.apache.http.config.MessageConstraints$Builder: MessageConstraints$Builder()
+org.apache.http.config.RegistryBuilder: RegistryBuilder()
+org.apache.http.config.SocketConfig$Builder: SocketConfig$Builder()
+org.apache.http.conn.socket.PlainConnectionSocketFactory: PlainConnectionSocketFactory()
+org.apache.http.entity.mime.Header: Header()
+org.apache.http.entity.mime.HttpMultipartMode: org.apache.http.entity.mime.HttpMultipartMode[] values()
+org.apache.http.entity.mime.HttpMultipartMode: org.apache.http.entity.mime.HttpMultipartMode valueOf(java.lang.String)
+org.apache.http.entity.mime.MIME: MIME()
+org.apache.http.entity.mime.MultipartEntity: MultipartEntity()
+org.apache.http.entity.mime.MultipartEntityBuilder: MultipartEntityBuilder()
+org.apache.http.impl.execchain.ConnectionHolder: void setState(java.lang.Object)
+org.apache.http.impl.execchain.Proxies: Proxies()
+org.apache.http.impl.pool.BasicConnFactory: BasicConnFactory()
+org.apache.http.impl.pool.BasicConnPool: BasicConnPool()
+org.apache.http.util.Args: Args()
+org.apache.http.util.Asserts: Asserts()
+org.apache.http.util.CharsetUtils: CharsetUtils()
+org.apache.http.util.NetUtils: NetUtils()
+org.apache.http.util.TextUtils: TextUtils()

@@ -58,6 +58,8 @@
         </activity>
         <!-- GPSLOGLIST END -->
         <activity android:name=".activity.PopupBrowserActivity"></activity>
+        <activity android:name=".activity.StravaAPITestActivity"></activity>
+        
     </application>
 
 </manifest>

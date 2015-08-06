@@ -1,0 +1,41 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="net.gringrid.pedal.RideActivity"
+    android:orientation="vertical" >
+    
+    <Button 
+        android:id="@+id/id_bt_get"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="[GET] Retrieve another athlete"/>
+    <Button 
+        android:id="@+id/id_bt_post"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="[POST] Create an activity"/>
+    <Button 
+        android:id="@+id/id_bt_post_with_file"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="[POST+FILE] Create an activity"/>
+    <Button 
+        android:id="@+id/id_bt_check_upload_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="[POST+FILE] Check Upload Status"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" 
+        >
+        <TextView
+            android:id="@+id/id_tv_response"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+             
+            />
+        
+    </ScrollView>
+</LinearLayout>

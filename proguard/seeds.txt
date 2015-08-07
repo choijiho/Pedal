@@ -5022,6 +5022,7 @@ net.gringrid.pedal.R$drawable: int ic_volume_up_white_48dp
 net.gringrid.pedal.R$drawable: int ic_watch_white_24dp
 net.gringrid.pedal.R$drawable: R$drawable()
 net.gringrid.pedal.R$id: int bt_create_gpx
+net.gringrid.pedal.R$id: int bt_del
 net.gringrid.pedal.R$id: int id_bt_check_upload_status
 net.gringrid.pedal.R$id: int id_bt_get
 net.gringrid.pedal.R$id: int id_bt_post
@@ -5055,6 +5056,7 @@ net.gringrid.pedal.R$id: int id_tv_music_artist
 net.gringrid.pedal.R$id: int id_tv_music_title
 net.gringrid.pedal.R$id: int id_tv_name
 net.gringrid.pedal.R$id: int id_tv_response
+net.gringrid.pedal.R$id: int id_tv_ride_info
 net.gringrid.pedal.R$id: int id_tv_start_time
 net.gringrid.pedal.R$id: int id_tv_strava
 net.gringrid.pedal.R$id: int id_wv

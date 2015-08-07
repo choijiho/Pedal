@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.util.Log;
 
 
 public class RideDao extends AbstractMasterDao<RideVO>{
@@ -124,6 +125,7 @@ public class RideDao extends AbstractMasterDao<RideVO>{
 			db.beginTransaction();
 
 			result = db.delete(TABLENAME, RideVO.PRIMARY_KEY+"="+Integer.toString(id), null);
+			Log.d("jiho", "delete result : "+result);
 
 			db.setTransactionSuccessful();
 			

@@ -3,8 +3,6 @@ package net.gringrid.pedal.activity;
 import java.util.List;
 
 import net.gringrid.pedal.R;
-import net.gringrid.pedal.R.id;
-import net.gringrid.pedal.R.layout;
 import net.gringrid.pedal.adapter.RideListAdapter;
 import net.gringrid.pedal.db.DBHelper;
 import net.gringrid.pedal.db.RideDao;

@@ -1,12 +1,6 @@
 package net.gringrid.pedal;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-
-
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,6 +12,7 @@ import net.gringrid.pedal.db.RideDao;
 import net.gringrid.pedal.db.vo.GpsLogVO;
 import net.gringrid.pedal.db.vo.RideVO;
 import android.content.Context;
+import android.util.Log;
 
 public class GPXMaker {
 
@@ -27,10 +22,6 @@ public class GPXMaker {
 	RideDao mRideDao;
 	GpsLogDao mGpsLogDao;
 	
-// <metadata>
-//  <time>2015-07-19T11:15:21Z</time>
-// </metadata>
-
 	public GPXMaker(Context context) {
 		mContext = context;
 	}
@@ -53,7 +44,9 @@ public class GPXMaker {
  			outputStreamWriter.write("<trk>");
  			outputStreamWriter.write("<name>"+rideVO.name+"</name>");
  			outputStreamWriter.write("<trkseq>");
- 			
+
+ 			Log.d("jiho", "convertUTCtoLocal(rideVO.startTime) : "+convertUTCtoLocal(rideVO.startTime));
+
  			List<GpsLogVO> results = mGpsLogDao.findWithParentId(rideId);
  			for ( GpsLogVO gpsLogVO : results){
  				outputStreamWriter.write("<trkpt lat"+gpsLogVO.latitude+" lon="+gpsLogVO.longitude+">");

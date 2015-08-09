@@ -54,7 +54,7 @@ public class RideListAdapter extends ArrayAdapter<RideVO>{
 			if ( preVo != null ){
 				Location.distanceBetween(preVo.latitude, preVo.longitude, vo.latitude, vo.longitude, distanceResult);
 				tmpSpeed = distanceResult[0] / (vo.gpsTime - preVo.gpsTime) * 1000;
-				if ( tmpSpeed > 0.3f ) {
+				if ( tmpSpeed > 0.2f ) {
 					totalTime += vo.gpsTime - preVo.gpsTime;
 				}
 				totalDistance += distanceResult[0];

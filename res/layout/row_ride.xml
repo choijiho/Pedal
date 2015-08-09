@@ -33,6 +33,18 @@
 	    android:layout_height="match_parent"
 	    >
 		<Button 
+		    android:id="@+id/bt_show_info"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="Info"
+		    />
+	</LinearLayout>
+
+	<LinearLayout 
+	    android:layout_width="wrap_content"
+	    android:layout_height="match_parent"
+	    >
+		<Button 
 		    android:id="@+id/bt_del"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"

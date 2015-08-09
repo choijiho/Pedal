@@ -1,9 +1,11 @@
 package net.gringrid.pedal.adapter;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import net.gringrid.pedal.GPXMaker;
 import net.gringrid.pedal.R;
+import net.gringrid.pedal.Utility;
 import net.gringrid.pedal.R.id;
 import net.gringrid.pedal.R.layout;
 import net.gringrid.pedal.UploadGpxFile;
@@ -48,8 +50,8 @@ public class RideListAdapter extends ArrayAdapter<RideVO>{
 		long totalTime = 0;
 		float totalDistance = 0;
 		float[] distanceResult = new float[3];
-		
 		float tmpSpeed = 0;
+		
 		for ( GpsLogVO vo : gpsLogVOList){
 			if ( preVo != null ){
 				Location.distanceBetween(preVo.latitude, preVo.longitude, vo.latitude, vo.longitude, distanceResult);
@@ -67,7 +69,11 @@ public class RideListAdapter extends ArrayAdapter<RideVO>{
 		Log.d("jiho", "avgSpeed : "+avgSpeed);
 		Log.d("jiho", "totalTime : "+totalTime / 1000);
 		Log.d("jiho", "totalDistance : "+totalDistance);
-		return avgSpeed+", "+totalTime+", "+totalDistance;
+
+		String printSpeed = new DecimalFormat("0.00").format(avgSpeed);
+		String printTime = Utility.getInstance().convertSecondsToHours(totalTime);
+		String printDistance = String.format("%.1f", totalDistance / 1000);
+		return printSpeed+", "+printTime+", "+printDistance;
 	}
 
 	@Override
@@ -82,6 +88,7 @@ public class RideListAdapter extends ArrayAdapter<RideVO>{
 			viewHolder.id_tv_name = (TextView)view.findViewById(R.id.id_tv_name);
 			viewHolder.id_tv_start_time = (TextView)view.findViewById(R.id.id_tv_start_time);
 			viewHolder.id_tv_ride_info = (TextView)view.findViewById(R.id.id_tv_ride_info);
+			viewHolder.bt_show_info = (Button)view.findViewById(R.id.bt_show_info);
 			viewHolder.bt_create_gpx = (Button)view.findViewById(R.id.bt_create_gpx);
 			viewHolder.bt_del = (Button)view.findViewById(R.id.bt_del);
 			view.setTag(viewHolder);
@@ -91,6 +98,7 @@ public class RideListAdapter extends ArrayAdapter<RideVO>{
 
 		final RideVO vo = data.get(position);
 		final int finalPosition = position;
+		final TextView final_id_tv_ride_info = viewHolder.id_tv_ride_info;
 
 		if ( vo != null ){
 			viewHolder.id_tv_name.setOnClickListener(new OnClickListener() {
@@ -103,6 +111,15 @@ public class RideListAdapter extends ArrayAdapter<RideVO>{
 				}
 			});
 			
+			viewHolder.bt_show_info.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					notifyDataSetChanged();
+					final_id_tv_ride_info.setText(calculateRideInfo(vo.primaryKey));
+				}
+			});
+
 			viewHolder.bt_del.setOnClickListener(new OnClickListener() {
 				
 				@Override
@@ -124,7 +141,6 @@ public class RideListAdapter extends ArrayAdapter<RideVO>{
 			});
 			viewHolder.id_tv_name.setText(vo.name);
 			viewHolder.id_tv_start_time.setText(String.valueOf(vo.startTime));
-			viewHolder.id_tv_ride_info.setText(calculateRideInfo(vo.primaryKey));
 		}
 
 		return view;
@@ -134,6 +150,7 @@ public class RideListAdapter extends ArrayAdapter<RideVO>{
 		TextView id_tv_name;
 		TextView id_tv_start_time;
 		TextView id_tv_ride_info;
+		Button bt_show_info;
 		Button bt_create_gpx;
 		Button bt_del;
 	}

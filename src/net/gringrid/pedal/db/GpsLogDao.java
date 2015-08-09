@@ -263,18 +263,18 @@ public class GpsLogDao extends AbstractMasterDao<GpsLogVO>{
 					if(cursor.moveToFirst()) {
 						do{
 							GpsLogVO object = new GpsLogVO();
-							object.primaryKey = cursor.getInt(0); 
-							object.latitude = Double.parseDouble(cursor.getString(1));
-							object.longitude = Double.parseDouble(cursor.getString(2));
-							object.elevation = Double.parseDouble(cursor.getString(3));
-							object.gpsTime = Long.parseLong(cursor.getString(4));
+							object.primaryKey = cursor.getInt(1); 
+							object.latitude = Double.parseDouble(cursor.getString(2));
+							object.longitude = Double.parseDouble(cursor.getString(3));
+							object.elevation = Double.parseDouble(cursor.getString(4));
+							object.gpsTime = Long.parseLong(cursor.getString(5));
 							objects.add(object);  
 
-							Log.d("jiho", "cursor.getString(1) : "+cursor.getString(1));
-							Log.d("jiho", "cursor.getString(2) : "+cursor.getString(2));
-							Log.d("jiho", "cursor.getString(3) : "+cursor.getString(3));
-							Log.d("jiho", "cursor.getString(4) : "+cursor.getString(4));
-							Log.d("jiho", "cursor.getString(5) : "+cursor.getString(5));
+//							Log.d("jiho", "cursor.getString(1) : "+cursor.getString(1));
+//							Log.d("jiho", "cursor.getString(2) : "+cursor.getString(2));
+//							Log.d("jiho", "cursor.getString(3) : "+cursor.getString(3));
+//							Log.d("jiho", "cursor.getString(4) : "+cursor.getString(4));
+//							Log.d("jiho", "cursor.getString(5) : "+cursor.getString(5));
 						} while (cursor.moveToNext());
 					}
 				}
@@ -312,11 +312,6 @@ public class GpsLogDao extends AbstractMasterDao<GpsLogVO>{
 							object.longitude = Double.parseDouble(cursor.getString(3));
 							object.elevation = Double.parseDouble(cursor.getString(4));
 							object.gpsTime = Long.parseLong(cursor.getString(5));
-							Log.d("jiho", "cursor.getString(1) : "+cursor.getString(1));
-							Log.d("jiho", "cursor.getString(2) : "+cursor.getString(2));
-							Log.d("jiho", "cursor.getString(3) : "+cursor.getString(3));
-							Log.d("jiho", "cursor.getString(4) : "+cursor.getString(4));
-							Log.d("jiho", "cursor.getString(5) : "+cursor.getString(5));
 							objects.add(object);  
 						} while (cursor.moveToNext());
 					}

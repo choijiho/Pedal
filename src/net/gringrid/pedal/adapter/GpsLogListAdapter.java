@@ -3,12 +3,8 @@ package net.gringrid.pedal.adapter;
 import java.util.List;
 
 import net.gringrid.pedal.R;
-import net.gringrid.pedal.R.id;
-import net.gringrid.pedal.R.layout;
 import net.gringrid.pedal.db.vo.GpsLogVO;
-import net.gringrid.pedal.db.vo.RideVO;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +37,6 @@ public class GpsLogListAdapter extends ArrayAdapter<GpsLogVO>{
 			data += ", "+String.valueOf(vo.elevation);
 			data += ", "+String.valueOf(vo.gpsTime);
 			data += ", "+String.valueOf(vo.parentId);
-			Log.d("jiho", "data : "+data);
 			TextView id_tv_data = (TextView)view.findViewById(R.id.id_tv_data);
 			id_tv_data.setText(data);
 		}

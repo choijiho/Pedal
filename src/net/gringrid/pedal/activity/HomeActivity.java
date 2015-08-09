@@ -1,20 +1,30 @@
 package net.gringrid.pedal.activity;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
 
 import net.gringrid.pedal.R;
 import net.gringrid.pedal.Setting;
@@ -387,7 +397,8 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 
 		case R.id.id_iv_delete:
 //			resetPedal();
-			cURLTest();
+			intent = new Intent(this, StravaAPITestActivity.class);
+			startActivity(intent);
 			break;
 
 		case R.id.id_iv_list:
@@ -428,48 +439,6 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 		default:
 			break;
 		}
-	}
-
-	private String cURLTest() {
-		StringBuffer stringBuffer = new StringBuffer("");
-		BufferedReader bufferedReader = null;
-		try {
-			HttpClient httpClient = new DefaultHttpClient();
-			HttpGet httpGet = new HttpGet();
-			String user_id = SharedData.getInstance(this).getGlobalDataString(Setting.SHARED_KEY_STRAVA_USER_ID);
-			String access_token = SharedData.getInstance(this).getGlobalDataString(Setting.SHARED_KEY_STRAVA_ACCESS_TOKEN);
-			Log.d("jiho", "user_id : "+user_id);
-			Log.d("jiho", "access_token : "+access_token);
-			URI uri = new URI("https://www.strava.com/api/v3/athletes/"+user_id);
-			httpGet.setHeader("Authorization", "Bearer "+access_token);
-			httpGet.setURI(uri);
-			//TODO
-			
-			HttpResponse httpResponse = httpClient.execute(httpGet);
-			InputStream inputStream = httpResponse.getEntity().getContent();
-			bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-			
-			String readLine = bufferedReader.readLine();
-			while(readLine != null){
-				stringBuffer.append(readLine);
-				stringBuffer.append("\n");
-				readLine = bufferedReader.readLine();
-			}
-			
-		} catch (Exception e) {
-		} finally {
-			if ( bufferedReader != null ){
-				try {
-					bufferedReader.close();
-				} catch (IOException e) {
-					// TODO: handle exception
-				}
-			}
-		}
-		Log.d("jiho", "return stringBuffer.toString(); : "+stringBuffer.toString());
-		
-		return stringBuffer.toString();
-		
 	}
 
 	@Override

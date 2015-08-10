@@ -5023,6 +5023,7 @@ net.gringrid.pedal.R$drawable: int ic_watch_white_24dp
 net.gringrid.pedal.R$drawable: R$drawable()
 net.gringrid.pedal.R$id: int bt_create_gpx
 net.gringrid.pedal.R$id: int bt_del
+net.gringrid.pedal.R$id: int bt_show_info
 net.gringrid.pedal.R$id: int id_bt_check_upload_status
 net.gringrid.pedal.R$id: int id_bt_get
 net.gringrid.pedal.R$id: int id_bt_post
@@ -5105,7 +5106,6 @@ net.gringrid.pedal.TextClock
 net.gringrid.pedal.TextClock: TextClock(android.content.Context)
 net.gringrid.pedal.TextClock: TextClock(android.content.Context,android.util.AttributeSet)
 net.gringrid.pedal.TextClock: TextClock(android.content.Context,android.util.AttributeSet,int)
-net.gringrid.pedal.Utility: Utility()
 net.gringrid.pedal.activity.GpsLogListActivity
 net.gringrid.pedal.activity.GpsLogListActivity: GpsLogListActivity()
 net.gringrid.pedal.activity.HomeActivity

@@ -64,15 +64,15 @@ public class RideListAdapter extends ArrayAdapter<RideVO>{
 			}
 			preVo = vo;
 		}
-		
-		avgSpeed = totalDistance / totalTime / 1000 * 3.6f;
+		totalTime = totalTime / 1000;
+		avgSpeed = totalDistance / totalTime * 3.6f;
 		Log.d("jiho", "avgSpeed : "+avgSpeed);
-		Log.d("jiho", "totalTime : "+totalTime / 1000);
+		Log.d("jiho", "totalTime : "+totalTime);
 		Log.d("jiho", "totalDistance : "+totalDistance);
 
-		String printSpeed = new DecimalFormat("0.00").format(avgSpeed);
+		String printSpeed = new DecimalFormat("0.0").format(avgSpeed)+"km/h";
 		String printTime = Utility.getInstance().convertSecondsToHours(totalTime);
-		String printDistance = String.format("%.1f", totalDistance / 1000);
+		String printDistance = String.format("%.1f", totalDistance / 1000)+"km";
 		return printSpeed+", "+printTime+", "+printDistance;
 	}
 

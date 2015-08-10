@@ -12,19 +12,18 @@ public class Utility {
 		return instance;
 	}
 
-	public String convertSecondsToHours(long milliseconds){
+	public String convertSecondsToHours(long seconds){
 		String result = "";
-		int seconds = (int) (milliseconds / 1000) % 60 ;
-		int minutes = (int) ((milliseconds / (1000*60)) % 60);
-		int hours   = (int) ((milliseconds / (1000*60*60)) % 24);
+		int minutes = (int) ((seconds / (60)) % 60);
+		int hours   = (int) ((seconds / (60*60)) % 24);
 		
-		if ( milliseconds > 3600000 ){
+		if ( seconds > 3600 ){
 			result += hours+":";
 		}
-		if ( milliseconds > 60000 ){
+		if ( seconds > 60 ){
 			result += minutes+":";
 		}
-		result += seconds;
+		result += seconds % 60;
 		
 		return result;
 	}

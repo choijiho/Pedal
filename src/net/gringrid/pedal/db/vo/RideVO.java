@@ -9,4 +9,11 @@ public class RideVO {
 	public int primaryKey;
 	public String name;
 	public long startTime;
+
+	public String detailTime;
+	public String detailDistance;
+	public String detailSpeed;
+	public String detailMaxSpeed;
+	public String detailAltitude;
+	
 }

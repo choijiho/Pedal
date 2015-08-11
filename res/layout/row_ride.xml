@@ -32,7 +32,7 @@
 	    android:layout_width="wrap_content"
 	    android:layout_height="match_parent"
 	    >
-		<Button 
+		<TextView
 		    android:id="@+id/bt_show_info"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
 	    android:layout_width="wrap_content"
 	    android:layout_height="match_parent"
 	    >
-		<Button 
+		<TextView
 		    android:id="@+id/bt_del"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
 	    android:layout_width="wrap_content"
 	    android:layout_height="match_parent"
 	    >
-		<Button 
+		<TextView
 		    android:id="@+id/bt_create_gpx"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"

@@ -13,9 +13,12 @@ import android.app.Activity;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-public class RideListActivity extends Activity{
+public class RidingListActivity extends Activity{
 
 	RideDao mRideDao;
 	GpsLogDao mGpsLogDao;
@@ -46,6 +49,14 @@ public class RideListActivity extends Activity{
 	
 	private void initView(){
 		id_lv_list = (ListView)findViewById(R.id.id_lv_list);
+		id_lv_list.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				id_lv_list.smoothScrollToPosition(position);
+			}
+		});
 	}
 
 	/**

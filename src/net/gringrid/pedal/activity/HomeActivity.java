@@ -90,7 +90,6 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 	 */
 	private LocationManager mLocationManager;
 	private long mTravelTime;
-	private long mLastLocationTime;
 	private long mMoveTime;
 	private Location mLastLocation;
 	private float mAvgSpeed;
@@ -358,7 +357,7 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 		pausePedal();
 		stopCadenceAlarm();
 		mTravelTime = 0;
-		mLastLocationTime = 0;
+		mLastLocation = null;
 		id_cm.setBase(SystemClock.elapsedRealtime());
 		id_tv_current_speed.setText("00.0");
 		id_tv_avg_speed.setText("00.0");
@@ -450,19 +449,22 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 		String currentStatus = null;
 		
 		// 최초실행인경우 필터링
-		if ( mLastLocationTime != 0 ){
+		if ( mLastLocation != null ){
+			float timeFromLastLocation = (locationTime - mLastLocation.getTime()) / 1000;
 			float distanceFromLastLocation = location.distanceTo(mLastLocation);
-			float speedFromLastLocation = distanceFromLastLocation * 3.6f;
+			float speedFromLastLocation = distanceFromLastLocation / timeFromLastLocation * 3.6f;
 		
 			// 평균속도를 계산하기 위해 멈춰있는경우는 제외한다. 
 			if ( speedFromLastLocation <= 3 || locationSpeedKm < 2 ){
 				currentStatus = "STOP";
-			// 속도가 100km 가 넘는경우는 GPS가 튄것으로 판단하여 제외한다.
+
+			// 속도가 150km 가 넘는경우는 GPS가 튄것으로 판단하여 제외한다.
 			}else if ( speedFromLastLocation > 150 ){
 				currentStatus = "GPS ERROR(OVER 150km)";
+
 			}else{
 				currentStatus = "Riding";
-				mMoveTime++;// += locationTime - mLastLocationTime;
+				mMoveTime += timeFromLastLocation;
 				mTotalDistance += distanceFromLastLocation;
 				mAvgSpeed = mTotalDistance / mMoveTime * 3.6f;
 				id_tv_distance.setText(String.format("%.2f", mTotalDistance / 1000));
@@ -480,15 +482,6 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 				logText += "\nLongitude : "+String.valueOf(location.getLongitude());
 				logText += "\nCurrent status : "+currentStatus;
 				id_tv_log.setText(logText);
-				
-//				((TextView)findViewById(R.id.id_tv_accuracy)).setText(String.valueOf(location.getAccuracy()));
-//				((TextView)findViewById(R.id.id_tv_move_time)).setText(String.valueOf(mMoveTime));
-//				((TextView)findViewById(R.id.id_tv_speed_from_last_location)).setText(String.valueOf(speedFromLastLocation));
-//				((TextView)findViewById(R.id.id_tv_location_speed)).setText(String.valueOf(locationSpeedKm));
-//				((TextView)findViewById(R.id.id_tv_last_distance)).setText(String.format("%.1f", distanceFromLastLocation));
-//				((TextView)findViewById(R.id.id_tv_latitude)).setText(String.valueOf(location.getLatitude()));
-//				((TextView)findViewById(R.id.id_tv_longitude)).setText(String.valueOf(location.getLongitude()));
-//				((TextView)findViewById(R.id.id_tv_current_status)).setText(currentStatus);
 			}
 
 			if ( mIsSaveGps ){
@@ -502,7 +495,6 @@ public class HomeActivity extends Activity implements OnClickListener, LocationL
 			}
 		}
 		
-		mLastLocationTime = locationTime;
 		mLastLocation = location;
 
 		id_tv_current_speed.setText(String.format("%.1f", locationSpeedKm));

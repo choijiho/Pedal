@@ -11,6 +11,7 @@ public class Setting {
 	public boolean IS_ENABLE_MUSIC = true;
 	public boolean IS_ENABLE_SAVE_GPS = true;
 
+	public static final String SHARED_KEY_STATE = "state"; 
 	public static final String SHARED_KEY_INITIAL_SETTING = "initial_setting"; 
 	public static final String SHARED_KEY_CURRENT_SPEED = "current_speed";
 	public static final String SHARED_KEY_AVERAGE_SPEED = "average_speed";

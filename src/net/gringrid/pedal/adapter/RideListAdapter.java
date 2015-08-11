@@ -88,9 +88,9 @@ public class RideListAdapter extends ArrayAdapter<RideVO>{
 			viewHolder.id_tv_name = (TextView)view.findViewById(R.id.id_tv_name);
 			viewHolder.id_tv_start_time = (TextView)view.findViewById(R.id.id_tv_start_time);
 			viewHolder.id_tv_ride_info = (TextView)view.findViewById(R.id.id_tv_ride_info);
-			viewHolder.bt_show_info = (Button)view.findViewById(R.id.bt_show_info);
-			viewHolder.bt_create_gpx = (Button)view.findViewById(R.id.bt_create_gpx);
-			viewHolder.bt_del = (Button)view.findViewById(R.id.bt_del);
+			viewHolder.bt_show_info = (TextView)view.findViewById(R.id.bt_show_info);
+			viewHolder.bt_create_gpx = (TextView)view.findViewById(R.id.bt_create_gpx);
+			viewHolder.bt_del = (TextView)view.findViewById(R.id.bt_del);
 			view.setTag(viewHolder);
 		}else{
 			viewHolder = (ViewHolder)view.getTag();
@@ -105,9 +105,11 @@ public class RideListAdapter extends ArrayAdapter<RideVO>{
 				
 				@Override
 				public void onClick(View v) {
-					Intent intent = new Intent(mContext, GpsLogListActivity.class);
-					intent.putExtra("PARENT_ID", vo.primaryKey);
-					mContext.startActivity(intent);
+
+//					Intent intent = new Intent(mContext, GpsLogListActivity.class);
+//					intent.putExtra("PARENT_ID", vo.primaryKey);
+//					mContext.startActivity(intent);
+					
 				}
 			});
 			
@@ -150,8 +152,8 @@ public class RideListAdapter extends ArrayAdapter<RideVO>{
 		TextView id_tv_name;
 		TextView id_tv_start_time;
 		TextView id_tv_ride_info;
-		Button bt_show_info;
-		Button bt_create_gpx;
-		Button bt_del;
+		TextView bt_show_info;
+		TextView bt_create_gpx;
+		TextView bt_del;
 	}
 }

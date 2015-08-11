@@ -9,397 +9,66 @@
     android:keepScreenOn="true"
     android:orientation="vertical"
     tools:context="net.gringrid.pedal.activity.HomeActivity" >
-   
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/app_name" 
-        android:textSize="25sp"
-        android:textStyle="bold"
-        />
-    
-	<!-- TIME & BATTERY START -->
-	<LinearLayout 
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="horizontal"
-	    android:gravity="center"
-	    >
-	    <TextView 
-	        android:id="@+id/id_tv_day_info"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        />
-		<net.gringrid.pedal.TextClock
-		    android:id="@+id/id_dc"
-	        android:layout_width="0dp"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:gravity="center"
-	        android:textSize="36sp" />
-	   	<ImageView 
-	   	    android:layout_width="wrap_content"
-	   	    android:layout_height="wrap_content"
-	   	    android:src="@drawable/ic_battery_full_white_24dp"/>
-		<TextView
-	        android:id="@+id/id_tv_battery_status"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content" 
-	        android:textSize="24sp"
-	        />
-	</LinearLayout>
-	<!-- TIME & BATTERY END -->
 
-    <ImageView 
-        android:id="@+id/id_iv_gps_enable"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:src="@drawable/ic_location_off_white_48dp"
-        android:visibility="gone"
-        />
-
-	<LinearLayout
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="horizontal"
-	    android:baselineAligned="false"
-	    >
-	    <!-- SPEED START -->
-	   	<LinearLayout
-	   	    android:layout_width="0dp" 
-	   	    android:layout_height="wrap_content"
-	   	    android:layout_weight="6"
-	   	    android:orientation="vertical"
-	   	    >
-	   	    <TextView 
-	   	        android:layout_width="match_parent"
-	   	        android:layout_height="wrap_content"
-	   	        style="@style/title"
-	   	        android:text="@string/title_speed"
-	   	        />
-	   	    <LinearLayout 
-	   	        android:layout_width="match_parent"
-	   	        android:layout_height="wrap_content"
-	   	        android:orientation="horizontal"
-	   	        >
-		   	    <TextView 
-		   	        android:layout_width="0dp"
-		   	        android:layout_height="wrap_content"
-		   	        android:layout_weight="7"
-		   	        android:textSize="65sp"
-		   	        android:id="@+id/id_tv_current_speed"
-		   	        android:gravity="right"
-		   	        android:text="@string/default_value_kmh"
-		   	        />
-		   	    <TextView 
-		   	        android:layout_width="0dp"
-		   	        android:layout_height="wrap_content"
-		   	        android:layout_weight="3"
-		   	        android:textSize="13sp"
-		   	        android:text="@string/unit_kmh"
-		   	        />
-	   	    </LinearLayout>
-	   	</LinearLayout> 
-	    <!-- SPEED END -->
-		
-		<!-- AVG SPEED, ALTITUDE START -->
-	   	<LinearLayout
-	   	    android:layout_width="0dp" 
-	   	    android:layout_height="wrap_content"
-	   	    android:layout_weight="4"
-	   	    android:orientation="vertical"
-	   	    >
-	   	    <!-- AVG SPEED START -->
-		   	<LinearLayout
-		   	    android:layout_width="match_parent" 
-		   	    android:layout_height="wrap_content"
-		   	    android:orientation="vertical"
-		   	    android:layout_marginBottom="5dp"
-		   	    >
-		   	    <TextView 
-		   	        android:layout_width="match_parent"
-		   	        android:layout_height="wrap_content"
-		   	        style="@style/title"
-		   	        android:text="@string/title_avg_speed"
-		   	        />
-		   	    <LinearLayout 
-		   	        android:layout_width="match_parent"
-		   	        android:layout_height="wrap_content"
-		   	        android:orientation="horizontal"
-		   	        >
-			   	    <TextView 
-			   	        android:id="@+id/id_tv_avg_speed"
-			   	        android:layout_width="0dp"
-			   	        android:layout_height="wrap_content"
-			   	        android:layout_weight="7"
-			   	        android:textSize="30sp"
-			   	        android:gravity="right"
-			   	        android:text="@string/default_value_kmh"
-			   	        />
-			   	    <TextView 
-			   	        android:layout_width="0dp"
-			   	        android:layout_height="wrap_content"
-			   	        android:layout_weight="3"
-			   	        android:textSize="11sp"
-			   	        android:text="@string/unit_kmh"
-			   	        />
-		   	        
-		   	    </LinearLayout>
-		   	</LinearLayout> 
-	   	    <!-- AVG SPEED END -->
-	   	    <!-- ALTITUDE START -->
-		   	<LinearLayout
-		   	    android:layout_width="match_parent" 
-		   	    android:layout_height="wrap_content"
-		   	    android:orientation="vertical"
-		   	    >
-		   	    <TextView 
-		   	        android:layout_width="match_parent"
-		   	        android:layout_height="wrap_content"
-		   	        style="@style/title"
-		   	        android:text="@string/title_altitude"
-		   	        />
-		   	    <LinearLayout 
-		   	        android:layout_width="match_parent"
-		   	        android:layout_height="wrap_content"
-		   	        android:orientation="horizontal"
-		   	        >
-			   	    <TextView 
-			   	        android:id="@+id/id_tv_current_altitude"
-			   	        android:layout_width="0dp"
-			   	        android:layout_height="wrap_content"
-			   	        android:layout_weight="7"
-			   	        android:textSize="30sp"
-			   	        android:gravity="right"
-			   	        android:text="@string/default_value_m"
-			   	        />
-			   	    <TextView 
-			   	        android:layout_width="0dp"
-			   	        android:layout_height="wrap_content"
-			   	        android:layout_weight="3"
-			   	        android:textSize="11sp"
-			   	        android:text="@string/unit_m"
-			   	        />
-		   	    </LinearLayout>
-		   	</LinearLayout> 
-	   	    <!-- ALTITUDE END -->
-	   	</LinearLayout> 
-		<!-- AVG SPEED, ALTITUDE END -->
-	</LinearLayout>
-
-
-    <!-- DISTANCE, TRAVEL TIME START -->
-	<LinearLayout 
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="horizontal"
-	    android:baselineAligned="false"
-	    >
-	   	<!-- DISTANCE START -->
-	   	<LinearLayout 
-	   	    android:layout_width="0dp"
-	   	    android:layout_height="wrap_content"
-	   	    android:layout_weight="6"
-	   	    android:orientation="vertical">
-	   	   	<TextView 
-	   	   	    android:layout_width="match_parent"
-	   	   	    android:layout_height="wrap_content"
-	   	   	    style="@style/title"
-	   	   	    android:text="@string/title_distance"/> 
-	   	    <LinearLayout 
-	   	        android:layout_width="match_parent"
-	   	        android:layout_height="wrap_content"
-	   	        android:orientation="horizontal"
-	   	        android:gravity="center_horizontal"
-	   	        >
-		   	    <TextView 
-		   	        android:id="@+id/id_tv_distance"
-		   	        android:layout_width="wrap_content"
-		   	        android:layout_height="wrap_content"
-		   	        android:textSize="30sp"
-		   	        android:gravity="right"
-		   	        android:text="@string/default_value_km"
-		   	        />
-		   	    <TextView 
-		   	        android:layout_width="wrap_content"
-		   	        android:layout_height="wrap_content"
-		   	        android:textSize="15sp"
-		   	        android:text="@string/unit_km"
-		   	        />
-	   	        
-	   	    </LinearLayout>
-	   	</LinearLayout>
-	   	<!-- DISTANCE END -->
-	   	<!-- TRAVEL TIME START -->
-	   	<LinearLayout 
-	   	    android:layout_width="0dp"
-	   	    android:layout_height="wrap_content"
-	   	    android:layout_weight="4"
-	   	    android:orientation="vertical">
-	   	   	<TextView 
-	   	   	    android:layout_width="match_parent"
-	   	   	    android:layout_height="wrap_content"
-	   	   	    style="@style/title"
-	   	   	    android:text="@string/title_travel_time"/> 
-			<Chronometer
-			    android:id="@+id/id_cm"
-        		android:layout_width="match_parent"
-   				android:layout_height="wrap_content" 
-	   	   	    android:gravity="center"
-        		android:textSize="30sp" />
-	   	</LinearLayout>
-	   	<!-- TRAVEL TIME END -->
-	</LinearLayout>
-    <!-- DISTANCE, TRAVEL TIME START -->
-
-    <!-- LOG START -->
-    <ScrollView
-        android:id="@+id/id_sv_log"
+    <!-- App name start -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3" >
-
-        <LinearLayout
+        android:orientation="horizontal" 
+        android:layout_weight="1"
+        >
+        <TextView 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:text="@string/app_name"
+            android:textSize="30sp"
+        	android:textStyle="bold"
+        	android:gravity="center"
+            />
+    </LinearLayout>
+    <!-- App name end -->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+    <!-- Ride button start -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal" 
+        android:layout_weight="2"
+        android:gravity="center"
+        >
+        <ImageView 
+            android:id="@+id/id_iv_riding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_directions_bike_white_48dp"
+            />
+    </LinearLayout>
+    <!-- Ride button end -->
 
-                <TextView
-                    android:id="@+id/id_tv_log"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
-            </LinearLayout>
-
-           
-        </LinearLayout>
-    </ScrollView>
-    <!-- LOG END -->
-
-
-	<!-- BIKE ICON START -->	
-	<LinearLayout 
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="horizontal"
-	    >
-	   	<ImageView
-			android:id="@+id/id_iv_bike"
-	   	    android:layout_width="match_parent"
-	   	    android:layout_height="wrap_content"
-	   	    android:src="@drawable/ic_directions_bike_white_48dp" 
-	   	    android:layout_gravity="center"
-	   	    android:visibility="gone"
-	   	    />
-	   	<ImageView
-			android:id="@+id/id_iv_cadence_alarm"
-	   	    android:layout_width="0dp"
-	   	    android:layout_height="wrap_content"
-	   	    android:layout_weight="1"
-	   	    android:src="@drawable/ic_notifications_off_white_48dp" 
-	   	    android:layout_gravity="center"
-	   	    />
-	   	<ImageView
-			android:id="@+id/id_iv_passing"
-	   	    android:layout_width="0dp"
-	   	    android:layout_height="wrap_content"
-	   	    android:layout_weight="1"
-	   	    android:src="@drawable/ic_volume_up_white_48dp" 
-	   	    android:layout_gravity="center"
-	   	    />
-	</LinearLayout>
-	<!-- BIKE ICON END -->	
-	
-	<View 
-	    android:layout_width="match_parent"
-	    android:layout_height="0dp"
-	    android:layout_weight="1"
-	    />	
-	    
-	<!-- MUSIC STTART -->	
-	<LinearLayout 
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="horizontal"
-	    >
-	   	<TextView 
-	   	    android:id="@+id/id_tv_music_artist"
-	   	    android:layout_width="wrap_content"
-	   	    android:layout_height="wrap_content"
-		    android:gravity="center"
-	   	    />
-	   	<TextView 
-	   	    android:id="@+id/id_tv_music_title"
-	   	    android:layout_width="0dp"
-	   	    android:layout_height="wrap_content"
-	   	    android:layout_weight="1"
-	   	    android:singleLine="true"
-		    android:gravity="center"
-	   	    />
-	</LinearLayout>
-	<!-- MUSIC END -->	
-	
-	    
-	<!-- CONTROL BUTTON START -->
-	<LinearLayout 
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="horizontal"
-	    android:gravity="bottom"
-	    android:baselineAligned="false"
-	    >
-	   	<LinearLayout 
-	   	    android:layout_width="0dp"
-	   	    android:layout_height="wrap_content"
-	   	    android:layout_weight="1">
-		   	<ImageView 
-		   	    android:id="@+id/id_iv_delete"
-		   	    android:layout_width="0dp"
-		   	    android:layout_height="wrap_content"
-		   	    android:layout_weight="1"
-		   	    android:src="@drawable/ic_delete_white_36dp"/>
-	   	</LinearLayout>
-	   	<LinearLayout 
-	   	    android:layout_width="0dp"
-	   	    android:layout_height="wrap_content"
-	   	    android:layout_weight="1">
-	   		<ImageView
-	   		    android:id="@+id/id_iv_play_stop"
-	   		    android:layout_width="0dp"
-	   		    android:layout_height="match_parent"
-	   		    android:layout_weight="1"
-	   		    android:src="@drawable/ic_play_circle_outline_white_48dp"/>
-	   	</LinearLayout>
-	   	<LinearLayout 
-	   	    android:layout_width="0dp"
-	   	    android:layout_height="wrap_content"
-	   	    android:layout_weight="1">
-	   		<ImageView 
-	   		    android:id="@+id/id_iv_list"
-	   		    android:layout_width="0dp"
-	   		    android:layout_height="wrap_content"
-	   		    android:layout_weight="1"
-	   		    android:src="@drawable/ic_list_white_36dp"/>
-   		</LinearLayout>
-	   	<LinearLayout 
-	   	    android:layout_width="0dp"
-	   	    android:layout_height="wrap_content"
-	   	    android:layout_weight="1">
-	   		<ImageView 
-	   		    android:id="@+id/id_iv_setting"
-	   		    android:layout_width="0dp"
-	   		    android:layout_height="wrap_content"
-	   		    android:layout_weight="1"
-	   		    android:src="@drawable/ic_settings_white_36dp"/>
-   		</LinearLayout>
-	</LinearLayout>
-	<!-- CONTROL BUTTON END -->
+    <!-- List, Setting button end -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal" 
+        android:layout_weight="1"
+        android:gravity="center"
+        >
+        <ImageView 
+            android:id="@+id/id_iv_riding_list"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/ic_reorder_white_36dp"
+            />
+        
+        <ImageView 
+            android:id="@+id/id_iv_setting"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/ic_settings_white_36dp"
+            />
+    </LinearLayout>
+    <!-- List, Setting button end -->
 
 </LinearLayout>

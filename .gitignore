@@ -8,6 +8,7 @@ gen/
 *.bak
 *.swp
 *~.nib
+*.properties
 local.properties
 .settings/
 .loadpath

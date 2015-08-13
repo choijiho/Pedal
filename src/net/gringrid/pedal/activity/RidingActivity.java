@@ -39,7 +39,7 @@ import android.widget.Toast;
 public class RidingActivity extends Activity implements OnClickListener, LocationListener{
 
 	final boolean DEBUG = false;
-	final boolean IS_LOG_PRINT = false;
+	final boolean IS_LOG_PRINT = true;
 
 	final int STATE_RIDING = 0x00;
 	final int STATE_STOP = 0x01;
@@ -65,7 +65,6 @@ public class RidingActivity extends Activity implements OnClickListener, Locatio
 	 */
 	private LocationManager mLocationManager;
 	private long mTravelTime;
-	private long mLastLocationTime;
 	private long mMoveTime;
 	private Location mLastLocation;
 	private float mAvgSpeed;
@@ -312,7 +311,7 @@ public class RidingActivity extends Activity implements OnClickListener, Locatio
 		pausePedal();
 		stopCadenceAlarm();
 		mTravelTime = 0;
-		mLastLocationTime = 0;
+		mLastLocation = null;
 		id_cm.setBase(SystemClock.elapsedRealtime());
 		id_tv_current_speed.setText("00.0");
 		id_tv_avg_speed.setText("00.0");
@@ -372,9 +371,10 @@ public class RidingActivity extends Activity implements OnClickListener, Locatio
 		String currentStatus = null;
 		
 		// 최초실행인경우 필터링
-		if ( mLastLocationTime != 0 ){
+		if ( mLastLocation != null ){
 			float distanceFromLastLocation = location.distanceTo(mLastLocation);
-			float speedFromLastLocation = distanceFromLastLocation * 3.6f;
+			long gapTimeFromLastlocation = (locationTime  - mLastLocation.getTime()) / 1000;
+			float speedFromLastLocation = distanceFromLastLocation / gapTimeFromLastlocation * 3.6f;
 		
 			// 평균속도를 계산하기 위해 멈춰있는경우는 제외한다. 
 			if ( speedFromLastLocation <= 3 || locationSpeedKm < 2 ){
@@ -416,7 +416,6 @@ public class RidingActivity extends Activity implements OnClickListener, Locatio
 			}
 		}
 		
-		mLastLocationTime = locationTime;
 		mLastLocation = location;
 
 		id_tv_current_speed.setText(String.format("%.1f", locationSpeedKm));

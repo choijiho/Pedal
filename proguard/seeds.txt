@@ -5026,9 +5026,6 @@ net.gringrid.pedal.R$drawable: int ic_stop_white_48dp
 net.gringrid.pedal.R$drawable: int ic_volume_up_white_48dp
 net.gringrid.pedal.R$drawable: int ic_watch_white_24dp
 net.gringrid.pedal.R$drawable: R$drawable()
-net.gringrid.pedal.R$id: int bt_create_gpx
-net.gringrid.pedal.R$id: int bt_del
-net.gringrid.pedal.R$id: int bt_show_info
 net.gringrid.pedal.R$id: int id_bt_check_upload_status
 net.gringrid.pedal.R$id: int id_bt_get
 net.gringrid.pedal.R$id: int id_bt_post
@@ -5048,6 +5045,8 @@ net.gringrid.pedal.R$id: int id_iv_riding_list
 net.gringrid.pedal.R$id: int id_iv_setting
 net.gringrid.pedal.R$id: int id_iv_stop
 net.gringrid.pedal.R$id: int id_iv_strava
+net.gringrid.pedal.R$id: int id_iv_upload_strava
+net.gringrid.pedal.R$id: int id_ll_detail_info
 net.gringrid.pedal.R$id: int id_lv_list
 net.gringrid.pedal.R$id: int id_sv_log
 net.gringrid.pedal.R$id: int id_tv_altitude
@@ -5070,6 +5069,7 @@ net.gringrid.pedal.R$id: int id_tv_strava
 net.gringrid.pedal.R$id: int id_tv_time
 net.gringrid.pedal.R$id: int id_wv
 net.gringrid.pedal.R$id: R$id()
+net.gringrid.pedal.R$layout: int activity_expandable_ride_list
 net.gringrid.pedal.R$layout: int activity_gps_log_list
 net.gringrid.pedal.R$layout: int activity_home
 net.gringrid.pedal.R$layout: int activity_popup_browser
@@ -5080,6 +5080,7 @@ net.gringrid.pedal.R$layout: int activity_setting
 net.gringrid.pedal.R$layout: int activity_strava_api_test
 net.gringrid.pedal.R$layout: int row_gps_log
 net.gringrid.pedal.R$layout: int row_ride
+net.gringrid.pedal.R$layout: int row_ride_group
 net.gringrid.pedal.R$layout: R$layout()
 net.gringrid.pedal.R$menu: int pedal
 net.gringrid.pedal.R$menu: R$menu()
@@ -5099,6 +5100,7 @@ net.gringrid.pedal.R$string: int default_value_kmh
 net.gringrid.pedal.R$string: int default_value_m
 net.gringrid.pedal.R$string: int gps_disabled
 net.gringrid.pedal.R$string: int hello_world
+net.gringrid.pedal.R$string: int ride_info_default
 net.gringrid.pedal.R$string: int title_altitude
 net.gringrid.pedal.R$string: int title_avg_speed
 net.gringrid.pedal.R$string: int title_distance
@@ -5116,6 +5118,8 @@ net.gringrid.pedal.TextClock
 net.gringrid.pedal.TextClock: TextClock(android.content.Context)
 net.gringrid.pedal.TextClock: TextClock(android.content.Context,android.util.AttributeSet)
 net.gringrid.pedal.TextClock: TextClock(android.content.Context,android.util.AttributeSet,int)
+net.gringrid.pedal.activity.ExpandableRidingListActivity
+net.gringrid.pedal.activity.ExpandableRidingListActivity: ExpandableRidingListActivity()
 net.gringrid.pedal.activity.GpsLogListActivity
 net.gringrid.pedal.activity.GpsLogListActivity: GpsLogListActivity()
 net.gringrid.pedal.activity.HomeActivity

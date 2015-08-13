@@ -12,8 +12,10 @@ public class RideVO {
 
 	public String detailTime;
 	public String detailDistance;
-	public String detailSpeed;
+	public String detailAvgSpeed;
 	public String detailMaxSpeed;
 	public String detailAltitude;
+	
+	public boolean isShowDetail = false;
 	
 }

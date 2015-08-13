@@ -45,7 +45,7 @@ public class RidingDetailActivity extends Activity {
 		RideVO detailVO = getRidingDetailInfo();
 
 		rideVO.detailDistance = detailVO.detailDistance;
-		rideVO.detailSpeed = detailVO.detailSpeed;
+		rideVO.detailAvgSpeed = detailVO.detailAvgSpeed;
 		rideVO.detailMaxSpeed = detailVO.detailMaxSpeed;
 		rideVO.detailAltitude = detailVO.detailAltitude;
 		rideVO.detailTime = detailVO.detailTime;
@@ -91,7 +91,7 @@ public class RidingDetailActivity extends Activity {
 		String printDistance = String.format("%.1f", totalDistance / 1000)+"km";
 		
 		detailVO.detailTime = printTime;
-		detailVO.detailSpeed = printSpeed;
+		detailVO.detailAvgSpeed = printSpeed;
 		detailVO.detailDistance = printDistance;
 		
 		return detailVO;

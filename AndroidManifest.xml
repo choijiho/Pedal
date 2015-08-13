@@ -75,6 +75,9 @@
         </activity>
         <activity android:name=".activity.StravaAPITestActivity">
         </activity>
+        <activity android:name=".activity.ExpandableRidingListActivity">
+        </activity>
+        
         
     </application>
 

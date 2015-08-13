@@ -10,6 +10,7 @@ import net.gringrid.pedal.R.id;
 import net.gringrid.pedal.R.layout;
 import net.gringrid.pedal.UploadGpxFile;
 import net.gringrid.pedal.activity.GpsLogListActivity;
+import net.gringrid.pedal.adapter.RideListAdapter.ViewHolder;
 import net.gringrid.pedal.db.DBHelper;
 import net.gringrid.pedal.db.GpsLogDao;
 import net.gringrid.pedal.db.RideDao;
@@ -24,12 +25,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class RideListAdapter extends ArrayAdapter<RideVO>{
+public class ExpandableRideListAdapter extends BaseExpandableListAdapter{
 
 	Context mContext;
 	List<RideVO> data;
@@ -40,10 +42,8 @@ public class RideListAdapter extends ArrayAdapter<RideVO>{
 	final int INDEX_AVG_SPEED = 2;
 	final int INDEX_MAX_SPEED = 3;
 	
-	
-	
-	public RideListAdapter(Context context, int resource, List<RideVO> objects) {
-		super(context, resource, objects);
+
+	public ExpandableRideListAdapter(Context context, List<RideVO> objects) {
 		mContext = context;
 		data = objects;
 	}
@@ -110,16 +110,88 @@ public class RideListAdapter extends ArrayAdapter<RideVO>{
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public int getGroupCount() {
+		return data.size();
+	}
+
+	@Override
+	public int getChildrenCount(int groupPosition) {
+		return 1;
+	}
+
+	@Override
+	public Object getGroup(int groupPosition) {
+		return data.get(groupPosition);
+	}
+
+	@Override
+	public Object getChild(int groupPosition, int childPosition) {
+		return data.get(groupPosition);
+	}
+
+	@Override
+	public long getGroupId(int groupPosition) {
+		return groupPosition;
+	}
+
+	@Override
+	public long getChildId(int groupPosition, int childPosition) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean hasStableIds() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 		View view = convertView;
-		ViewHolder viewHolder = null;
+		GroupViewHolder viewHolder = null;
 		
 		if ( view == null ){
 			LayoutInflater vi = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			view = vi.inflate(R.layout.row_ride, null);
-			viewHolder = new ViewHolder();
+			view = vi.inflate(R.layout.row_ride_group, null);
+			viewHolder = new GroupViewHolder();
 			viewHolder.id_tv_name = (TextView)view.findViewById(R.id.id_tv_name);
 			viewHolder.id_tv_start_time = (TextView)view.findViewById(R.id.id_tv_start_time);
+			view.setTag(viewHolder);
+		}else{
+			viewHolder = (GroupViewHolder)view.getTag();
+		}
+
+		final RideVO vo = data.get(groupPosition);
+		final int finalPosition = groupPosition;
+
+		if ( vo != null ){
+			viewHolder.id_tv_name.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					showDetailInfo(finalPosition);
+				}
+			});
+		
+			viewHolder.id_tv_name.setText(vo.name);
+			viewHolder.id_tv_start_time.setText(String.valueOf(vo.startTime));
+			
+		}
+
+		return view;
+	}
+
+	@Override
+	public View getChildView(int groupPosition, int childPosition,
+			boolean isLastChild, View convertView, ViewGroup parent) {
+		View view = convertView;
+		ChildViewHolder viewHolder = null;
+		
+		if ( view == null ){
+			LayoutInflater vi = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			view = vi.inflate(R.layout.row_ride_child, null);
+			viewHolder = new ChildViewHolder();
 			viewHolder.id_ll_detail_info = (LinearLayout)view.findViewById(R.id.id_ll_detail_info);
 			viewHolder.id_tv_distance = (TextView)view.findViewById(R.id.id_tv_distance);
 			viewHolder.id_tv_time = (TextView)view.findViewById(R.id.id_tv_time);
@@ -129,45 +201,22 @@ public class RideListAdapter extends ArrayAdapter<RideVO>{
 			
 			view.setTag(viewHolder);
 		}else{
-			viewHolder = (ViewHolder)view.getTag();
+			viewHolder = (ChildViewHolder)view.getTag();
 		}
 
-		final RideVO vo = data.get(position);
-		final int finalPosition = position;
+		final RideVO vo = data.get(groupPosition);
 
 		if ( vo != null ){
-			viewHolder.id_tv_name.setOnClickListener(new OnClickListener() {
+			if ( vo.isShowDetail ){
+				viewHolder.id_ll_detail_info.setVisibility(View.VISIBLE);
+				viewHolder.id_tv_distance.setText(vo.detailDistance);
+				viewHolder.id_tv_time.setText(vo.detailTime);
+				viewHolder.id_tv_avg_speed.setText(vo.detailAvgSpeed);
+				viewHolder.id_tv_max_speed.setText(vo.detailMaxSpeed);
+			}else{
+				return null;
+			}
 				
-				@Override
-				public void onClick(View v) {
-					showDetailInfo(finalPosition);
-//					Intent intent = new Intent(mContext, GpsLogListActivity.class);
-//					intent.putExtra("PARENT_ID", vo.primaryKey);
-//					mContext.startActivity(intent);
-					
-				}
-			});
-			
-//			viewHolder.bt_show_info.setOnClickListener(new OnClickListener() {
-//				
-//				@Override
-//				public void onClick(View v) {
-//					notifyDataSetChanged();
-////					final_id_tv_ride_info.setText(calculateRideInfo(vo.primaryKey));
-//				}
-//			});
-
-//			viewHolder.bt_del.setOnClickListener(new OnClickListener() {
-//				
-//				@Override
-//				public void onClick(View v) {
-//					RideDao rideDao = RideDao.getInstance(DBHelper.getInstance(mContext));
-//					rideDao.delete(vo.primaryKey);
-//					data.remove(finalPosition);
-//					notifyDataSetChanged();
-//				}
-//			});
-
 			viewHolder.id_iv_upload_strava.setOnClickListener(new OnClickListener() {
 				
 				@Override
@@ -176,30 +225,22 @@ public class RideListAdapter extends ArrayAdapter<RideVO>{
 					uploadGpxFile.excute(vo.primaryKey);
 				}
 			});
-			
-			viewHolder.id_tv_name.setText(vo.name);
-			viewHolder.id_tv_start_time.setText(String.valueOf(vo.startTime));
-			if ( vo.isShowDetail ){
-				Log.d("jiho", "vo.detailDistance : "+vo.detailDistance);
-				Log.d("jiho", "vo.detailTime : "+vo.detailTime);
-				Log.d("jiho", "vo.detailAvgSpeed : "+vo.detailAvgSpeed);
-				Log.d("jiho", "vo.detailMaxSpeed : "+vo.detailMaxSpeed);
-				viewHolder.id_ll_detail_info.setVisibility(View.VISIBLE);
-				viewHolder.id_tv_distance.setText(vo.detailDistance);
-				viewHolder.id_tv_time.setText(vo.detailTime);
-				viewHolder.id_tv_avg_speed.setText(vo.detailAvgSpeed);
-				viewHolder.id_tv_max_speed.setText(vo.detailMaxSpeed);
-			}else{
-				viewHolder.id_ll_detail_info.setVisibility(View.GONE);
-			}
 		}
 
 		return view;
 	}
+
+	@Override
+	public boolean isChildSelectable(int groupPosition, int childPosition) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
-	class ViewHolder{
+	class GroupViewHolder{
 		TextView id_tv_name;
 		TextView id_tv_start_time;
+	}
+	class ChildViewHolder{
 		LinearLayout id_ll_detail_info;
 		TextView id_tv_distance;
 		TextView id_tv_time;

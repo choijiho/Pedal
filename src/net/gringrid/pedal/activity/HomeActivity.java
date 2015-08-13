@@ -51,7 +51,7 @@ public class HomeActivity extends Activity implements OnClickListener{
 			break;
 
 		case R.id.id_iv_riding_list:
-			intent = new Intent(this, RidingListActivity.class);
+			intent = new Intent(this, ExpandableRidingListActivity.class);
 			startActivity(intent);
 			break;
 

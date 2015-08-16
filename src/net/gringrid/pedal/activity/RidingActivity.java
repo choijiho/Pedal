@@ -384,13 +384,13 @@ public class RidingActivity extends Activity implements OnClickListener, Locatio
 				currentStatus = "GPS ERROR(OVER 150km)";
 			}else{
 				currentStatus = "Riding";
-				mMoveTime++;// += locationTime - mLastLocationTime;
+				mMoveTime += gapTimeFromLastlocation;// += locationTime - mLastLocationTime;
 				mTotalDistance += distanceFromLastLocation;
 				mAvgSpeed = mTotalDistance / mMoveTime * 3.6f;
 				id_tv_distance.setText(String.format("%.2f", mTotalDistance / 1000));
 				id_tv_avg_speed.setText(String.format("%.1f", mAvgSpeed));
 			}
-		
+			Log.d("jiho", "gapTimeFromLastlocation : "+gapTimeFromLastlocation);
 			if ( IS_LOG_PRINT ){
 				TextView id_tv_log = (TextView)findViewById(R.id.id_tv_log);
 				String logText = "Accurace : "+String.valueOf(location.getAccuracy());

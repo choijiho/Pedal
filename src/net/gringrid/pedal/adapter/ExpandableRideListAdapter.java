@@ -36,79 +36,11 @@ public class ExpandableRideListAdapter extends BaseExpandableListAdapter{
 	Context mContext;
 	List<RideVO> data;
 
-	final int INDEX_LENGTH = 4;
-	final int INDEX_DISTANCE = 0;
-	final int INDEX_TIME = 1;
-	final int INDEX_AVG_SPEED = 2;
-	final int INDEX_MAX_SPEED = 3;
-	
-
 	public ExpandableRideListAdapter(Context context, List<RideVO> objects) {
 		mContext = context;
 		data = objects;
 	}
 	
-	/**
-	 * Riding Time
-	 */
-	private void calculateRideInfo(int parentId, String results[]){
-		GpsLogDao gpsLogDao = GpsLogDao.getInstance(DBHelper.getInstance(mContext));
-		List<GpsLogVO> gpsLogVOList = gpsLogDao.findWithParentId(parentId);
-		GpsLogVO preVo = null;
-
-		float avgSpeed = 0;
-		long totalTime = 0;
-		float totalDistance = 0;
-		float[] distanceResult = new float[3];
-		float tmpSpeed = 0;
-		
-		for ( GpsLogVO vo : gpsLogVOList){
-			if ( preVo != null ){
-				Location.distanceBetween(preVo.latitude, preVo.longitude, vo.latitude, vo.longitude, distanceResult);
-				tmpSpeed = distanceResult[0] / (vo.gpsTime - preVo.gpsTime) * 1000;
-				if ( tmpSpeed > 0.2f ) {
-					totalTime += vo.gpsTime - preVo.gpsTime;
-				}
-				totalDistance += distanceResult[0];
-//				Log.d("jiho", "Speed : "+tmpSpeed+", distanceResult[0] : "+distanceResult[0]+", time : "+(vo.gpsTime - preVo.gpsTime));
-			}
-			preVo = vo;
-		}
-		totalTime = totalTime / 1000;
-		avgSpeed = totalDistance / totalTime * 3.6f;
-		Log.d("jiho", "avgSpeed : "+avgSpeed);
-		Log.d("jiho", "totalTime : "+totalTime);
-		Log.d("jiho", "totalDistance : "+totalDistance);
-
-		String printAvgSpeed = new DecimalFormat("0.0").format(avgSpeed)+"km/h";
-		String printTime = Utility.getInstance().convertSecondsToHours(totalTime);
-		String printDistance = String.format("%.1f", totalDistance / 1000)+"km";
-		String printMaxSpeed = "";
-		results[INDEX_DISTANCE] = printDistance;
-		results[INDEX_TIME] = printTime;
-		results[INDEX_AVG_SPEED] = printAvgSpeed;
-		results[INDEX_MAX_SPEED] = printMaxSpeed;
-//		return printSpeed+", "+printTime+", "+printDistance;
-	}
-
-	private void showDetailInfo(int position){
-		
-		Log.d("jiho", "before : "+data.get(position).toString());
-		RideVO vo = data.get(position);
-		String detailInfo[] = new String[INDEX_LENGTH];
-		calculateRideInfo(vo.primaryKey, detailInfo);
-		
-		vo.detailDistance = detailInfo[INDEX_DISTANCE];
-		vo.detailTime = detailInfo[INDEX_TIME];
-		vo.detailAvgSpeed = detailInfo[INDEX_AVG_SPEED];
-		vo.detailMaxSpeed = detailInfo[INDEX_MAX_SPEED];
-		vo.isShowDetail = true;
-		
-		Log.d("jiho", "detailDistance: "+data.get(position).detailDistance);
-		Log.d("jiho", "after : "+data.get(position).toString());
-		notifyDataSetChanged();
-	}
-
 	@Override
 	public int getGroupCount() {
 		return data.size();
@@ -166,13 +98,13 @@ public class ExpandableRideListAdapter extends BaseExpandableListAdapter{
 		final int finalPosition = groupPosition;
 
 		if ( vo != null ){
-			viewHolder.id_tv_name.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					showDetailInfo(finalPosition);
-				}
-			});
+//			viewHolder.id_tv_name.setOnClickListener(new OnClickListener() {
+//				
+//				@Override
+//				public void onClick(View v) {
+//					showDetailInfo(finalPosition);
+//				}
+//			});
 		
 			viewHolder.id_tv_name.setText(vo.name);
 			viewHolder.id_tv_start_time.setText(String.valueOf(vo.startTime));
@@ -187,12 +119,11 @@ public class ExpandableRideListAdapter extends BaseExpandableListAdapter{
 			boolean isLastChild, View convertView, ViewGroup parent) {
 		View view = convertView;
 		ChildViewHolder viewHolder = null;
-		
+		Log.d("jiho", "getChildView");
 		if ( view == null ){
 			LayoutInflater vi = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			view = vi.inflate(R.layout.row_ride_child, null);
 			viewHolder = new ChildViewHolder();
-			viewHolder.id_ll_detail_info = (LinearLayout)view.findViewById(R.id.id_ll_detail_info);
 			viewHolder.id_tv_distance = (TextView)view.findViewById(R.id.id_tv_distance);
 			viewHolder.id_tv_time = (TextView)view.findViewById(R.id.id_tv_time);
 			viewHolder.id_tv_avg_speed = (TextView)view.findViewById(R.id.id_tv_avg_speed);
@@ -203,18 +134,17 @@ public class ExpandableRideListAdapter extends BaseExpandableListAdapter{
 		}else{
 			viewHolder = (ChildViewHolder)view.getTag();
 		}
-
+		Log.d("jiho", "DEBUG1");
 		final RideVO vo = data.get(groupPosition);
 
 		if ( vo != null ){
 			if ( vo.isShowDetail ){
-				viewHolder.id_ll_detail_info.setVisibility(View.VISIBLE);
 				viewHolder.id_tv_distance.setText(vo.detailDistance);
 				viewHolder.id_tv_time.setText(vo.detailTime);
 				viewHolder.id_tv_avg_speed.setText(vo.detailAvgSpeed);
 				viewHolder.id_tv_max_speed.setText(vo.detailMaxSpeed);
 			}else{
-				return null;
+				return view;
 			}
 				
 			viewHolder.id_iv_upload_strava.setOnClickListener(new OnClickListener() {
@@ -226,6 +156,7 @@ public class ExpandableRideListAdapter extends BaseExpandableListAdapter{
 				}
 			});
 		}
+		Log.d("jiho", "DEBUG2");
 
 		return view;
 	}
@@ -241,7 +172,6 @@ public class ExpandableRideListAdapter extends BaseExpandableListAdapter{
 		TextView id_tv_start_time;
 	}
 	class ChildViewHolder{
-		LinearLayout id_ll_detail_info;
 		TextView id_tv_distance;
 		TextView id_tv_time;
 		TextView id_tv_avg_speed;

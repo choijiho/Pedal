@@ -69,13 +69,29 @@
             >
         </activity>
         <!-- GPSLOGLIST END -->
-        <activity android:name=".activity.PopupBrowserActivity">
+        <activity 
+            android:name=".activity.PopupBrowserActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomTheme"
+            >
         </activity>
-        <activity android:name=".activity.RidingDetailActivity">
+        <activity 
+            android:name=".activity.RidingDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomTheme"
+            >
         </activity>
-        <activity android:name=".activity.StravaAPITestActivity">
+        <activity 
+            android:name=".activity.StravaAPITestActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomTheme"
+            >
         </activity>
-        <activity android:name=".activity.ExpandableRidingListActivity">
+        <activity 
+            android:name=".activity.ExpandableRidingListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomTheme"
+            >
         </activity>
         
         

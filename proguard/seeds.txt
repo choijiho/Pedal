@@ -5080,6 +5080,7 @@ net.gringrid.pedal.R$layout: int activity_setting
 net.gringrid.pedal.R$layout: int activity_strava_api_test
 net.gringrid.pedal.R$layout: int row_gps_log
 net.gringrid.pedal.R$layout: int row_ride
+net.gringrid.pedal.R$layout: int row_ride_child
 net.gringrid.pedal.R$layout: int row_ride_group
 net.gringrid.pedal.R$layout: R$layout()
 net.gringrid.pedal.R$menu: int pedal
@@ -5100,6 +5101,7 @@ net.gringrid.pedal.R$string: int default_value_kmh
 net.gringrid.pedal.R$string: int default_value_m
 net.gringrid.pedal.R$string: int gps_disabled
 net.gringrid.pedal.R$string: int hello_world
+net.gringrid.pedal.R$string: int progress_loading
 net.gringrid.pedal.R$string: int ride_info_default
 net.gringrid.pedal.R$string: int title_altitude
 net.gringrid.pedal.R$string: int title_avg_speed

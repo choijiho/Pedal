@@ -13,8 +13,11 @@ import net.gringrid.pedal.db.RideDao;
 import net.gringrid.pedal.db.vo.GpsLogVO;
 import net.gringrid.pedal.db.vo.RideVO;
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.graphics.Rect;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +28,7 @@ import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class ExpandableRidingListActivity extends Activity{
 
@@ -33,6 +37,8 @@ public class ExpandableRidingListActivity extends Activity{
 	List<RideVO>	mRideVOList;
 	ExpandableListView id_lv_list;
 	ExpandableRideListAdapter mAdapter;
+	ProgressDialog mProgressDialog;
+	Context mContext;
 
 	final int INDEX_LENGTH = 4;
 	final int INDEX_DISTANCE = 0;
@@ -46,6 +52,7 @@ public class ExpandableRidingListActivity extends Activity{
 		initView();
 		mRideDao = RideDao.getInstance(DBHelper.getInstance(this));
 		mGpsLogDao = GpsLogDao.getInstance(DBHelper.getInstance(this));
+		mContext = this;
 		super.onCreate(savedInstanceState);
 	}
 	
@@ -137,17 +144,55 @@ public class ExpandableRidingListActivity extends Activity{
 	}
 
 	private void showDetailInfo(int position){
+		RidingDetailTask ridingDetailTask = new RidingDetailTask();
+		ridingDetailTask.execute(position);
+	}
+	
+	
+	class RidingDetailTask extends AsyncTask<Integer, String, Integer>{
+
+		@Override
+		protected void onPreExecute() {
+			mProgressDialog = new ProgressDialog(mContext);
+			mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+			mProgressDialog.setMessage(mContext.getResources().getString(R.string.progress_loading));
+			mProgressDialog.show();
+			mProgressDialog.setMax(100);
+			super.onPreExecute();
+		}
+
+		@Override
+		protected Integer doInBackground(Integer... params) {
+			RideVO vo = (RideVO)mAdapter.getGroup(params[0]);
+			publishProgress("30", "Loading VO VO");
+			
+			String detailInfo[] = new String[INDEX_LENGTH];
+			calculateRideInfo(vo.primaryKey, detailInfo);
+			publishProgress("80", "Calculate Riding Info");
+			
+			vo.detailDistance = detailInfo[INDEX_DISTANCE];
+			vo.detailTime = detailInfo[INDEX_TIME];
+			vo.detailAvgSpeed = detailInfo[INDEX_AVG_SPEED];
+			vo.detailMaxSpeed = detailInfo[INDEX_MAX_SPEED];
+			vo.isShowDetail = true;
+			
+			return null;
+		}
 		
-		RideVO vo = (RideVO)mAdapter.getGroup(position);
-		String detailInfo[] = new String[INDEX_LENGTH];
-		calculateRideInfo(vo.primaryKey, detailInfo);
+		@Override
+		protected void onProgressUpdate(String... values) {
+			mProgressDialog.setProgress(Integer.parseInt(values[0]));
+			mProgressDialog.setMessage(values[1]);
+			super.onProgressUpdate(values);
+		}
 		
-		vo.detailDistance = detailInfo[INDEX_DISTANCE];
-		vo.detailTime = detailInfo[INDEX_TIME];
-		vo.detailAvgSpeed = detailInfo[INDEX_AVG_SPEED];
-		vo.detailMaxSpeed = detailInfo[INDEX_MAX_SPEED];
-		vo.isShowDetail = true;
+		@Override
+		protected void onPostExecute(Integer result) {
+			mAdapter.notifyDataSetChanged();
+			mProgressDialog.dismiss();
+			Toast.makeText(mContext, "END", Toast.LENGTH_LONG).show();
+			super.onPostExecute(result);
+		}
 		
-		mAdapter.notifyDataSetChanged();
 	}
 }

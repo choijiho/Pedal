@@ -16,9 +16,11 @@ import net.gringrid.pedal.db.GpsLogDao;
 import net.gringrid.pedal.db.RideDao;
 import net.gringrid.pedal.db.vo.GpsLogVO;
 import net.gringrid.pedal.db.vo.RideVO;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,11 +32,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ExpandableRideListAdapter extends BaseExpandableListAdapter{
 
 	Context mContext;
 	List<RideVO> data;
+	ProgressDialog mProgressDialog;
 
 	public ExpandableRideListAdapter(Context context, List<RideVO> objects) {
 		mContext = context;
@@ -151,8 +155,9 @@ public class ExpandableRideListAdapter extends BaseExpandableListAdapter{
 				
 				@Override
 				public void onClick(View v) {
-					UploadGpxFile uploadGpxFile = new UploadGpxFile(mContext);
-					uploadGpxFile.excute(vo.primaryKey);
+					new UploadTask().execute(vo.primaryKey);
+//					UploadGpxFile uploadGpxFile = new UploadGpxFile(mContext);
+//					uploadGpxFile.excute(vo.primaryKey);
 				}
 			});
 		}
@@ -177,5 +182,47 @@ public class ExpandableRideListAdapter extends BaseExpandableListAdapter{
 		TextView id_tv_avg_speed;
 		TextView id_tv_max_speed;
 		ImageView id_iv_upload_strava;
+	}
+	
+	class UploadTask extends AsyncTask<Integer, String, Integer>{
+		@Override
+		protected void onPreExecute() {
+			mProgressDialog = new ProgressDialog(mContext);
+			mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+			mProgressDialog.setMessage(mContext.getResources().getString(R.string.progress_loading));
+			mProgressDialog.show();
+			mProgressDialog.setMax(100);
+			super.onPreExecute();
+		}
+
+		@Override
+		protected Integer doInBackground(Integer... params) {
+			publishProgress("30", "making GPX file from riding data");	
+			GPXMaker gPXMaker = new GPXMaker(mContext);
+
+			publishProgress("80", "uploading GPX file to STRAVA. ");	
+			UploadGpxFile uploadGpxFile = new UploadGpxFile(mContext);
+			if ( gPXMaker.createGPXFile(params[0]) ){
+				uploadGpxFile.createActivity();
+			}
+			return null;
+		}
+
+		@Override
+		protected void onProgressUpdate(String... values) {
+			mProgressDialog.setProgress(Integer.parseInt(values[0]));
+			mProgressDialog.setMessage(values[1]);
+			super.onProgressUpdate(values);
+		}
+
+		
+		@Override
+		protected void onPostExecute(Integer result) {
+			mProgressDialog.dismiss();
+			Toast.makeText(mContext, "END", Toast.LENGTH_LONG).show();
+			super.onPostExecute(result);
+		}
+		
+		
 	}
 }

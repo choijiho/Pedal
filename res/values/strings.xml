@@ -20,5 +20,6 @@
     <string name="alert_confirm">Confirm</string>
     <string name="alert_cancel">Cancel</string>
     <string name="ride_info_default">--</string>
+    <string name="progress_loading">Loading...</string>
 
 </resources>

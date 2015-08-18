@@ -11,8 +11,8 @@
     <!-- PERMISSION START -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <!-- PERMISSION END -->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- PERMISSION END -->
     
     <application
         android:allowBackup="true"
@@ -28,7 +28,6 @@
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -4996,6 +4996,7 @@ net.gringrid.pedal.PedalApplication: PedalApplication()
 net.gringrid.pedal.R: R()
 net.gringrid.pedal.R$array: int week
 net.gringrid.pedal.R$array: R$array()
+net.gringrid.pedal.R$attr: int id_iv_back_visibility
 net.gringrid.pedal.R$attr: R$attr()
 net.gringrid.pedal.R$color: int custom_theme_color
 net.gringrid.pedal.R$color: R$color()
@@ -5004,6 +5005,7 @@ net.gringrid.pedal.R$dimen: int activity_vertical_margin
 net.gringrid.pedal.R$dimen: R$dimen()
 net.gringrid.pedal.R$drawable: int connect_with_strava
 net.gringrid.pedal.R$drawable: int custom_checkbox
+net.gringrid.pedal.R$drawable: int ic_arrow_back_white_36dp
 net.gringrid.pedal.R$drawable: int ic_battery_full_white_24dp
 net.gringrid.pedal.R$drawable: int ic_check_box_outline_blank_white_24dp
 net.gringrid.pedal.R$drawable: int ic_check_box_white_24dp
@@ -5014,6 +5016,7 @@ net.gringrid.pedal.R$drawable: int ic_format_list_bulleted_white_48dp
 net.gringrid.pedal.R$drawable: int ic_launcher
 net.gringrid.pedal.R$drawable: int ic_list_white_36dp
 net.gringrid.pedal.R$drawable: int ic_location_off_white_48dp
+net.gringrid.pedal.R$drawable: int ic_more_vert_white_36dp
 net.gringrid.pedal.R$drawable: int ic_notifications_active_white_48dp
 net.gringrid.pedal.R$drawable: int ic_notifications_off_white_48dp
 net.gringrid.pedal.R$drawable: int ic_pause_circle_outline_white_48dp
@@ -5036,17 +5039,19 @@ net.gringrid.pedal.R$id: int id_chk_music
 net.gringrid.pedal.R$id: int id_chk_save_gps
 net.gringrid.pedal.R$id: int id_cm
 net.gringrid.pedal.R$id: int id_dc
+net.gringrid.pedal.R$id: int id_iv_back
 net.gringrid.pedal.R$id: int id_iv_cadence_alarm
 net.gringrid.pedal.R$id: int id_iv_gps_enable
+net.gringrid.pedal.R$id: int id_iv_menu
 net.gringrid.pedal.R$id: int id_iv_pause
 net.gringrid.pedal.R$id: int id_iv_play
 net.gringrid.pedal.R$id: int id_iv_riding
-net.gringrid.pedal.R$id: int id_iv_riding_list
-net.gringrid.pedal.R$id: int id_iv_setting
 net.gringrid.pedal.R$id: int id_iv_stop
 net.gringrid.pedal.R$id: int id_iv_strava
 net.gringrid.pedal.R$id: int id_iv_upload_strava
 net.gringrid.pedal.R$id: int id_ll_detail_info
+net.gringrid.pedal.R$id: int id_ll_head
+net.gringrid.pedal.R$id: int id_ll_menu
 net.gringrid.pedal.R$id: int id_lv_list
 net.gringrid.pedal.R$id: int id_sv_log
 net.gringrid.pedal.R$id: int id_tv_altitude
@@ -5062,6 +5067,9 @@ net.gringrid.pedal.R$id: int id_tv_max_speed
 net.gringrid.pedal.R$id: int id_tv_name
 net.gringrid.pedal.R$id: int id_tv_response
 net.gringrid.pedal.R$id: int id_tv_ride_info
+net.gringrid.pedal.R$id: int id_tv_riding
+net.gringrid.pedal.R$id: int id_tv_riding_list
+net.gringrid.pedal.R$id: int id_tv_setting
 net.gringrid.pedal.R$id: int id_tv_speed
 net.gringrid.pedal.R$id: int id_tv_start_date
 net.gringrid.pedal.R$id: int id_tv_start_time
@@ -5073,11 +5081,12 @@ net.gringrid.pedal.R$layout: int activity_expandable_ride_list
 net.gringrid.pedal.R$layout: int activity_gps_log_list
 net.gringrid.pedal.R$layout: int activity_home
 net.gringrid.pedal.R$layout: int activity_popup_browser
-net.gringrid.pedal.R$layout: int activity_ride_list
 net.gringrid.pedal.R$layout: int activity_riding
 net.gringrid.pedal.R$layout: int activity_riding_detail
+net.gringrid.pedal.R$layout: int activity_riding_list
 net.gringrid.pedal.R$layout: int activity_setting
 net.gringrid.pedal.R$layout: int activity_strava_api_test
+net.gringrid.pedal.R$layout: int header_view
 net.gringrid.pedal.R$layout: int row_gps_log
 net.gringrid.pedal.R$layout: int row_ride
 net.gringrid.pedal.R$layout: int row_ride_child
@@ -5101,6 +5110,9 @@ net.gringrid.pedal.R$string: int default_value_kmh
 net.gringrid.pedal.R$string: int default_value_m
 net.gringrid.pedal.R$string: int gps_disabled
 net.gringrid.pedal.R$string: int hello_world
+net.gringrid.pedal.R$string: int menu_riding
+net.gringrid.pedal.R$string: int menu_riding_list
+net.gringrid.pedal.R$string: int menu_setting
 net.gringrid.pedal.R$string: int progress_loading
 net.gringrid.pedal.R$string: int ride_info_default
 net.gringrid.pedal.R$string: int title_altitude
@@ -5113,8 +5125,12 @@ net.gringrid.pedal.R$string: int unit_kmh
 net.gringrid.pedal.R$string: int unit_m
 net.gringrid.pedal.R$string: R$string()
 net.gringrid.pedal.R$style: int CustomTheme
+net.gringrid.pedal.R$style: int menu
 net.gringrid.pedal.R$style: int title
 net.gringrid.pedal.R$style: R$style()
+net.gringrid.pedal.R$styleable: int[] HeaderView
+net.gringrid.pedal.R$styleable: int HeaderView_id_iv_back_visibility
+net.gringrid.pedal.R$styleable: R$styleable()
 net.gringrid.pedal.SharedData: SharedData()
 net.gringrid.pedal.TextClock
 net.gringrid.pedal.TextClock: TextClock(android.content.Context)
@@ -5147,6 +5163,8 @@ net.gringrid.pedal.db.GpsLogDao: GpsLogDao()
 net.gringrid.pedal.db.RideDao: RideDao()
 net.gringrid.pedal.db.vo.GpsLogVO: GpsLogVO()
 net.gringrid.pedal.db.vo.RideVO: RideVO()
+net.gringrid.pedal.view.HeaderView
+net.gringrid.pedal.view.HeaderView: HeaderView(android.content.Context,android.util.AttributeSet)
 org.apache.http.client.config.RequestConfig$Builder: RequestConfig$Builder()
 org.apache.http.client.utils.DateUtils$DateFormatHolder: DateUtils$DateFormatHolder()
 org.apache.http.client.utils.DateUtils$DateFormatHolder$1: DateUtils$DateFormatHolder$1()

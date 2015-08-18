@@ -1,0 +1,19 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res/net.gringrid.pedal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="net.gringrid.pedal.RidingListActivity" >
+
+    <net.gringrid.pedal.view.HeaderView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:id_iv_back_visibility="GONE" />
+
+    <ListView
+        android:id="@+id/id_lv_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
+
+</FrameLayout>

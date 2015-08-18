@@ -32,8 +32,6 @@ public class HomeActivity extends Activity implements OnClickListener{
 	private void registEvent() {
 		int [] setClickEventViewsList = {
 				R.id.id_iv_riding
-				,R.id.id_iv_riding_list
-				,R.id.id_iv_setting
 				};
 		for ( int viewId : setClickEventViewsList ){
 			View view = findViewById( viewId );
@@ -47,16 +45,6 @@ public class HomeActivity extends Activity implements OnClickListener{
 		switch (v.getId()) {
 		case R.id.id_iv_riding:
 			intent = new Intent(this, RidingActivity.class);
-			startActivity(intent);
-			break;
-
-		case R.id.id_iv_riding_list:
-			intent = new Intent(this, ExpandableRidingListActivity.class);
-			startActivity(intent);
-			break;
-
-		case R.id.id_iv_setting:
-			intent = new Intent(this, SettingActivity.class);
 			startActivity(intent);
 			break;
 

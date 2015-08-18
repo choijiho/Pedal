@@ -1,74 +1,43 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res/net.gringrid.pedal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:keepScreenOn="true"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:keepScreenOn="true"
-    android:orientation="vertical"
     tools:context="net.gringrid.pedal.activity.HomeActivity" >
 
-    <!-- App name start -->
+    <net.gringrid.pedal.view.HeaderView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:id_iv_back_visibility="GONE" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="horizontal" 
-        android:layout_weight="1"
-        >
-        <TextView 
+        android:layout_height="match_parent"
+        android:orientation="vertical" 
+        android:layout_marginTop="20dp">
+
+        <!-- Ride button start -->
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/app_name"
-            android:textSize="30sp"
-        	android:textStyle="bold"
-        	android:gravity="center"
-            />
-    </LinearLayout>
-    <!-- App name end -->
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:orientation="horizontal" >
 
-    <!-- Ride button start -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="horizontal" 
-        android:layout_weight="2"
-        android:gravity="center"
-        >
-        <ImageView 
-            android:id="@+id/id_iv_riding"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_directions_bike_white_48dp"
-            />
-    </LinearLayout>
-    <!-- Ride button end -->
+            <ImageView
+                android:id="@+id/id_iv_riding"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_directions_bike_white_48dp" />
+        </LinearLayout>
+        <!-- Ride button end -->
 
-    <!-- List, Setting button end -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="horizontal" 
-        android:layout_weight="1"
-        android:gravity="center"
-        >
-        <ImageView 
-            android:id="@+id/id_iv_riding_list"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/ic_reorder_white_36dp"
-            />
-        
-        <ImageView 
-            android:id="@+id/id_iv_setting"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/ic_settings_white_36dp"
-            />
     </LinearLayout>
-    <!-- List, Setting button end -->
 
-</LinearLayout>
+</FrameLayout>

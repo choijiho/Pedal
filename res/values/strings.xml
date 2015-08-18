@@ -21,5 +21,7 @@
     <string name="alert_cancel">Cancel</string>
     <string name="ride_info_default">--</string>
     <string name="progress_loading">Loading...</string>
-
+    <string name="menu_riding">Riding</string>
+    <string name="menu_riding_list">Riding List</string>
+    <string name="menu_setting">Setting</string>
 </resources>

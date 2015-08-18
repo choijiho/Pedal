@@ -14,6 +14,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -28,11 +29,12 @@ public class RidingListActivity extends Activity{
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		setContentView(R.layout.activity_ride_list);
+		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setContentView(R.layout.activity_riding_list);
 		initView();
 		mRideDao = RideDao.getInstance(DBHelper.getInstance(this));
 		mGpsLogDao = GpsLogDao.getInstance(DBHelper.getInstance(this));
-		super.onCreate(savedInstanceState);
 	}
 	
 	@Override

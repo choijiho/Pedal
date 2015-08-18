@@ -1,336 +1,347 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res/net.gringrid.pedal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:keepScreenOn="true"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:keepScreenOn="true"
-    android:orientation="vertical"
     tools:context="net.gringrid.pedal.activity.RidingActivity" >
-   
-    <TextView
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/app_name" 
-        android:textSize="25sp"
-        android:textStyle="bold"
-        />
-    
-	<!-- TIME & BATTERY START -->
-	<LinearLayout 
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="horizontal"
-	    android:gravity="center"
-	    >
-	    <TextView 
-	        android:id="@+id/id_tv_day_info"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        />
-		<net.gringrid.pedal.TextClock
-		    android:id="@+id/id_dc"
-	        android:layout_width="0dp"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:gravity="center"
-	        android:textSize="36sp" />
-	   	<ImageView 
-	   	    android:layout_width="wrap_content"
-	   	    android:layout_height="wrap_content"
-	   	    android:src="@drawable/ic_battery_full_white_24dp"/>
-		<TextView
-	        android:id="@+id/id_tv_battery_status"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content" 
-	        android:textSize="24sp"
-	        />
-	</LinearLayout>
-	<!-- TIME & BATTERY END -->
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:orientation="vertical" >
 
-    <ImageView 
-        android:id="@+id/id_iv_gps_enable"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:src="@drawable/ic_location_off_white_48dp"
-        android:visibility="gone"
-        />
-
-	<LinearLayout
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="horizontal"
-	    android:baselineAligned="false"
-	    >
-	    <!-- SPEED START -->
-	   	<LinearLayout
-	   	    android:layout_width="0dp" 
-	   	    android:layout_height="wrap_content"
-	   	    android:layout_weight="6"
-	   	    android:orientation="vertical"
-	   	    >
-	   	    <TextView 
-	   	        android:layout_width="match_parent"
-	   	        android:layout_height="wrap_content"
-	   	        style="@style/title"
-	   	        android:text="@string/title_speed"
-	   	        />
-	   	    <LinearLayout 
-	   	        android:layout_width="match_parent"
-	   	        android:layout_height="wrap_content"
-	   	        android:orientation="horizontal"
-	   	        >
-		   	    <TextView 
-		   	        android:layout_width="0dp"
-		   	        android:layout_height="wrap_content"
-		   	        android:layout_weight="7"
-		   	        android:textSize="65sp"
-		   	        android:id="@+id/id_tv_current_speed"
-		   	        android:gravity="right"
-		   	        android:text="@string/default_value_kmh"
-		   	        />
-		   	    <TextView 
-		   	        android:layout_width="0dp"
-		   	        android:layout_height="wrap_content"
-		   	        android:layout_weight="3"
-		   	        android:textSize="13sp"
-		   	        android:text="@string/unit_kmh"
-		   	        />
-	   	    </LinearLayout>
-	   	</LinearLayout> 
-	    <!-- SPEED END -->
-		
-		<!-- AVG SPEED, ALTITUDE START -->
-	   	<LinearLayout
-	   	    android:layout_width="0dp" 
-	   	    android:layout_height="wrap_content"
-	   	    android:layout_weight="4"
-	   	    android:orientation="vertical"
-	   	    >
-	   	    <!-- AVG SPEED START -->
-		   	<LinearLayout
-		   	    android:layout_width="match_parent" 
-		   	    android:layout_height="wrap_content"
-		   	    android:orientation="vertical"
-		   	    android:layout_marginBottom="5dp"
-		   	    >
-		   	    <TextView 
-		   	        android:layout_width="match_parent"
-		   	        android:layout_height="wrap_content"
-		   	        style="@style/title"
-		   	        android:text="@string/title_avg_speed"
-		   	        />
-		   	    <LinearLayout 
-		   	        android:layout_width="match_parent"
-		   	        android:layout_height="wrap_content"
-		   	        android:orientation="horizontal"
-		   	        >
-			   	    <TextView 
-			   	        android:id="@+id/id_tv_avg_speed"
-			   	        android:layout_width="0dp"
-			   	        android:layout_height="wrap_content"
-			   	        android:layout_weight="7"
-			   	        android:textSize="30sp"
-			   	        android:gravity="right"
-			   	        android:text="@string/default_value_kmh"
-			   	        />
-			   	    <TextView 
-			   	        android:layout_width="0dp"
-			   	        android:layout_height="wrap_content"
-			   	        android:layout_weight="3"
-			   	        android:textSize="11sp"
-			   	        android:text="@string/unit_kmh"
-			   	        />
-		   	        
-		   	    </LinearLayout>
-		   	</LinearLayout> 
-	   	    <!-- AVG SPEED END -->
-	   	    <!-- ALTITUDE START -->
-		   	<LinearLayout
-		   	    android:layout_width="match_parent" 
-		   	    android:layout_height="wrap_content"
-		   	    android:orientation="vertical"
-		   	    >
-		   	    <TextView 
-		   	        android:layout_width="match_parent"
-		   	        android:layout_height="wrap_content"
-		   	        style="@style/title"
-		   	        android:text="@string/title_altitude"
-		   	        />
-		   	    <LinearLayout 
-		   	        android:layout_width="match_parent"
-		   	        android:layout_height="wrap_content"
-		   	        android:orientation="horizontal"
-		   	        >
-			   	    <TextView 
-			   	        android:id="@+id/id_tv_current_altitude"
-			   	        android:layout_width="0dp"
-			   	        android:layout_height="wrap_content"
-			   	        android:layout_weight="7"
-			   	        android:textSize="30sp"
-			   	        android:gravity="right"
-			   	        android:text="@string/default_value_m"
-			   	        />
-			   	    <TextView 
-			   	        android:layout_width="0dp"
-			   	        android:layout_height="wrap_content"
-			   	        android:layout_weight="3"
-			   	        android:textSize="11sp"
-			   	        android:text="@string/unit_m"
-			   	        />
-		   	    </LinearLayout>
-		   	</LinearLayout> 
-	   	    <!-- ALTITUDE END -->
-	   	</LinearLayout> 
-		<!-- AVG SPEED, ALTITUDE END -->
-	</LinearLayout>
-
-
-    <!-- DISTANCE, TRAVEL TIME START -->
-	<LinearLayout 
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="horizontal"
-	    android:baselineAligned="false"
-	    >
-	   	<!-- DISTANCE START -->
-	   	<LinearLayout 
-	   	    android:layout_width="0dp"
-	   	    android:layout_height="wrap_content"
-	   	    android:layout_weight="6"
-	   	    android:orientation="vertical">
-	   	   	<TextView 
-	   	   	    android:layout_width="match_parent"
-	   	   	    android:layout_height="wrap_content"
-	   	   	    style="@style/title"
-	   	   	    android:text="@string/title_distance"/> 
-	   	    <LinearLayout 
-	   	        android:layout_width="match_parent"
-	   	        android:layout_height="wrap_content"
-	   	        android:orientation="horizontal"
-	   	        android:gravity="center_horizontal"
-	   	        >
-		   	    <TextView 
-		   	        android:id="@+id/id_tv_distance"
-		   	        android:layout_width="wrap_content"
-		   	        android:layout_height="wrap_content"
-		   	        android:textSize="30sp"
-		   	        android:gravity="right"
-		   	        android:text="@string/default_value_km"
-		   	        />
-		   	    <TextView 
-		   	        android:layout_width="wrap_content"
-		   	        android:layout_height="wrap_content"
-		   	        android:textSize="15sp"
-		   	        android:text="@string/unit_km"
-		   	        />
-	   	        
-	   	    </LinearLayout>
-	   	</LinearLayout>
-	   	<!-- DISTANCE END -->
-	   	<!-- TRAVEL TIME START -->
-	   	<LinearLayout 
-	   	    android:layout_width="0dp"
-	   	    android:layout_height="wrap_content"
-	   	    android:layout_weight="4"
-	   	    android:orientation="vertical">
-	   	   	<TextView 
-	   	   	    android:layout_width="match_parent"
-	   	   	    android:layout_height="wrap_content"
-	   	   	    style="@style/title"
-	   	   	    android:text="@string/title_travel_time"/> 
-			<Chronometer
-			    android:id="@+id/id_cm"
-        		android:layout_width="match_parent"
-   				android:layout_height="wrap_content" 
-	   	   	    android:gravity="center"
-        		android:textSize="30sp" />
-	   	</LinearLayout>
-	   	<!-- TRAVEL TIME END -->
-	</LinearLayout>
-    <!-- DISTANCE, TRAVEL TIME START -->
-
-    <!-- LOG START -->
-    <ScrollView
-        android:id="@+id/id_sv_log"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" 
-        android:visibility="gone">
+        <!-- TIME & BATTERY START -->
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/id_tv_day_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <net.gringrid.pedal.TextClock
+                android:id="@+id/id_dc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="36sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_battery_full_white_24dp" />
+
+            <TextView
+                android:id="@+id/id_tv_battery_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp" />
+        </LinearLayout>
+        <!-- TIME & BATTERY END -->
+
+        <ImageView
+            android:id="@+id/id_iv_gps_enable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_location_off_white_48dp"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="horizontal" >
+
+            <!-- SPEED START -->
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:orientation="vertical" >
+
+                <TextView
+                    style="@style/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_speed" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/id_tv_current_speed"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:gravity="right"
+                        android:text="@string/default_value_kmh"
+                        android:textSize="65sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:text="@string/unit_kmh"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </LinearLayout>
+            <!-- SPEED END -->
+
+
+            <!-- AVG SPEED, ALTITUDE START -->
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:orientation="vertical" >
+
+                <!-- AVG SPEED START -->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        style="@style/title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_avg_speed" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:id="@+id/id_tv_avg_speed"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="7"
+                            android:gravity="right"
+                            android:text="@string/default_value_kmh"
+                            android:textSize="30sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:text="@string/unit_kmh"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </LinearLayout>
+                <!-- AVG SPEED END -->
+                <!-- ALTITUDE START -->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        style="@style/title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_altitude" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:id="@+id/id_tv_current_altitude"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="7"
+                            android:gravity="right"
+                            android:text="@string/default_value_m"
+                            android:textSize="30sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:text="@string/unit_m"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </LinearLayout>
+                <!-- ALTITUDE END -->
+            </LinearLayout>
+            <!-- AVG SPEED, ALTITUDE END -->
+        </LinearLayout>
+
+        <!-- DISTANCE, TRAVEL TIME START -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="horizontal" >
+
+            <!-- DISTANCE START -->
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:orientation="vertical" >
+
+                <TextView
+                    style="@style/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_distance" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/id_tv_distance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text="@string/default_value_km"
+                        android:textSize="30sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/unit_km"
+                        android:textSize="15sp" />
+                </LinearLayout>
+            </LinearLayout>
+            <!-- DISTANCE END -->
+            <!-- TRAVEL TIME START -->
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:orientation="vertical" >
+
+                <TextView
+                    style="@style/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_travel_time" />
+
+                <Chronometer
+                    android:id="@+id/id_cm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="30sp" />
+            </LinearLayout>
+            <!-- TRAVEL TIME END -->
+        </LinearLayout>
+        <!-- DISTANCE, TRAVEL TIME START -->
+
+
+        <!-- LOG START -->
+
+        <ScrollView
+            android:id="@+id/id_sv_log"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:visibility="gone" >
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:orientation="vertical" >
 
-                <TextView
-                    android:id="@+id/id_tv_log"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    />
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/id_tv_log"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
             </LinearLayout>
+        </ScrollView>
+        <!-- LOG END -->
+
+
+        <!-- BIKE ICON START -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/id_iv_play"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_play_circle_outline_white_48dp" />
+
+            <ImageView
+                android:id="@+id/id_iv_pause"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:src="@drawable/ic_pause_white_48dp" />
+
+            <ImageView
+                android:id="@+id/id_iv_stop"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:src="@drawable/ic_stop_white_48dp" />
         </LinearLayout>
-    </ScrollView>
-    <!-- LOG END -->
+        <!-- BIKE ICON END -->
 
-	<!-- BIKE ICON START -->	
-	<LinearLayout 
-	    android:layout_width="match_parent"
-	    android:layout_height="0dp"
-	    android:orientation="horizontal"
-	    android:layout_weight="1"
-	    
-	    >
-        <ImageView 
-			android:id="@+id/id_iv_play"
+
+        <!-- CADENCE ICON START -->
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_play_circle_outline_white_48dp"
-            />
-	   	<ImageView
-			android:id="@+id/id_iv_pause"
-	   	    android:layout_width="0dp"
-	   	    android:layout_height="wrap_content"
-	   	    android:layout_weight="1"
-	   	    android:src="@drawable/ic_pause_white_48dp" 
-	   	    android:layout_gravity="center"
-	   	    />
-	   	<ImageView
-			android:id="@+id/id_iv_stop"
-	   	    android:layout_width="0dp"
-	   	    android:layout_height="wrap_content"
-	   	    android:layout_weight="1"
-	   	    android:src="@drawable/ic_stop_white_48dp" 
-	   	    android:layout_gravity="center"
-	   	    />
-	</LinearLayout>
-	<!-- BIKE ICON END -->	
-	
-	<!-- CADENCE ICON START -->	
-	<LinearLayout 
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="horizontal"
-	    >
-        <ImageView 
-			android:id="@+id/id_iv_cadence_alarm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_notifications_active_white_48dp"
-            />
-	</LinearLayout>
-	<!-- CADENCE ICON END -->	
+            android:orientation="horizontal" >
 
+            <ImageView
+                android:id="@+id/id_iv_cadence_alarm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_notifications_active_white_48dp" />
+        </LinearLayout>
+        <!-- CADENCE ICON END -->
 
-</LinearLayout>
+    </LinearLayout>
+
+    <net.gringrid.pedal.view.HeaderView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:id_iv_back_visibility="GONE" />
+
+</FrameLayout>

@@ -10,16 +10,11 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="net.gringrid.pedal.activity.SettingActivity" >
     
-    <net.gringrid.pedal.view.HeaderView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:id_iv_back_visibility="GONE" />
-    
 	<LinearLayout 
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
 	    android:orientation="vertical"
-	    android:layout_marginTop="30dp"
+	    style="@style/content"
 	    >
 	    <LinearLayout
 	        android:layout_width="match_parent"
@@ -115,5 +110,10 @@
 			    />
 	    </LinearLayout>
 	</LinearLayout>
+
+    <net.gringrid.pedal.view.HeaderView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:id_iv_back_visibility="visible" />
 
 </FrameLayout>

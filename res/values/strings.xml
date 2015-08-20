@@ -6,6 +6,7 @@
     <string name="gps_disabled">GPS is disabled. Click Here!</string>
     <string name="title_speed">SPEED</string>
     <string name="title_avg_speed">AVG SPEED</string>
+    <string name="title_max_speed">MAX SPEED</string>
     <string name="title_altitude">ALTITUDE</string>
     <string name="title_distance">DISTANCE</string>
     <string name="title_travel_time">TRAVEL TIME</string>
@@ -24,4 +25,5 @@
     <string name="menu_riding">Riding</string>
     <string name="menu_riding_list">Riding List</string>
     <string name="menu_setting">Setting</string>
+    <string name="colon">:</string>
 </resources>

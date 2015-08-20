@@ -152,6 +152,10 @@ public class RidingActivity extends Activity implements OnClickListener, Locatio
 			mIsSaveGps = true;
 			mGpsLogDao = GpsLogDao.getInstance(DBHelper.getInstance(this));
 		}
+		
+		if ( SharedData.getInstance(this).getGlobalDataLong(Setting.SHARED_KEY_RIDING_ID) != Long.MAX_VALUE){
+			mRideId = SharedData.getInstance(this).getGlobalDataLong(Setting.SHARED_KEY_RIDING_ID);
+		}
 	}
 
 	private void registEvent() {
@@ -243,8 +247,19 @@ public class RidingActivity extends Activity implements OnClickListener, Locatio
 			rideVo.name = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
 			rideVo.startTime = System.currentTimeMillis();
 			mRideId = mRideDao.insert(rideVo);
+			SharedData.getInstance(this).insertGlobalData(Setting.SHARED_KEY_RIDING_ID, mRideId);
 			Log.d("jiho", "mRideId insert : "+mRideId);
 		}
+	}
+	
+	private void resumePedal(){
+		findViewById(R.id.id_iv_play).setVisibility(View.GONE);
+		findViewById(R.id.id_iv_pause).setVisibility(View.VISIBLE);
+		findViewById(R.id.id_iv_stop).setVisibility(View.VISIBLE);
+
+		id_cm.setBase(SystemClock.elapsedRealtime() + mTravelTime);
+		id_cm.start();
+		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 2, this);
 	}
 	
 	private void pausePedal(){
@@ -264,6 +279,7 @@ public class RidingActivity extends Activity implements OnClickListener, Locatio
 				new android.content.DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
+						SharedData.getInstance(RidingActivity.this).insertGlobalData(Setting.SHARED_KEY_RIDING_ID, Long.MAX_VALUE);
 						reset();
 					}
 				});

@@ -44,11 +44,11 @@ public class RidingDetailActivity extends Activity {
 		RideVO rideVO = rideDao.find(mRidingId);
 		RideVO detailVO = getRidingDetailInfo();
 
-		rideVO.detailDistance = detailVO.detailDistance;
-		rideVO.detailAvgSpeed = detailVO.detailAvgSpeed;
-		rideVO.detailMaxSpeed = detailVO.detailMaxSpeed;
-		rideVO.detailAltitude = detailVO.detailAltitude;
-		rideVO.detailTime = detailVO.detailTime;
+		rideVO.ridingTime = detailVO.ridingTime;
+		rideVO.distance = detailVO.distance;
+		rideVO.avgSpeed = detailVO.avgSpeed;
+		rideVO.maxSpeed = detailVO.maxSpeed;
+		rideVO.altitude = detailVO.altitude;
 		
 		return rideVO;
 		
@@ -90,9 +90,9 @@ public class RidingDetailActivity extends Activity {
 		String printTime = Utility.getInstance().convertSecondsToHours(totalTime);
 		String printDistance = String.format("%.1f", totalDistance / 1000)+"km";
 		
-		detailVO.detailTime = printTime;
-		detailVO.detailAvgSpeed = printSpeed;
-		detailVO.detailDistance = printDistance;
+		detailVO.ridingTime= printTime;
+		detailVO.avgSpeed = printSpeed;
+		detailVO.distance = printDistance;
 		
 		return detailVO;
 	}	

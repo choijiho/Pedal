@@ -10,17 +10,12 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="net.gringrid.pedal.activity.HomeActivity" >
 
-    <net.gringrid.pedal.view.HeaderView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:id_iv_back_visibility="GONE" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" 
-        android:layout_marginTop="20dp">
-
+        style="@style/content"
+		>
         <!-- Ride button start -->
 
         <LinearLayout
@@ -39,5 +34,11 @@
         <!-- Ride button end -->
 
     </LinearLayout>
+
+    <net.gringrid.pedal.view.HeaderView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:id_iv_back_visibility="GONE" />
+
 
 </FrameLayout>

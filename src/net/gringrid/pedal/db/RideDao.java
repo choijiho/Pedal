@@ -21,14 +21,28 @@ public class RideDao extends AbstractMasterDao<RideVO>{
 	private static final String SQL_CREATE_TABLE =
 			"CREATE TABLE IF NOT EXISTS " + TABLENAME +
 					"(primaryKey INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
-					RideVO.NAME + " TEXT , " +
-					RideVO.START_TIME + " TEXT NOT NULL UNIQUE)";
+					RideVO.NAME 		+ " TEXT , " +
+					RideVO.START_TIME 	+ " TEXT NOT NULL UNIQUE , " +
+					RideVO.END_TIME 	+ " TEXT , " +
+					RideVO.RIDING_TIME 	+ " TEXT , " +
+					RideVO.DISTANCE 	+ " TEXT , " +
+					RideVO.AVG_SPEED 	+ " TEXT , " +
+					RideVO.MAX_SPEED 	+ " TEXT , " +
+					RideVO.ALTITUDE 	+ " TEXT " + 
+					")";
 
 	private static final String SQL_INSERT =
-			String.format("INSERT INTO %s(%s,%s) VALUES(?,?)",
+			String.format("INSERT INTO %s(%s,%s,%s,%s,%s,%s,%s,%s) VALUES(?,?,?,?,?,?,?,?)",
 					TABLENAME,
 					RideVO.NAME,
-					RideVO.START_TIME);
+					RideVO.START_TIME,
+					RideVO.END_TIME,
+					RideVO.RIDING_TIME,
+					RideVO.DISTANCE,
+					RideVO.AVG_SPEED,
+					RideVO.MAX_SPEED,
+					RideVO.ALTITUDE
+					);
 
     public static RideDao getInstance(DBHelper helper){
         if(instance == null) {
@@ -59,6 +73,12 @@ public class RideDao extends AbstractMasterDao<RideVO>{
 			
 			stmt.bindString(1, object.name);
 			stmt.bindString(2, String.valueOf(object.startTime));
+			stmt.bindString(3, String.valueOf(object.endTime));
+			stmt.bindString(4, String.valueOf(object.ridingTime));
+			stmt.bindString(5, String.valueOf(object.distance));
+			stmt.bindString(6, String.valueOf(object.avgSpeed));
+			stmt.bindString(7, String.valueOf(object.maxSpeed));
+			stmt.bindString(8, String.valueOf(object.altitude));
 			result = stmt.executeInsert();
 
 			db.setTransactionSuccessful();
@@ -95,6 +115,12 @@ public class RideDao extends AbstractMasterDao<RideVO>{
 				RideVO object = objects.get(i);
 				stmt.bindString(1, object.name);
 				stmt.bindString(2, String.valueOf(object.startTime));
+				stmt.bindString(3, String.valueOf(object.endTime));
+				stmt.bindString(4, String.valueOf(object.ridingTime));
+				stmt.bindString(5, String.valueOf(object.distance));
+				stmt.bindString(6, String.valueOf(object.avgSpeed));
+				stmt.bindString(7, String.valueOf(object.maxSpeed));
+				stmt.bindString(8, String.valueOf(object.altitude));
 				results[i] = stmt.executeInsert();
 			}
 
@@ -153,6 +179,13 @@ public class RideDao extends AbstractMasterDao<RideVO>{
 			ContentValues values = new ContentValues();
 			values.put(RideVO.NAME, object.name);
 			values.put(RideVO.START_TIME, object.startTime);
+			values.put(RideVO.END_TIME, object.endTime);
+			values.put(RideVO.RIDING_TIME, object.ridingTime);
+			values.put(RideVO.DISTANCE, object.distance);
+			values.put(RideVO.AVG_SPEED, object.avgSpeed);
+			values.put(RideVO.MAX_SPEED, object.maxSpeed);
+			values.put(RideVO.ALTITUDE, object.altitude);
+			
 			result = db.update(TABLENAME,
 									values,
 									RideVO.PRIMARY_KEY+"="+object.primaryKey,
@@ -216,6 +249,12 @@ public class RideDao extends AbstractMasterDao<RideVO>{
 						object.primaryKey = cursor.getInt(0); 
 						object.name = cursor.getString(1);
 						object.startTime = Long.parseLong(cursor.getString(2));
+						object.endTime = Long.parseLong(cursor.getString(3));
+						object.ridingTime = cursor.getString(4);
+						object.distance = cursor.getString(5);
+						object.avgSpeed = cursor.getString(6);
+						object.maxSpeed = cursor.getString(7);
+						object.altitude = cursor.getString(8);
 					}
 		        }
 			} finally {
@@ -250,6 +289,12 @@ public class RideDao extends AbstractMasterDao<RideVO>{
 							object.primaryKey = cursor.getInt(0); 
 							object.name = cursor.getString(1);
 							object.startTime = Long.parseLong(cursor.getString(2));
+							object.endTime = Long.parseLong(cursor.getString(3));
+							object.ridingTime = cursor.getString(4);
+							object.distance = cursor.getString(5);
+							object.avgSpeed = cursor.getString(6);
+							object.maxSpeed = cursor.getString(7);
+							object.altitude = cursor.getString(8);
 							objects.add(object);  
 						} while (cursor.moveToNext());
 					}

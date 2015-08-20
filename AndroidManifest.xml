@@ -68,6 +68,7 @@
             >
         </activity>
         <!-- GPSLOGLIST END -->
+        
         <activity 
             android:name=".activity.PopupBrowserActivity"
             android:screenOrientation="portrait"

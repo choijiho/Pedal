@@ -23,7 +23,7 @@ public class RidingListActivity extends Activity{
 
 	RideDao mRideDao;
 	GpsLogDao mGpsLogDao;
-	List<RideVO>	mRideVOList;
+	List<RideVO> mRideVOList;
 	ListView id_lv_list;
 	RideListAdapter mAdapter;
 	

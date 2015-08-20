@@ -93,19 +93,16 @@ public class RideListAdapter extends ArrayAdapter<RideVO>{
 
 	private void showDetailInfo(int position){
 		
-		Log.d("jiho", "before : "+data.get(position).toString());
 		RideVO vo = data.get(position);
 		String detailInfo[] = new String[INDEX_LENGTH];
 		calculateRideInfo(vo.primaryKey, detailInfo);
 		
-		vo.detailDistance = detailInfo[INDEX_DISTANCE];
-		vo.detailTime = detailInfo[INDEX_TIME];
-		vo.detailAvgSpeed = detailInfo[INDEX_AVG_SPEED];
-		vo.detailMaxSpeed = detailInfo[INDEX_MAX_SPEED];
+		vo.distance = detailInfo[INDEX_DISTANCE];
+		vo.ridingTime = detailInfo[INDEX_TIME];
+		vo.avgSpeed = detailInfo[INDEX_AVG_SPEED];
+		vo.maxSpeed = detailInfo[INDEX_MAX_SPEED];
 		vo.isShowDetail = true;
 		
-		Log.d("jiho", "detailDistance: "+data.get(position).detailDistance);
-		Log.d("jiho", "after : "+data.get(position).toString());
 		notifyDataSetChanged();
 	}
 
@@ -180,15 +177,11 @@ public class RideListAdapter extends ArrayAdapter<RideVO>{
 			viewHolder.id_tv_name.setText(vo.name);
 			viewHolder.id_tv_start_time.setText(String.valueOf(vo.startTime));
 			if ( vo.isShowDetail ){
-				Log.d("jiho", "vo.detailDistance : "+vo.detailDistance);
-				Log.d("jiho", "vo.detailTime : "+vo.detailTime);
-				Log.d("jiho", "vo.detailAvgSpeed : "+vo.detailAvgSpeed);
-				Log.d("jiho", "vo.detailMaxSpeed : "+vo.detailMaxSpeed);
 				viewHolder.id_ll_detail_info.setVisibility(View.VISIBLE);
-				viewHolder.id_tv_distance.setText(vo.detailDistance);
-				viewHolder.id_tv_time.setText(vo.detailTime);
-				viewHolder.id_tv_avg_speed.setText(vo.detailAvgSpeed);
-				viewHolder.id_tv_max_speed.setText(vo.detailMaxSpeed);
+				viewHolder.id_tv_distance.setText(vo.distance);
+				viewHolder.id_tv_time.setText(vo.ridingTime);
+				viewHolder.id_tv_avg_speed.setText(vo.avgSpeed);
+				viewHolder.id_tv_max_speed.setText(vo.maxSpeed);
 			}else{
 				viewHolder.id_ll_detail_info.setVisibility(View.GONE);
 			}

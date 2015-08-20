@@ -1,6 +1,8 @@
 package net.gringrid.pedal.adapter;
 
+import java.sql.Date;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import net.gringrid.pedal.GPXMaker;
@@ -39,6 +41,7 @@ public class ExpandableRideListAdapter extends BaseExpandableListAdapter{
 	Context mContext;
 	List<RideVO> data;
 	ProgressDialog mProgressDialog;
+	SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
 	public ExpandableRideListAdapter(Context context, List<RideVO> objects) {
 		mContext = context;
@@ -99,19 +102,18 @@ public class ExpandableRideListAdapter extends BaseExpandableListAdapter{
 		}
 
 		final RideVO vo = data.get(groupPosition);
-		final int finalPosition = groupPosition;
 
 		if ( vo != null ){
-//			viewHolder.id_tv_name.setOnClickListener(new OnClickListener() {
-//				
-//				@Override
-//				public void onClick(View v) {
-//					showDetailInfo(finalPosition);
-//				}
-//			});
 		
+			Date startTime = new Date(vo.startTime);
+			Date endTime = new Date(vo.endTime);
+
+			String startDate = mSimpleDateFormat.format(startTime);
+			String endDate = vo.endTime==0 ? "" : " ~ "+mSimpleDateFormat.format(endTime);
+			String ridingTime = startDate + endDate;
+				
 			viewHolder.id_tv_name.setText(vo.name);
-			viewHolder.id_tv_start_time.setText(String.valueOf(vo.startTime));
+			viewHolder.id_tv_start_time.setText(ridingTime);
 			
 		}
 
@@ -140,13 +142,13 @@ public class ExpandableRideListAdapter extends BaseExpandableListAdapter{
 		}
 		Log.d("jiho", "DEBUG1");
 		final RideVO vo = data.get(groupPosition);
-
+		
 		if ( vo != null ){
 			if ( vo.isShowDetail ){
-				viewHolder.id_tv_distance.setText(vo.detailDistance);
-				viewHolder.id_tv_time.setText(vo.detailTime);
-				viewHolder.id_tv_avg_speed.setText(vo.detailAvgSpeed);
-				viewHolder.id_tv_max_speed.setText(vo.detailMaxSpeed);
+				viewHolder.id_tv_distance.setText(vo.distance);
+				viewHolder.id_tv_time.setText(vo.ridingTime);
+				viewHolder.id_tv_avg_speed.setText(vo.avgSpeed);
+				viewHolder.id_tv_max_speed.setText(vo.maxSpeed);
 			}else{
 				return view;
 			}

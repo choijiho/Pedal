@@ -8,7 +8,7 @@ public class DBHelper extends SQLiteOpenHelper
 {
 	public static final String DB_FILE_NAME = "pedal.db";
 	
-	private static int version = 1;
+	private static int version = 2;
 
 	private static SQLiteDatabase db;
 	private static DBHelper instance;

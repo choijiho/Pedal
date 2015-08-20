@@ -93,6 +93,14 @@ public class SharedData {
     	return m_preference.getInt(_key, _default);
     }
     
+    public long getGlobalDataLong(String _key){
+    	return m_preference.getLong(_key, 0);
+    }
+
+    public long getGlobalDataLong(String _key, long _default){
+    	return m_preference.getLong(_key, _default);
+    }
+
     public boolean getGlobalDataBoolean(String _key){
     	return m_preference.getBoolean(_key, false);
     }

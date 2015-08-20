@@ -20,6 +20,8 @@ public class Setting {
 	public static final String SHARED_KEY_STRAVA_USER_ID = "strava_user_id";
 	public static final String SHARED_KEY_STRAVA_ACCESS_TOKEN = "strava_access_token";
 	public static final String SHARED_KEY_STRAVA_EMAIL = "strava_email";
+	public static final String SHARED_KEY_RIDING_ID = "riding_id";
+
 
 	
 	public Setting(Context context) {
@@ -40,6 +42,7 @@ public class Setting {
 		SharedData.getInstance(mContext).setGlobalData(SHARED_KEY_AVERAGE_SPEED, true);
 		SharedData.getInstance(mContext).setGlobalData(SHARED_KEY_MUSIC, true);
 		SharedData.getInstance(mContext).setGlobalData(SHARED_KEY_SAVE_GPS, true);
+		SharedData.getInstance(mContext).setGlobalData(SHARED_KEY_RIDING_ID, Long.MAX_VALUE);
 		SharedData.getInstance(mContext).commit();
 	}
 }

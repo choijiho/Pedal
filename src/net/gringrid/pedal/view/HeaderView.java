@@ -9,23 +9,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.view.View.OnClickListener;
 
 public class HeaderView extends FrameLayout implements OnClickListener{
 
 	private Context mContext;
-	private View mView;
 	private RelativeLayout id_ll_menu;
 	private ImageView id_iv_back;
-	private ImageView id_iv_menu;
-	
-	
+
 	public HeaderView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mContext = context;
@@ -33,6 +31,12 @@ public class HeaderView extends FrameLayout implements OnClickListener{
 		registEvent();
 	}
 
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		Log.d("jiho", "onTouchEvent");
+		// TODO Auto-generated method stub
+		return super.onTouchEvent(event);
+	}
 	private void setLayout(AttributeSet attrs) {
 		TypedArray array = mContext.obtainStyledAttributes(attrs, R.styleable.HeaderView);
 		String id_iv_back_visibility = array.getString(R.styleable.HeaderView_id_iv_back_visibility);
@@ -41,8 +45,8 @@ public class HeaderView extends FrameLayout implements OnClickListener{
 		inflater.inflate(R.layout.header_view, this);
 		id_ll_menu = (RelativeLayout)findViewById(R.id.id_ll_menu);
 		id_iv_back = (ImageView)findViewById(R.id.id_iv_back);
-		id_iv_menu = (ImageView)findViewById(R.id.id_iv_menu);
-		if ( id_iv_back_visibility != null && id_iv_back_visibility.equals("VISIBLE") ){
+
+		if ( id_iv_back_visibility != null && id_iv_back_visibility.equals("visible") ){
 			id_iv_back.setVisibility(View.VISIBLE);
 		}else{
 			id_iv_back.setVisibility(View.INVISIBLE);
@@ -65,7 +69,7 @@ public class HeaderView extends FrameLayout implements OnClickListener{
 
 	@Override
 	public void onClick(View v) {
-		Intent intent;
+		Intent intent = null;
 		
 		switch (v.getId()) {
 		case R.id.id_iv_back:			
@@ -78,30 +82,32 @@ public class HeaderView extends FrameLayout implements OnClickListener{
 
 		case R.id.id_tv_riding:
 			intent = new Intent(mContext, RidingActivity.class);
-			mContext.startActivity(intent);
 			break;
 
 		case R.id.id_tv_riding_list:
 			intent = new Intent(mContext, ExpandableRidingListActivity.class);
-			mContext.startActivity(intent);
 			break;
 
 		case R.id.id_tv_setting:
 			intent = new Intent(mContext, SettingActivity.class);
-			mContext.startActivity(intent);
 			break;
 			
 		default:
 			break;
+		}
+	
+		if ( intent != null ){
+			intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+			hideMenu();
+			mContext.startActivity(intent);
 		}
 	}
 
 	private void toggleMenu() {
 		id_ll_menu.setVisibility( id_ll_menu.getVisibility()==View.GONE ? View.VISIBLE : View.GONE );
 	}
-
-
-
 	
-
+	private void hideMenu(){
+		id_ll_menu.setVisibility(View.GONE);
+	}
 }

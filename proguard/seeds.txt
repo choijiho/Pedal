@@ -5105,6 +5105,7 @@ net.gringrid.pedal.R$string: int alert_confirm
 net.gringrid.pedal.R$string: int alert_reset
 net.gringrid.pedal.R$string: int alert_title
 net.gringrid.pedal.R$string: int app_name
+net.gringrid.pedal.R$string: int colon
 net.gringrid.pedal.R$string: int default_value_km
 net.gringrid.pedal.R$string: int default_value_kmh
 net.gringrid.pedal.R$string: int default_value_m
@@ -5118,6 +5119,7 @@ net.gringrid.pedal.R$string: int ride_info_default
 net.gringrid.pedal.R$string: int title_altitude
 net.gringrid.pedal.R$string: int title_avg_speed
 net.gringrid.pedal.R$string: int title_distance
+net.gringrid.pedal.R$string: int title_max_speed
 net.gringrid.pedal.R$string: int title_speed
 net.gringrid.pedal.R$string: int title_travel_time
 net.gringrid.pedal.R$string: int unit_km
@@ -5125,6 +5127,7 @@ net.gringrid.pedal.R$string: int unit_kmh
 net.gringrid.pedal.R$string: int unit_m
 net.gringrid.pedal.R$string: R$string()
 net.gringrid.pedal.R$style: int CustomTheme
+net.gringrid.pedal.R$style: int content
 net.gringrid.pedal.R$style: int menu
 net.gringrid.pedal.R$style: int title
 net.gringrid.pedal.R$style: R$style()

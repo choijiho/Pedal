@@ -20,4 +20,9 @@
 <style name="CustomTheme" parent="android:Theme.Black">
     <item name="android:textColor">@color/custom_theme_color</item>
 </style>
+
+<style name="content">
+    <item name="android:layout_marginTop">55dp</item>
+</style>
+
 </resources>

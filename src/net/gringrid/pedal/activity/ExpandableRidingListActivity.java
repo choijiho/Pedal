@@ -21,6 +21,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ExpandableListView;
@@ -48,6 +49,7 @@ public class ExpandableRidingListActivity extends Activity{
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_expandable_ride_list);
 		initView();
 		mRideDao = RideDao.getInstance(DBHelper.getInstance(this));
@@ -76,7 +78,6 @@ public class ExpandableRidingListActivity extends Activity{
 			public boolean onGroupClick(ExpandableListView parent, View v,
 					int groupPosition, long id) {
 				Log.d("jiho", "onGroupClick");
-				// TODO Auto-generated method stub
 				return false;
 			}
 		});
@@ -86,7 +87,6 @@ public class ExpandableRidingListActivity extends Activity{
 			@Override
 			public void onGroupCollapse(int groupPosition) {
 				Log.d("jiho", "onGroupCollapse");
-				// TODO Auto-generated method stub
 				
 			}
 		});
@@ -164,16 +164,21 @@ public class ExpandableRidingListActivity extends Activity{
 		@Override
 		protected Integer doInBackground(Integer... params) {
 			RideVO vo = (RideVO)mAdapter.getGroup(params[0]);
+			
+			Log.d("jiho", "distance : "+vo.distance);
+			Log.d("jiho", "ridingTime : "+vo.ridingTime);
+			
+			
 			publishProgress("30", "Loading VO VO");
 			
 			String detailInfo[] = new String[INDEX_LENGTH];
 			calculateRideInfo(vo.primaryKey, detailInfo);
 			publishProgress("80", "Calculate Riding Info");
 			
-			vo.detailDistance = detailInfo[INDEX_DISTANCE];
-			vo.detailTime = detailInfo[INDEX_TIME];
-			vo.detailAvgSpeed = detailInfo[INDEX_AVG_SPEED];
-			vo.detailMaxSpeed = detailInfo[INDEX_MAX_SPEED];
+			vo.distance = detailInfo[INDEX_DISTANCE];
+			vo.ridingTime = detailInfo[INDEX_TIME];
+			vo.avgSpeed = detailInfo[INDEX_AVG_SPEED];
+			vo.maxSpeed = detailInfo[INDEX_MAX_SPEED];
 			vo.isShowDetail = true;
 			
 			return null;

@@ -1,33 +1,38 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:padding="5dp" >
 
-    <!-- Average Speed / Max Speed start -->
+    <!-- Average Speed start -->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="@string/title_avg_speed" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:text="@string/colon" />
 
         <TextView
             android:id="@+id/id_tv_avg_speed"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/ride_info_default" />
-
-        <TextView
-            android:id="@+id/id_tv_max_speed"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="7"
             android:text="@string/ride_info_default" />
     </LinearLayout>
-    <!-- Average Speed / Max Speed end -->
-
-
-    <!-- Distance / Time start -->
+    <!-- Average Speed end -->
+    <!-- Max Speed start -->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,20 +40,84 @@
         android:orientation="horizontal" >
 
         <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="@string/title_max_speed" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:text="@string/colon" />
+
+        <TextView
+            android:id="@+id/id_tv_max_speed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:text="@string/ride_info_default" />
+    </LinearLayout>
+    <!-- Max Speed end -->
+    <!-- Distance start -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="@string/title_distance" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:text="@string/colon" />
+
+        <TextView
             android:id="@+id/id_tv_distance"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="7"
             android:text="@string/ride_info_default" />
+    </LinearLayout>
+    <!-- Distance end -->
+
+
+    <!-- Travel Time start -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="@string/title_travel_time" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:text="@string/colon" />
 
         <TextView
             android:id="@+id/id_tv_time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="7"
             android:text="@string/ride_info_default" />
     </LinearLayout>
-    <!-- Distance / Time end -->
+    <!-- Travel Time end -->
 
 
     <!-- Upload Strava start -->
@@ -56,6 +125,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal" >
 
         <ImageView
@@ -67,4 +137,4 @@
     </LinearLayout>
     <!-- Upload Strava end -->
 
-</LinearLayout><!-- Detail Info end -->
+</LinearLayout> <!-- Detail Info end -->

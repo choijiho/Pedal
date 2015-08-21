@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import net.gringrid.pedal.R;
+import net.gringrid.pedal.RidingInfoUtility;
 import net.gringrid.pedal.Utility;
 import net.gringrid.pedal.adapter.ExpandableRideListAdapter;
 import net.gringrid.pedal.adapter.RideListAdapter;
@@ -101,48 +102,6 @@ public class ExpandableRidingListActivity extends Activity{
 		});
 	}
 	
-	/**
-	 * Riding Time
-	 */
-	private void calculateRideInfo(int parentId, String results[]){
-		GpsLogDao gpsLogDao = GpsLogDao.getInstance(DBHelper.getInstance(this));
-		List<GpsLogVO> gpsLogVOList = gpsLogDao.findWithParentId(parentId);
-		GpsLogVO preVo = null;
-
-		float avgSpeed = 0;
-		long totalTime = 0;
-		float totalDistance = 0;
-		float[] distanceResult = new float[3];
-		float tmpSpeed = 0;
-		
-		for ( GpsLogVO vo : gpsLogVOList){
-			if ( preVo != null ){
-				Location.distanceBetween(preVo.latitude, preVo.longitude, vo.latitude, vo.longitude, distanceResult);
-				tmpSpeed = distanceResult[0] / (vo.gpsTime - preVo.gpsTime) * 1000;
-				if ( tmpSpeed > 0.2f ) {
-					totalTime += vo.gpsTime - preVo.gpsTime;
-				}
-				totalDistance += distanceResult[0];
-//				Log.d("jiho", "Speed : "+tmpSpeed+", distanceResult[0] : "+distanceResult[0]+", time : "+(vo.gpsTime - preVo.gpsTime));
-			}
-			preVo = vo;
-		}
-		totalTime = totalTime / 1000;
-		avgSpeed = totalDistance / totalTime * 3.6f;
-		Log.d("jiho", "avgSpeed : "+avgSpeed);
-		Log.d("jiho", "totalTime : "+totalTime);
-		Log.d("jiho", "totalDistance : "+totalDistance);
-
-		String printAvgSpeed = new DecimalFormat("0.0").format(avgSpeed)+"km/h";
-		String printTime = Utility.getInstance().convertSecondsToHours(totalTime);
-		String printDistance = String.format("%.1f", totalDistance / 1000)+"km";
-		String printMaxSpeed = "";
-		results[INDEX_DISTANCE] = printDistance;
-		results[INDEX_TIME] = printTime;
-		results[INDEX_AVG_SPEED] = printAvgSpeed;
-		results[INDEX_MAX_SPEED] = printMaxSpeed;
-	}
-
 	private void showDetailInfo(int position){
 		RidingDetailTask ridingDetailTask = new RidingDetailTask();
 		ridingDetailTask.execute(position);
@@ -172,13 +131,14 @@ public class ExpandableRidingListActivity extends Activity{
 			publishProgress("30", "Loading VO VO");
 			
 			String detailInfo[] = new String[INDEX_LENGTH];
-			calculateRideInfo(vo.primaryKey, detailInfo);
+			RidingInfoUtility ridingInfoUtility = new RidingInfoUtility(ExpandableRidingListActivity.this);
+			ridingInfoUtility.calculateRideInfo(vo.primaryKey, detailInfo);
 			publishProgress("80", "Calculate Riding Info");
 			
-			vo.distance = detailInfo[INDEX_DISTANCE];
-			vo.ridingTime = detailInfo[INDEX_TIME];
-			vo.avgSpeed = detailInfo[INDEX_AVG_SPEED];
-			vo.maxSpeed = detailInfo[INDEX_MAX_SPEED];
+			vo.distance = detailInfo[INDEX_DISTANCE]+"Km";
+			vo.ridingTime = Utility.getInstance().convertSecondsToHours(Long.parseLong(detailInfo[INDEX_TIME]));
+			vo.avgSpeed = detailInfo[INDEX_AVG_SPEED]+"Km/h";
+			vo.maxSpeed = detailInfo[INDEX_MAX_SPEED]+"Km/h";
 			vo.isShowDetail = true;
 			
 			return null;

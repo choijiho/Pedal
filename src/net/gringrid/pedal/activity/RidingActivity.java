@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import net.gringrid.pedal.R;
+import net.gringrid.pedal.RidingInfoUtility;
 import net.gringrid.pedal.Setting;
 import net.gringrid.pedal.SharedData;
 import net.gringrid.pedal.db.DBHelper;
@@ -153,8 +154,10 @@ public class RidingActivity extends Activity implements OnClickListener, Locatio
 			mGpsLogDao = GpsLogDao.getInstance(DBHelper.getInstance(this));
 		}
 		
+		// Stop 버튼이 눌려서 정상종료되지 않고 재실행되는 경우
 		if ( SharedData.getInstance(this).getGlobalDataLong(Setting.SHARED_KEY_RIDING_ID) != Long.MAX_VALUE){
 			mRideId = SharedData.getInstance(this).getGlobalDataLong(Setting.SHARED_KEY_RIDING_ID);
+			resumePedal();
 		}
 	}
 
@@ -237,11 +240,18 @@ public class RidingActivity extends Activity implements OnClickListener, Locatio
 		findViewById(R.id.id_iv_pause).setVisibility(View.VISIBLE);
 		findViewById(R.id.id_iv_stop).setVisibility(View.VISIBLE);
 
+		String detailInfo[] = new String[RidingInfoUtility.INDEX_LENGTH];
+		RidingInfoUtility ridingInfoUtility = new RidingInfoUtility(this);
+		ridingInfoUtility.calculateRideInfo(mRideId, detailInfo);
+	
+		mMoveTime = Long.parseLong(detailInfo[RidingInfoUtility.INDEX_TIME]);
+		mTotalDistance = Float.parseFloat(detailInfo[RidingInfoUtility.INDEX_DISTANCE]);
+
+		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 2, this);
 		id_cm.setBase(SystemClock.elapsedRealtime() + mTravelTime);
 		id_cm.start();
-		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 2, this);
 		
-		if ( mIsSaveGps && mRideDao == null ){
+		if ( mRideId == Long.MAX_VALUE && mIsSaveGps && mRideDao == null ){
 			mRideDao = RideDao.getInstance(DBHelper.getInstance(this));
 			RideVO rideVo = new RideVO();
 			rideVo.name = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
@@ -257,7 +267,9 @@ public class RidingActivity extends Activity implements OnClickListener, Locatio
 		findViewById(R.id.id_iv_pause).setVisibility(View.VISIBLE);
 		findViewById(R.id.id_iv_stop).setVisibility(View.VISIBLE);
 
-		id_cm.setBase(SystemClock.elapsedRealtime() + mTravelTime);
+		
+
+		id_cm.setBase(SystemClock.elapsedRealtime() + mMoveTime);
 		id_cm.start();
 		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 2, this);
 	}
@@ -403,8 +415,7 @@ public class RidingActivity extends Activity implements OnClickListener, Locatio
 				mMoveTime += gapTimeFromLastlocation;// += locationTime - mLastLocationTime;
 				mTotalDistance += distanceFromLastLocation;
 				mAvgSpeed = mTotalDistance / mMoveTime * 3.6f;
-				id_tv_distance.setText(String.format("%.2f", mTotalDistance / 1000));
-				id_tv_avg_speed.setText(String.format("%.1f", mAvgSpeed));
+				setRidingInfo(String.format("%.1f", mAvgSpeed), String.format("%.2f", mTotalDistance / 1000));
 			}
 			Log.d("jiho", "gapTimeFromLastlocation : "+gapTimeFromLastlocation);
 			if ( IS_LOG_PRINT ){
@@ -436,6 +447,11 @@ public class RidingActivity extends Activity implements OnClickListener, Locatio
 
 		id_tv_current_speed.setText(String.format("%.1f", locationSpeedKm));
 		id_tv_current_altitude.setText(String.valueOf(location.getAltitude()));
+	}
+	
+	private void setRidingInfo(String avgSpeed, String distance){
+		id_tv_distance.setText(distance);
+		id_tv_avg_speed.setText(avgSpeed);
 	}
 
 	@Override

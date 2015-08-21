@@ -248,7 +248,7 @@ public class GpsLogDao extends AbstractMasterDao<GpsLogVO>{
         return object;
 	}
 
-	public List<GpsLogVO> findWithParentId(int parentId) {
+	public List<GpsLogVO> findWithParentId(long parentId) {
 		List<GpsLogVO> objects = new LinkedList<GpsLogVO>();
 		SQLiteDatabase db = null;
 
@@ -258,7 +258,7 @@ public class GpsLogDao extends AbstractMasterDao<GpsLogVO>{
 			Cursor cursor = null;
 			try {
 				cursor = db.query(true, TABLENAME, null,
-					GpsLogVO.PARENT_ID+"="+Integer.toString(parentId), null, null, null, null, null);
+					GpsLogVO.PARENT_ID+"="+parentId, null, null, null, null, null);
 				if(cursor!=null) {
 					if(cursor.moveToFirst()) {
 						do{

@@ -5,7 +5,9 @@ import java.util.List;
 
 import net.gringrid.pedal.db.DBHelper;
 import net.gringrid.pedal.db.GpsLogDao;
+import net.gringrid.pedal.db.RideDao;
 import net.gringrid.pedal.db.vo.GpsLogVO;
+import net.gringrid.pedal.db.vo.RideVO;
 import android.content.Context;
 import android.location.Location;
 import android.util.Log;
@@ -64,5 +66,29 @@ public class RidingInfoUtility {
 		results[INDEX_TIME] = printTime;
 		results[INDEX_AVG_SPEED] = printAvgSpeed;
 		results[INDEX_MAX_SPEED] = printMaxSpeed;
+	}
+	
+	public void saveRidingInfo(long parentId){
+		
+		RideDao dao = RideDao.getInstance(DBHelper.getInstance(mContext));
+		RideVO vo = dao.find((int)parentId);
+		String[] results = new String[RidingInfoUtility.INDEX_LENGTH];
+		calculateRideInfo(vo.primaryKey, results);
+		vo.avgSpeed = results[RidingInfoUtility.INDEX_AVG_SPEED];
+		vo.distance = results[RidingInfoUtility.INDEX_DISTANCE];
+		vo.maxSpeed = results[RidingInfoUtility.INDEX_MAX_SPEED];
+		vo.ridingTime = results[RidingInfoUtility.INDEX_TIME];
+		int result = dao.update(vo);	
+	}
+
+	public void saveRidingInfo(RideVO vo){
+		RideDao dao = RideDao.getInstance(DBHelper.getInstance(mContext));
+		String[] results = new String[RidingInfoUtility.INDEX_LENGTH];
+		calculateRideInfo(vo.primaryKey, results);
+		vo.avgSpeed = results[RidingInfoUtility.INDEX_AVG_SPEED];
+		vo.distance = results[RidingInfoUtility.INDEX_DISTANCE];
+		vo.maxSpeed = results[RidingInfoUtility.INDEX_MAX_SPEED];
+		vo.ridingTime = results[RidingInfoUtility.INDEX_TIME];
+		int result = dao.update(vo);	
 	}
 }

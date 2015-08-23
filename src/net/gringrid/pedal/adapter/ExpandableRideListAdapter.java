@@ -5,6 +5,9 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import net.gringrid.pedal.GPXMaker;
 import net.gringrid.pedal.R;
 import net.gringrid.pedal.Utility;
@@ -144,14 +147,10 @@ public class ExpandableRideListAdapter extends BaseExpandableListAdapter{
 		final RideVO vo = data.get(groupPosition);
 		
 		if ( vo != null ){
-			if ( vo.isShowDetail ){
-				viewHolder.id_tv_distance.setText(vo.distance);
-				viewHolder.id_tv_time.setText(vo.ridingTime);
-				viewHolder.id_tv_avg_speed.setText(vo.avgSpeed);
-				viewHolder.id_tv_max_speed.setText(vo.maxSpeed);
-			}else{
-				return view;
-			}
+			viewHolder.id_tv_distance.setText(vo.distance);
+			viewHolder.id_tv_time.setText(vo.ridingTime);
+			viewHolder.id_tv_avg_speed.setText(vo.avgSpeed);
+			viewHolder.id_tv_max_speed.setText(vo.maxSpeed);
 				
 			viewHolder.id_iv_upload_strava.setOnClickListener(new OnClickListener() {
 				
@@ -205,7 +204,16 @@ public class ExpandableRideListAdapter extends BaseExpandableListAdapter{
 			publishProgress("80", "uploading GPX file to STRAVA. ");	
 			UploadGpxFile uploadGpxFile = new UploadGpxFile(mContext);
 			if ( gPXMaker.createGPXFile(params[0]) ){
-				uploadGpxFile.createActivity();
+				JSONObject jsonObject = uploadGpxFile.createActivity();
+				try {
+					String id = jsonObject.getString("id");
+					String error = jsonObject.getString("error");
+					Log.d("jiho", "jsonObject id : "+id);
+					Log.d("jiho", "jsonObject error : "+error);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			return null;
 		}

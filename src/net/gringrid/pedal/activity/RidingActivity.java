@@ -155,9 +155,9 @@ public class RidingActivity extends Activity implements OnClickListener, Locatio
 		}
 		
 		// Stop 버튼이 눌려서 정상종료되지 않고 재실행되는 경우
-		if ( SharedData.getInstance(this).getGlobalDataLong(Setting.SHARED_KEY_RIDING_ID) != Long.MAX_VALUE){
-			mRideId = SharedData.getInstance(this).getGlobalDataLong(Setting.SHARED_KEY_RIDING_ID);
-			resumePedal();
+		mRideId = SharedData.getInstance(this).getGlobalDataLong(Setting.SHARED_KEY_RIDING_ID);
+		if ( mRideId != Long.MAX_VALUE){
+			playPedal();
 		}
 	}
 
@@ -239,18 +239,19 @@ public class RidingActivity extends Activity implements OnClickListener, Locatio
 		findViewById(R.id.id_iv_play).setVisibility(View.GONE);
 		findViewById(R.id.id_iv_pause).setVisibility(View.VISIBLE);
 		findViewById(R.id.id_iv_stop).setVisibility(View.VISIBLE);
-
-		String detailInfo[] = new String[RidingInfoUtility.INDEX_LENGTH];
-		RidingInfoUtility ridingInfoUtility = new RidingInfoUtility(this);
-		ridingInfoUtility.calculateRideInfo(mRideId, detailInfo);
+		
+		if ( mRideId != Long.MAX_VALUE ){
+			String detailInfo[] = new String[RidingInfoUtility.INDEX_LENGTH];
+			RidingInfoUtility ridingInfoUtility = new RidingInfoUtility(this);
+			ridingInfoUtility.calculateRideInfo(mRideId, detailInfo);
 	
-		mMoveTime = Long.parseLong(detailInfo[RidingInfoUtility.INDEX_TIME]);
-		mTotalDistance = Float.parseFloat(detailInfo[RidingInfoUtility.INDEX_DISTANCE]);
+			mMoveTime = Long.parseLong(detailInfo[RidingInfoUtility.INDEX_TIME]);
+			mTotalDistance = Float.parseFloat(detailInfo[RidingInfoUtility.INDEX_DISTANCE]);
+		}
 
 		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 2, this);
 		id_cm.setBase(SystemClock.elapsedRealtime() + mTravelTime);
 		id_cm.start();
-		
 		if ( mRideId == Long.MAX_VALUE && mIsSaveGps && mRideDao == null ){
 			mRideDao = RideDao.getInstance(DBHelper.getInstance(this));
 			RideVO rideVo = new RideVO();
@@ -258,20 +259,7 @@ public class RidingActivity extends Activity implements OnClickListener, Locatio
 			rideVo.startTime = System.currentTimeMillis();
 			mRideId = mRideDao.insert(rideVo);
 			SharedData.getInstance(this).insertGlobalData(Setting.SHARED_KEY_RIDING_ID, mRideId);
-			Log.d("jiho", "mRideId insert : "+mRideId);
 		}
-	}
-	
-	private void resumePedal(){
-		findViewById(R.id.id_iv_play).setVisibility(View.GONE);
-		findViewById(R.id.id_iv_pause).setVisibility(View.VISIBLE);
-		findViewById(R.id.id_iv_stop).setVisibility(View.VISIBLE);
-
-		
-
-		id_cm.setBase(SystemClock.elapsedRealtime() + mMoveTime);
-		id_cm.start();
-		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 2, this);
 	}
 	
 	private void pausePedal(){
@@ -291,7 +279,6 @@ public class RidingActivity extends Activity implements OnClickListener, Locatio
 				new android.content.DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						SharedData.getInstance(RidingActivity.this).insertGlobalData(Setting.SHARED_KEY_RIDING_ID, Long.MAX_VALUE);
 						reset();
 					}
 				});
@@ -336,6 +323,8 @@ public class RidingActivity extends Activity implements OnClickListener, Locatio
 	}
 	
 	private void reset(){
+		RidingInfoUtility ridingInfoUtility = new RidingInfoUtility(RidingActivity.this);
+		ridingInfoUtility.saveRidingInfo(mRideId);
 		pausePedal();
 		stopCadenceAlarm();
 		mTravelTime = 0;
@@ -346,6 +335,8 @@ public class RidingActivity extends Activity implements OnClickListener, Locatio
 		id_tv_current_altitude.setText("000");
 		id_tv_distance.setText("000");
 		mRideDao = null;
+		mRideId = Long.MAX_VALUE;
+		SharedData.getInstance(RidingActivity.this).insertGlobalData(Setting.SHARED_KEY_RIDING_ID, mRideId);
 	}
 	
 	@Override
@@ -417,7 +408,6 @@ public class RidingActivity extends Activity implements OnClickListener, Locatio
 				mAvgSpeed = mTotalDistance / mMoveTime * 3.6f;
 				setRidingInfo(String.format("%.1f", mAvgSpeed), String.format("%.2f", mTotalDistance / 1000));
 			}
-			Log.d("jiho", "gapTimeFromLastlocation : "+gapTimeFromLastlocation);
 			if ( IS_LOG_PRINT ){
 				TextView id_tv_log = (TextView)findViewById(R.id.id_tv_log);
 				String logText = "Accurace : "+String.valueOf(location.getAccuracy());

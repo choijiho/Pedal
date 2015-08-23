@@ -20,6 +20,7 @@ import android.graphics.Rect;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -62,10 +63,20 @@ public class ExpandableRidingListActivity extends Activity{
 	@Override
 	protected void onResume() {
 		mRideVOList = mRideDao.findAll();
-		Log.d("jiho", "mRideVOList : "+mRideVOList.size());
-//		for ( RideVO vo : mRideVOList ){
-//			calculateRideInfo(vo.primaryKey);
-//		}
+		
+		for ( RideVO vo : mRideVOList ){
+			if ( TextUtils.isEmpty(vo.avgSpeed) || vo.avgSpeed.equals("null") ){
+				String[] results = new String[RidingInfoUtility.INDEX_LENGTH];
+				RidingInfoUtility ridingInfoUtility = new RidingInfoUtility(this);
+				ridingInfoUtility.calculateRideInfo(vo.primaryKey, results);
+				vo.avgSpeed = results[RidingInfoUtility.INDEX_AVG_SPEED];
+				vo.distance = results[RidingInfoUtility.INDEX_DISTANCE];
+				vo.maxSpeed = results[RidingInfoUtility.INDEX_MAX_SPEED];
+				vo.ridingTime = results[RidingInfoUtility.INDEX_TIME];
+				int result = mRideDao.update(vo);
+				Log.d("jiho", "update result = "+result);
+			}
+		}
 		mAdapter = new ExpandableRideListAdapter(this, mRideVOList);
 		id_lv_list.setAdapter(mAdapter);
 		super.onResume();
@@ -96,8 +107,12 @@ public class ExpandableRidingListActivity extends Activity{
 			
 			@Override
 			public void onGroupExpand(int groupPosition) {
-				showDetailInfo(groupPosition);
-				id_lv_list.setSelectedGroup(groupPosition);
+				// TODO 
+				// 1. strava 인증여부 체크
+				// 2. 해당 스트라바 ID가 DB에 있는경우 스트라바 상태 체크
+				
+//				showDetailInfo(groupPosition);
+//				id_lv_list.setSelectedGroup(groupPosition);
 			}
 		});
 	}

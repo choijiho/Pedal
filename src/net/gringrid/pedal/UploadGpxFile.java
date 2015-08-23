@@ -36,7 +36,9 @@ public class UploadGpxFile {
 		}
 	}
 	
-	public void createActivity(){
+	public JSONObject createActivity(){
+		JSONObject jsonObject = null;
+
 		String access_token = SharedData.getInstance(mContext).getGlobalDataString(Setting.SHARED_KEY_STRAVA_ACCESS_TOKEN);
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpPost httpPost = new HttpPost(STRAVA_CREATE_ACTIVITY_URL);
@@ -66,14 +68,16 @@ public class UploadGpxFile {
 			if (resEntity != null) {    
 				result = EntityUtils.toString(resEntity);
 	        }	
-			JSONObject jsonArray = new JSONObject(result);
-			mActivityId = jsonArray.getString("id");
+			jsonObject = new JSONObject(result);
+			mActivityId = jsonObject.getString("id");
+
 			Log.d("jiho", "mActivityId = "+mActivityId);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
-		
 		Log.d("jiho", "return stringBuffer.toString(); : "+result);
+		return jsonObject;
+		
 	}
 }

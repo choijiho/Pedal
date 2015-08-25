@@ -116,17 +116,16 @@ public class RidingActivity extends Activity implements OnClickListener, Locatio
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.activity_riding);
-		loadSetting();
 		initView();
 		registEvent();
-
+		initLocation();
+		loadSetting();
 		this.registerReceiver(mBR, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 		this.registerReceiver(mBR, new IntentFilter(Intent.ACTION_DATE_CHANGED));
 	}
 	
 	@Override
 	protected void onResume() {
-		initLocation();
 		super.onResume();
 	}
 	

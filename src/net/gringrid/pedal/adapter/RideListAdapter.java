@@ -8,7 +8,7 @@ import net.gringrid.pedal.R;
 import net.gringrid.pedal.Utility;
 import net.gringrid.pedal.R.id;
 import net.gringrid.pedal.R.layout;
-import net.gringrid.pedal.UploadGpxFile;
+import net.gringrid.pedal.StravaTasks;
 import net.gringrid.pedal.activity.GpsLogListActivity;
 import net.gringrid.pedal.db.DBHelper;
 import net.gringrid.pedal.db.GpsLogDao;
@@ -169,7 +169,7 @@ public class RideListAdapter extends ArrayAdapter<RideVO>{
 				
 				@Override
 				public void onClick(View v) {
-					UploadGpxFile uploadGpxFile = new UploadGpxFile(mContext);
+					StravaTasks uploadGpxFile = new StravaTasks(mContext);
 					uploadGpxFile.excute(vo.primaryKey);
 				}
 			});

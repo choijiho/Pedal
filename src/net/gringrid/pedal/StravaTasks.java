@@ -6,6 +6,7 @@ import java.net.URI;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
@@ -17,7 +18,7 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.util.Log;
 
-public class UploadGpxFile {
+public class StravaTasks {
 
 	private Context mContext;
 	private final String STRAVA_UPLOAD_URL = "https://www.strava.com/api/v3/uploads/";
@@ -25,7 +26,7 @@ public class UploadGpxFile {
 	private GPXMaker mGpxMaker;
 	private String mActivityId;
 
-	public UploadGpxFile(Context context) {
+	public StravaTasks(Context context) {
 		mContext = context;
 	}
 	
@@ -79,5 +80,34 @@ public class UploadGpxFile {
 		Log.d("jiho", "return stringBuffer.toString(); : "+result);
 		return jsonObject;
 		
+	}
+	
+	public JSONObject checkUploadStatus(String id){
+		JSONObject jsonObject = null;
+
+		String access_token = SharedData.getInstance(mContext).getGlobalDataString(Setting.SHARED_KEY_STRAVA_ACCESS_TOKEN);
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpGet httpGet = new HttpGet(STRAVA_CREATE_ACTIVITY_URL);
+		
+		httpGet.setHeader("Authorization", "Bearer "+access_token);	
+		String result = "";
+		try {
+			URI uri = new URI("https://www.strava.com/api/v3/uploads/"+id);
+			httpGet.setHeader("Authorization", "Bearer "+access_token);
+			httpGet.setURI(uri);
+			
+			HttpResponse httpResponse = httpClient.execute(httpGet);
+			HttpEntity resEntity = httpResponse.getEntity();  
+
+			if (resEntity != null) {    
+				result = EntityUtils.toString(resEntity);
+	        }	
+			jsonObject = new JSONObject(result);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		Log.d("jiho", "return stringBuffer.toString(); : "+result);
+		return jsonObject;
 	}
 }

@@ -10,6 +10,7 @@
     <string name="title_altitude">ALTITUDE</string>
     <string name="title_distance">DISTANCE</string>
     <string name="title_travel_time">TRAVEL TIME</string>
+    <string name="title_strava_status">STRAVA</string>
     <string name="unit_kmh">KM/H</string>
     <string name="unit_m">M</string>
     <string name="unit_km">KM</string>

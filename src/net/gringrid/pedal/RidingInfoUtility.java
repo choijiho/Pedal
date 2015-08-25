@@ -34,6 +34,7 @@ public class RidingInfoUtility {
 		GpsLogVO preVo = null;
 
 		float avgSpeed = 0;
+		float maxSpeed = 0;
 		long totalTime = 0;
 		float totalDistance = 0;
 		float[] distanceResult = new float[3];
@@ -43,6 +44,12 @@ public class RidingInfoUtility {
 			if ( preVo != null ){
 				Location.distanceBetween(preVo.latitude, preVo.longitude, vo.latitude, vo.longitude, distanceResult);
 				tmpSpeed = distanceResult[0] / (vo.gpsTime - preVo.gpsTime) * 1000;
+				Log.d("jiho", "tmpSpeed : "+tmpSpeed);
+				if ( maxSpeed < tmpSpeed ) {
+					maxSpeed = tmpSpeed;
+					Log.d("jiho", "Max Speed : "+String.format("%.1f",maxSpeed));
+					
+				}
 				if ( tmpSpeed > 0.2f ) {
 					totalTime += vo.gpsTime - preVo.gpsTime;
 				}
@@ -60,7 +67,7 @@ public class RidingInfoUtility {
 		String printAvgSpeed = String.format("%.1f", avgSpeed);
 		String printTime = String.valueOf(totalTime);
 		String printDistance = String.format("%.2f", totalDistance / 1000);
-		String printMaxSpeed = "";
+		String printMaxSpeed = String.format("%.1f", maxSpeed);
 
 		results[INDEX_DISTANCE] = printDistance;
 		results[INDEX_TIME] = printTime;

@@ -28,11 +28,12 @@ public class RideDao extends AbstractMasterDao<RideVO>{
 					RideVO.DISTANCE 	+ " TEXT , " +
 					RideVO.AVG_SPEED 	+ " TEXT , " +
 					RideVO.MAX_SPEED 	+ " TEXT , " +
-					RideVO.ALTITUDE 	+ " TEXT " + 
+					RideVO.ALTITUDE 	+ " TEXT , " + 
+					RideVO.STRAVA_ID	+ " TEXT " +
 					")";
 
 	private static final String SQL_INSERT =
-			String.format("INSERT INTO %s(%s,%s,%s,%s,%s,%s,%s,%s) VALUES(?,?,?,?,?,?,?,?)",
+			String.format("INSERT INTO %s(%s,%s,%s,%s,%s,%s,%s,%s,%s) VALUES(?,?,?,?,?,?,?,?,?)",
 					TABLENAME,
 					RideVO.NAME,
 					RideVO.START_TIME,
@@ -41,7 +42,8 @@ public class RideDao extends AbstractMasterDao<RideVO>{
 					RideVO.DISTANCE,
 					RideVO.AVG_SPEED,
 					RideVO.MAX_SPEED,
-					RideVO.ALTITUDE
+					RideVO.ALTITUDE,
+					RideVO.STRAVA_ID
 					);
 
     public static RideDao getInstance(DBHelper helper){
@@ -79,6 +81,7 @@ public class RideDao extends AbstractMasterDao<RideVO>{
 			stmt.bindString(6, String.valueOf(object.avgSpeed));
 			stmt.bindString(7, String.valueOf(object.maxSpeed));
 			stmt.bindString(8, String.valueOf(object.altitude));
+			stmt.bindString(9, String.valueOf(object.stravaId));
 			result = stmt.executeInsert();
 
 			db.setTransactionSuccessful();
@@ -121,6 +124,7 @@ public class RideDao extends AbstractMasterDao<RideVO>{
 				stmt.bindString(6, String.valueOf(object.avgSpeed));
 				stmt.bindString(7, String.valueOf(object.maxSpeed));
 				stmt.bindString(8, String.valueOf(object.altitude));
+				stmt.bindString(9, String.valueOf(object.stravaId));
 				results[i] = stmt.executeInsert();
 			}
 
@@ -185,6 +189,7 @@ public class RideDao extends AbstractMasterDao<RideVO>{
 			values.put(RideVO.AVG_SPEED, object.avgSpeed);
 			values.put(RideVO.MAX_SPEED, object.maxSpeed);
 			values.put(RideVO.ALTITUDE, object.altitude);
+			values.put(RideVO.STRAVA_ID, object.stravaId);
 			
 			result = db.update(TABLENAME,
 									values,
@@ -255,6 +260,7 @@ public class RideDao extends AbstractMasterDao<RideVO>{
 						object.avgSpeed = cursor.getString(6);
 						object.maxSpeed = cursor.getString(7);
 						object.altitude = cursor.getString(8);
+						object.stravaId = cursor.getString(9);
 					}
 		        }
 			} finally {
@@ -295,6 +301,7 @@ public class RideDao extends AbstractMasterDao<RideVO>{
 							object.avgSpeed = cursor.getString(6);
 							object.maxSpeed = cursor.getString(7);
 							object.altitude = cursor.getString(8);
+							object.stravaId = cursor.getString(9);
 							objects.add(object);  
 						} while (cursor.moveToNext());
 					}

@@ -4991,17 +4991,117 @@ android.support.v4.widget.SwipeRefreshLayout: void setColorSchemeColors(int[])
 android.support.v4.widget.SwipeRefreshLayout: void setDistanceToTriggerSync(int)
 android.support.v4.widget.ViewDragHelper$1: ViewDragHelper$1()
 android.support.v4.widget.ViewDragHelper$Callback: ViewDragHelper$Callback()
+android.support.v7.gridlayout.R: R()
+android.support.v7.gridlayout.R$attr: int alignmentMode
+android.support.v7.gridlayout.R$attr: int columnCount
+android.support.v7.gridlayout.R$attr: int columnOrderPreserved
+android.support.v7.gridlayout.R$attr: int layout_column
+android.support.v7.gridlayout.R$attr: int layout_columnSpan
+android.support.v7.gridlayout.R$attr: int layout_columnWeight
+android.support.v7.gridlayout.R$attr: int layout_gravity
+android.support.v7.gridlayout.R$attr: int layout_row
+android.support.v7.gridlayout.R$attr: int layout_rowSpan
+android.support.v7.gridlayout.R$attr: int layout_rowWeight
+android.support.v7.gridlayout.R$attr: int orientation
+android.support.v7.gridlayout.R$attr: int rowCount
+android.support.v7.gridlayout.R$attr: int rowOrderPreserved
+android.support.v7.gridlayout.R$attr: int useDefaultMargins
+android.support.v7.gridlayout.R$attr: R$attr()
+android.support.v7.gridlayout.R$dimen: int default_gap
+android.support.v7.gridlayout.R$dimen: R$dimen()
+android.support.v7.gridlayout.R$id: int alignBounds
+android.support.v7.gridlayout.R$id: int alignMargins
+android.support.v7.gridlayout.R$id: int bottom
+android.support.v7.gridlayout.R$id: int center
+android.support.v7.gridlayout.R$id: int center_horizontal
+android.support.v7.gridlayout.R$id: int center_vertical
+android.support.v7.gridlayout.R$id: int clip_horizontal
+android.support.v7.gridlayout.R$id: int clip_vertical
+android.support.v7.gridlayout.R$id: int end
+android.support.v7.gridlayout.R$id: int fill
+android.support.v7.gridlayout.R$id: int fill_horizontal
+android.support.v7.gridlayout.R$id: int fill_vertical
+android.support.v7.gridlayout.R$id: int horizontal
+android.support.v7.gridlayout.R$id: int left
+android.support.v7.gridlayout.R$id: int right
+android.support.v7.gridlayout.R$id: int start
+android.support.v7.gridlayout.R$id: int top
+android.support.v7.gridlayout.R$id: int vertical
+android.support.v7.gridlayout.R$id: R$id()
+android.support.v7.gridlayout.R$styleable: int[] GridLayout
+android.support.v7.gridlayout.R$styleable: int[] GridLayout_Layout
+android.support.v7.gridlayout.R$styleable: int GridLayout_Layout_android_layout_height
+android.support.v7.gridlayout.R$styleable: int GridLayout_Layout_android_layout_margin
+android.support.v7.gridlayout.R$styleable: int GridLayout_Layout_android_layout_marginBottom
+android.support.v7.gridlayout.R$styleable: int GridLayout_Layout_android_layout_marginLeft
+android.support.v7.gridlayout.R$styleable: int GridLayout_Layout_android_layout_marginRight
+android.support.v7.gridlayout.R$styleable: int GridLayout_Layout_android_layout_marginTop
+android.support.v7.gridlayout.R$styleable: int GridLayout_Layout_android_layout_width
+android.support.v7.gridlayout.R$styleable: int GridLayout_Layout_layout_column
+android.support.v7.gridlayout.R$styleable: int GridLayout_Layout_layout_columnSpan
+android.support.v7.gridlayout.R$styleable: int GridLayout_Layout_layout_columnWeight
+android.support.v7.gridlayout.R$styleable: int GridLayout_Layout_layout_gravity
+android.support.v7.gridlayout.R$styleable: int GridLayout_Layout_layout_row
+android.support.v7.gridlayout.R$styleable: int GridLayout_Layout_layout_rowSpan
+android.support.v7.gridlayout.R$styleable: int GridLayout_Layout_layout_rowWeight
+android.support.v7.gridlayout.R$styleable: int GridLayout_alignmentMode
+android.support.v7.gridlayout.R$styleable: int GridLayout_columnCount
+android.support.v7.gridlayout.R$styleable: int GridLayout_columnOrderPreserved
+android.support.v7.gridlayout.R$styleable: int GridLayout_orientation
+android.support.v7.gridlayout.R$styleable: int GridLayout_rowCount
+android.support.v7.gridlayout.R$styleable: int GridLayout_rowOrderPreserved
+android.support.v7.gridlayout.R$styleable: int GridLayout_useDefaultMargins
+android.support.v7.gridlayout.R$styleable: R$styleable()
+android.support.v7.widget.GridLayout: GridLayout(android.content.Context,android.util.AttributeSet,int)
+android.support.v7.widget.GridLayout: GridLayout(android.content.Context,android.util.AttributeSet)
+android.support.v7.widget.GridLayout: GridLayout(android.content.Context)
+android.support.v7.widget.GridLayout: void setOrientation(int)
+android.support.v7.widget.GridLayout: void setRowCount(int)
+android.support.v7.widget.GridLayout: void setColumnCount(int)
+android.support.v7.widget.GridLayout: void setUseDefaultMargins(boolean)
+android.support.v7.widget.GridLayout: void setAlignmentMode(int)
+android.support.v7.widget.GridLayout: void setRowOrderPreserved(boolean)
+android.support.v7.widget.GridLayout: void setColumnOrderPreserved(boolean)
+android.support.v7.widget.GridLayout: void setPrinter(android.util.Printer)
+android.support.v7.widget.GridLayout$1: GridLayout$1()
+android.support.v7.widget.GridLayout$2: GridLayout$2()
+android.support.v7.widget.GridLayout$3: GridLayout$3()
+android.support.v7.widget.GridLayout$4: GridLayout$4()
+android.support.v7.widget.GridLayout$6: GridLayout$6()
+android.support.v7.widget.GridLayout$7: GridLayout$7()
+android.support.v7.widget.GridLayout$8: GridLayout$8()
+android.support.v7.widget.GridLayout$Alignment: GridLayout$Alignment()
+android.support.v7.widget.GridLayout$LayoutParams: GridLayout$LayoutParams()
+android.support.v7.widget.GridLayout$LayoutParams: GridLayout$LayoutParams(android.content.Context,android.util.AttributeSet)
+android.support.v7.widget.GridLayout$MutableInt: GridLayout$MutableInt()
+android.support.v7.widget.Space: Space(android.content.Context,android.util.AttributeSet)
+android.support.v7.widget.Space: Space(android.content.Context,android.util.AttributeSet,int)
 net.gringrid.pedal.BuildConfig: BuildConfig()
 net.gringrid.pedal.PedalApplication: PedalApplication()
 net.gringrid.pedal.R: R()
 net.gringrid.pedal.R$array: int week
 net.gringrid.pedal.R$array: R$array()
+net.gringrid.pedal.R$attr: int alignmentMode
+net.gringrid.pedal.R$attr: int columnCount
+net.gringrid.pedal.R$attr: int columnOrderPreserved
 net.gringrid.pedal.R$attr: int id_iv_back_visibility
+net.gringrid.pedal.R$attr: int layout_column
+net.gringrid.pedal.R$attr: int layout_columnSpan
+net.gringrid.pedal.R$attr: int layout_columnWeight
+net.gringrid.pedal.R$attr: int layout_gravity
+net.gringrid.pedal.R$attr: int layout_row
+net.gringrid.pedal.R$attr: int layout_rowSpan
+net.gringrid.pedal.R$attr: int layout_rowWeight
+net.gringrid.pedal.R$attr: int orientation
+net.gringrid.pedal.R$attr: int rowCount
+net.gringrid.pedal.R$attr: int rowOrderPreserved
+net.gringrid.pedal.R$attr: int useDefaultMargins
 net.gringrid.pedal.R$attr: R$attr()
 net.gringrid.pedal.R$color: int custom_theme_color
 net.gringrid.pedal.R$color: R$color()
 net.gringrid.pedal.R$dimen: int activity_horizontal_margin
 net.gringrid.pedal.R$dimen: int activity_vertical_margin
+net.gringrid.pedal.R$dimen: int default_gap
 net.gringrid.pedal.R$dimen: R$dimen()
 net.gringrid.pedal.R$drawable: int connect_with_strava
 net.gringrid.pedal.R$drawable: int custom_checkbox
@@ -5029,6 +5129,19 @@ net.gringrid.pedal.R$drawable: int ic_stop_white_48dp
 net.gringrid.pedal.R$drawable: int ic_volume_up_white_48dp
 net.gringrid.pedal.R$drawable: int ic_watch_white_24dp
 net.gringrid.pedal.R$drawable: R$drawable()
+net.gringrid.pedal.R$id: int alignBounds
+net.gringrid.pedal.R$id: int alignMargins
+net.gringrid.pedal.R$id: int bottom
+net.gringrid.pedal.R$id: int center
+net.gringrid.pedal.R$id: int center_horizontal
+net.gringrid.pedal.R$id: int center_vertical
+net.gringrid.pedal.R$id: int clip_horizontal
+net.gringrid.pedal.R$id: int clip_vertical
+net.gringrid.pedal.R$id: int end
+net.gringrid.pedal.R$id: int fill
+net.gringrid.pedal.R$id: int fill_horizontal
+net.gringrid.pedal.R$id: int fill_vertical
+net.gringrid.pedal.R$id: int horizontal
 net.gringrid.pedal.R$id: int id_bt_check_upload_status
 net.gringrid.pedal.R$id: int id_bt_get
 net.gringrid.pedal.R$id: int id_bt_post
@@ -5061,6 +5174,7 @@ net.gringrid.pedal.R$id: int id_tv_current_altitude
 net.gringrid.pedal.R$id: int id_tv_current_speed
 net.gringrid.pedal.R$id: int id_tv_data
 net.gringrid.pedal.R$id: int id_tv_day_info
+net.gringrid.pedal.R$id: int id_tv_display_test
 net.gringrid.pedal.R$id: int id_tv_distance
 net.gringrid.pedal.R$id: int id_tv_log
 net.gringrid.pedal.R$id: int id_tv_max_speed
@@ -5074,9 +5188,16 @@ net.gringrid.pedal.R$id: int id_tv_speed
 net.gringrid.pedal.R$id: int id_tv_start_date
 net.gringrid.pedal.R$id: int id_tv_start_time
 net.gringrid.pedal.R$id: int id_tv_strava
+net.gringrid.pedal.R$id: int id_tv_strava_status
 net.gringrid.pedal.R$id: int id_tv_time
 net.gringrid.pedal.R$id: int id_wv
+net.gringrid.pedal.R$id: int left
+net.gringrid.pedal.R$id: int right
+net.gringrid.pedal.R$id: int start
+net.gringrid.pedal.R$id: int top
+net.gringrid.pedal.R$id: int vertical
 net.gringrid.pedal.R$id: R$id()
+net.gringrid.pedal.R$layout: int activity_display_test
 net.gringrid.pedal.R$layout: int activity_expandable_ride_list
 net.gringrid.pedal.R$layout: int activity_gps_log_list
 net.gringrid.pedal.R$layout: int activity_home
@@ -5121,6 +5242,7 @@ net.gringrid.pedal.R$string: int title_avg_speed
 net.gringrid.pedal.R$string: int title_distance
 net.gringrid.pedal.R$string: int title_max_speed
 net.gringrid.pedal.R$string: int title_speed
+net.gringrid.pedal.R$string: int title_strava_status
 net.gringrid.pedal.R$string: int title_travel_time
 net.gringrid.pedal.R$string: int unit_km
 net.gringrid.pedal.R$string: int unit_kmh
@@ -5131,6 +5253,29 @@ net.gringrid.pedal.R$style: int content
 net.gringrid.pedal.R$style: int menu
 net.gringrid.pedal.R$style: int title
 net.gringrid.pedal.R$style: R$style()
+net.gringrid.pedal.R$styleable: int[] GridLayout
+net.gringrid.pedal.R$styleable: int GridLayout_alignmentMode
+net.gringrid.pedal.R$styleable: int GridLayout_columnCount
+net.gringrid.pedal.R$styleable: int GridLayout_columnOrderPreserved
+net.gringrid.pedal.R$styleable: int GridLayout_orientation
+net.gringrid.pedal.R$styleable: int GridLayout_rowCount
+net.gringrid.pedal.R$styleable: int GridLayout_rowOrderPreserved
+net.gringrid.pedal.R$styleable: int GridLayout_useDefaultMargins
+net.gringrid.pedal.R$styleable: int[] GridLayout_Layout
+net.gringrid.pedal.R$styleable: int GridLayout_Layout_android_layout_height
+net.gringrid.pedal.R$styleable: int GridLayout_Layout_android_layout_margin
+net.gringrid.pedal.R$styleable: int GridLayout_Layout_android_layout_marginBottom
+net.gringrid.pedal.R$styleable: int GridLayout_Layout_android_layout_marginLeft
+net.gringrid.pedal.R$styleable: int GridLayout_Layout_android_layout_marginRight
+net.gringrid.pedal.R$styleable: int GridLayout_Layout_android_layout_marginTop
+net.gringrid.pedal.R$styleable: int GridLayout_Layout_android_layout_width
+net.gringrid.pedal.R$styleable: int GridLayout_Layout_layout_column
+net.gringrid.pedal.R$styleable: int GridLayout_Layout_layout_columnSpan
+net.gringrid.pedal.R$styleable: int GridLayout_Layout_layout_columnWeight
+net.gringrid.pedal.R$styleable: int GridLayout_Layout_layout_gravity
+net.gringrid.pedal.R$styleable: int GridLayout_Layout_layout_row
+net.gringrid.pedal.R$styleable: int GridLayout_Layout_layout_rowSpan
+net.gringrid.pedal.R$styleable: int GridLayout_Layout_layout_rowWeight
 net.gringrid.pedal.R$styleable: int[] HeaderView
 net.gringrid.pedal.R$styleable: int HeaderView_id_iv_back_visibility
 net.gringrid.pedal.R$styleable: R$styleable()
@@ -5139,6 +5284,8 @@ net.gringrid.pedal.TextClock
 net.gringrid.pedal.TextClock: TextClock(android.content.Context)
 net.gringrid.pedal.TextClock: TextClock(android.content.Context,android.util.AttributeSet)
 net.gringrid.pedal.TextClock: TextClock(android.content.Context,android.util.AttributeSet,int)
+net.gringrid.pedal.activity.DisplayTest
+net.gringrid.pedal.activity.DisplayTest: DisplayTest()
 net.gringrid.pedal.activity.ExpandableRidingListActivity
 net.gringrid.pedal.activity.ExpandableRidingListActivity: ExpandableRidingListActivity()
 net.gringrid.pedal.activity.GpsLogListActivity

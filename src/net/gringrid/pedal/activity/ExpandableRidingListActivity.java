@@ -3,8 +3,12 @@ package net.gringrid.pedal.activity;
 import java.text.DecimalFormat;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import net.gringrid.pedal.R;
 import net.gringrid.pedal.RidingInfoUtility;
+import net.gringrid.pedal.StravaTasks;
 import net.gringrid.pedal.Utility;
 import net.gringrid.pedal.adapter.ExpandableRideListAdapter;
 import net.gringrid.pedal.adapter.RideListAdapter;
@@ -65,7 +69,7 @@ public class ExpandableRidingListActivity extends Activity{
 		mRideVOList = mRideDao.findAll();
 		
 		for ( RideVO vo : mRideVOList ){
-			if ( TextUtils.isEmpty(vo.avgSpeed) || vo.avgSpeed.equals("null") ){
+//			if ( TextUtils.isEmpty(vo.maxSpeed) || vo.maxSpeed.equals("null") ){
 				String[] results = new String[RidingInfoUtility.INDEX_LENGTH];
 				RidingInfoUtility ridingInfoUtility = new RidingInfoUtility(this);
 				ridingInfoUtility.calculateRideInfo(vo.primaryKey, results);
@@ -76,7 +80,7 @@ public class ExpandableRidingListActivity extends Activity{
 				int result = mRideDao.update(vo);
 				Log.d("jiho", "update result = "+result);
 			}
-		}
+//		}
 		mAdapter = new ExpandableRideListAdapter(this, mRideVOList);
 		id_lv_list.setAdapter(mAdapter);
 		super.onResume();
@@ -110,18 +114,16 @@ public class ExpandableRidingListActivity extends Activity{
 				// TODO 
 				// 1. strava 인증여부 체크
 				// 2. 해당 스트라바 ID가 DB에 있는경우 스트라바 상태 체크
-				
+				RideVO vo = (RideVO)mAdapter.getGroup(groupPosition);
+				if ( !TextUtils.isEmpty(vo.stravaId) && !vo.stravaId.equals("null") ){
+					RidingDetailTask task = new RidingDetailTask();
+					task.execute(groupPosition, Integer.parseInt(vo.stravaId));
+				}
 //				showDetailInfo(groupPosition);
 //				id_lv_list.setSelectedGroup(groupPosition);
 			}
 		});
 	}
-	
-	private void showDetailInfo(int position){
-		RidingDetailTask ridingDetailTask = new RidingDetailTask();
-		ridingDetailTask.execute(position);
-	}
-	
 	
 	class RidingDetailTask extends AsyncTask<Integer, String, Integer>{
 
@@ -137,32 +139,43 @@ public class ExpandableRidingListActivity extends Activity{
 
 		@Override
 		protected Integer doInBackground(Integer... params) {
-			RideVO vo = (RideVO)mAdapter.getGroup(params[0]);
-			
-			Log.d("jiho", "distance : "+vo.distance);
-			Log.d("jiho", "ridingTime : "+vo.ridingTime);
-			
-			
-			publishProgress("30", "Loading VO VO");
-			
-			String detailInfo[] = new String[INDEX_LENGTH];
-			RidingInfoUtility ridingInfoUtility = new RidingInfoUtility(ExpandableRidingListActivity.this);
-			ridingInfoUtility.calculateRideInfo(vo.primaryKey, detailInfo);
-			publishProgress("80", "Calculate Riding Info");
-			
-			vo.distance = detailInfo[INDEX_DISTANCE]+"Km";
-			vo.ridingTime = Utility.getInstance().convertSecondsToHours(Long.parseLong(detailInfo[INDEX_TIME]));
-			vo.avgSpeed = detailInfo[INDEX_AVG_SPEED]+"Km/h";
-			vo.maxSpeed = detailInfo[INDEX_MAX_SPEED]+"Km/h";
-			vo.isShowDetail = true;
+			StravaTasks stravaTasks = new StravaTasks(mContext);
+			JSONObject jsonObject = stravaTasks.checkUploadStatus(String.valueOf(params[1]));
+			try {
+				String error = jsonObject.getString("error");
+				String status = jsonObject.getString("status");
+				String[] values = {String.valueOf(params[0]), String.valueOf(params[1]), error, status};
+				publishProgress(values);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+//			
+//			
+//			publishProgress("30", "Loading VO VO");
+//			
+//			String detailInfo[] = new String[INDEX_LENGTH];
+//			RidingInfoUtility ridingInfoUtility = new RidingInfoUtility(ExpandableRidingListActivity.this);
+//			ridingInfoUtility.calculateRideInfo(vo.primaryKey, detailInfo);
+//			publishProgress("80", "Calculate Riding Info");
+//			
+//			vo.distance = detailInfo[INDEX_DISTANCE]+"Km";
+//			vo.ridingTime = Utility.getInstance().convertSecondsToHours(Long.parseLong(detailInfo[INDEX_TIME]));
+//			vo.avgSpeed = detailInfo[INDEX_AVG_SPEED]+"Km/h";
+//			vo.maxSpeed = detailInfo[INDEX_MAX_SPEED]+"Km/h";
+//			vo.isShowDetail = true;
 			
 			return null;
 		}
 		
 		@Override
 		protected void onProgressUpdate(String... values) {
-			mProgressDialog.setProgress(Integer.parseInt(values[0]));
-			mProgressDialog.setMessage(values[1]);
+			RideVO vo = (RideVO)mAdapter.getGroup(Integer.parseInt(values[0]));
+			vo.stravaStatus = values[3];
+			Log.d("jiho", "vo.stravaStatus : "+vo.stravaStatus);
+			mAdapter.notifyDataSetChanged();
+//			mProgressDialog.setProgress(Integer.parseInt(values[0]));
+//			mProgressDialog.setMessage(values[1]);
 			super.onProgressUpdate(values);
 		}
 		

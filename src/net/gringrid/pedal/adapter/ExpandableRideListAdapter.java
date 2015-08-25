@@ -13,7 +13,7 @@ import net.gringrid.pedal.R;
 import net.gringrid.pedal.Utility;
 import net.gringrid.pedal.R.id;
 import net.gringrid.pedal.R.layout;
-import net.gringrid.pedal.UploadGpxFile;
+import net.gringrid.pedal.StravaTasks;
 import net.gringrid.pedal.activity.GpsLogListActivity;
 import net.gringrid.pedal.adapter.RideListAdapter.ViewHolder;
 import net.gringrid.pedal.db.DBHelper;
@@ -138,7 +138,7 @@ public class ExpandableRideListAdapter extends BaseExpandableListAdapter{
 			viewHolder.id_tv_avg_speed = (TextView)view.findViewById(R.id.id_tv_avg_speed);
 			viewHolder.id_tv_max_speed = (TextView)view.findViewById(R.id.id_tv_max_speed);
 			viewHolder.id_iv_upload_strava = (ImageView)view.findViewById(R.id.id_iv_upload_strava);
-			
+			viewHolder.id_tv_strava_status = (TextView)view.findViewById(R.id.id_tv_strava_status);
 			view.setTag(viewHolder);
 		}else{
 			viewHolder = (ChildViewHolder)view.getTag();
@@ -151,7 +151,8 @@ public class ExpandableRideListAdapter extends BaseExpandableListAdapter{
 			viewHolder.id_tv_time.setText(vo.ridingTime);
 			viewHolder.id_tv_avg_speed.setText(vo.avgSpeed);
 			viewHolder.id_tv_max_speed.setText(vo.maxSpeed);
-				
+			viewHolder.id_tv_strava_status.setText(vo.stravaStatus);
+			
 			viewHolder.id_iv_upload_strava.setOnClickListener(new OnClickListener() {
 				
 				@Override
@@ -183,6 +184,7 @@ public class ExpandableRideListAdapter extends BaseExpandableListAdapter{
 		TextView id_tv_avg_speed;
 		TextView id_tv_max_speed;
 		ImageView id_iv_upload_strava;
+		TextView id_tv_strava_status;
 	}
 	
 	class UploadTask extends AsyncTask<Integer, String, Integer>{
@@ -202,14 +204,16 @@ public class ExpandableRideListAdapter extends BaseExpandableListAdapter{
 			GPXMaker gPXMaker = new GPXMaker(mContext);
 
 			publishProgress("80", "uploading GPX file to STRAVA. ");	
-			UploadGpxFile uploadGpxFile = new UploadGpxFile(mContext);
+			StravaTasks uploadGpxFile = new StravaTasks(mContext);
 			if ( gPXMaker.createGPXFile(params[0]) ){
 				JSONObject jsonObject = uploadGpxFile.createActivity();
 				try {
-					String id = jsonObject.getString("id");
-					String error = jsonObject.getString("error");
-					Log.d("jiho", "jsonObject id : "+id);
-					Log.d("jiho", "jsonObject error : "+error);
+					RideDao dao = RideDao.getInstance(DBHelper.getInstance(mContext));
+					RideVO vo = dao.find(params[0]);
+					String stravaId = jsonObject.getString("id");
+					String stravaError = jsonObject.getString("error");
+					vo.stravaId = stravaId;
+					dao.update(vo);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

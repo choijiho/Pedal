@@ -11,18 +11,26 @@ public class RideVO {
 	public static final String AVG_SPEED	= "avgSpeed";
 	public static final String MAX_SPEED	= "maxSpeed";
 	public static final String ALTITUDE		= "altitude";
-	
-	public int primaryKey;
+	public static final String STRAVA_ID	= "stravaId";
 
+	/**
+	 * DB field
+	 */
+	public int primaryKey;
 	public String name;
 	public long startTime;
 	public long endTime;
-
 	public String ridingTime;
 	public String distance;
 	public String avgSpeed;
 	public String maxSpeed;
 	public String altitude;
+	public String stravaId;
+	
+	/**
+	 * Display Field
+	 */
+	public String stravaStatus;
 	
 	public boolean isShowDetail = false;
 	

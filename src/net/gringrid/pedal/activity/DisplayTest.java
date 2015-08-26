@@ -117,10 +117,8 @@ public class DisplayTest extends Activity implements OnClickListener {
 	}
 
 	private boolean checkValid() {
-//		세로가 가로보다 길 수 없다.
-//		사각형이 되어야 한다.
-//		(가장 작은 index ~ 가장 큰 index 사이에 모든 것이 선택 되어야 함.)	
-		// TODO Auto-generated method stub
+		//	세로가 가로보다 길 수 없다.
+		//	사각형이 되어야 한다.
 		TextView id_tv_error = (TextView)findViewById(R.id.id_tv_error);
 		id_tv_error.setText("");	
 
@@ -204,8 +202,6 @@ public class DisplayTest extends Activity implements OnClickListener {
 	}
 	
 	private boolean isSquare(int[] matrixMin, int[] matrixMax){
-		boolean result = true;
-		
 		if ( matrixMin[INDEX] % mCols > matrixMin[REMAINDER] ){
 			return false;
 		}
@@ -213,7 +209,6 @@ public class DisplayTest extends Activity implements OnClickListener {
 		if ( matrixMax[INDEX] % mCols < matrixMax[REMAINDER] ){
 			return false;
 		}
-		
 		
 		for ( int i=matrixMin[INDEX]; i<matrixMax[INDEX]; i++ ){
 			if ( i % mCols >= matrixMin[REMAINDER] && i % mCols <= matrixMax[REMAINDER] ){
@@ -223,7 +218,7 @@ public class DisplayTest extends Activity implements OnClickListener {
 				}
 			}
 		}
-		return result;
+		return true;
 	}
 	
 }

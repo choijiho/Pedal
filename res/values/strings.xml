@@ -26,5 +26,6 @@
     <string name="menu_riding">Riding</string>
     <string name="menu_riding_list">Riding List</string>
     <string name="menu_setting">Setting</string>
+    <string name="menu_display_test">Display</string>
     <string name="colon">:</string>
 </resources>

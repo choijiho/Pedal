@@ -28,4 +28,6 @@
     <string name="menu_setting">Setting</string>
     <string name="menu_display_test">Display</string>
     <string name="colon">:</string>
+    <string name="error_not_square">selected region not square.</string>
+    <string name="error_width_short">width should be longer or equal height.</string>
 </resources>

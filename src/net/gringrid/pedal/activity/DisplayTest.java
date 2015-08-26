@@ -44,6 +44,11 @@ public class DisplayTest extends Activity implements OnClickListener {
 	TextView[] mCells = new TextView[mCellCount];
 	private int mWidth;
 	private int mHeight;
+	
+	final int INDEX = 0;
+	final int REMAINDER = 1;
+	final int QUATIENT = 2;
+	final int MATRIX_INFO_LENGTH = 3;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -116,10 +121,11 @@ public class DisplayTest extends Activity implements OnClickListener {
 //		사각형이 되어야 한다.
 //		(가장 작은 index ~ 가장 큰 index 사이에 모든 것이 선택 되어야 함.)	
 		// TODO Auto-generated method stub
-		
-		
-		int[] matrixMin = new int[3];
-		int[] matrixMax = new int[3];
+		TextView id_tv_error = (TextView)findViewById(R.id.id_tv_error);
+		id_tv_error.setText("");	
+
+		int[] matrixMin = new int[MATRIX_INFO_LENGTH];
+		int[] matrixMax = new int[MATRIX_INFO_LENGTH];
 		
 		getMatrixMin(matrixMin);
 		getMatrixMax(matrixMax);
@@ -132,21 +138,21 @@ public class DisplayTest extends Activity implements OnClickListener {
 			Log.d("jiho", "max : "+max);
 		}
 		
-		
-//		
-//		// 사각형여부 체크
-//		if ( !isSquare() ){
-//			Log.d("jiho", "not square");
-//		}else{
-//			Log.d("jiho", "good");
-//		}
+		Log.d("jiho", "width : "+(matrixMax[REMAINDER] - matrixMin[REMAINDER]));
+		Log.d("jiho", "height : "+(matrixMax[QUATIENT] - matrixMin[QUATIENT]));
+		// 사각형여부 체크
+		if ( !isSquare(matrixMin, matrixMax) ){
+			id_tv_error.setText(R.string.error_not_square);
+			return false;
+		}
 		
 		// 가로가 세로길이 비교
-		
-		Log.d("jiho", "getSelectedMinQuotient : "+getSelectedMinQuotient());
-		Log.d("jiho", "getSelectedMaxQuotient : "+getSelectedMaxQuotient());
-		
-
+		int width = matrixMax[REMAINDER] - matrixMin[REMAINDER];
+		int height = matrixMax[QUATIENT] - matrixMin[QUATIENT];
+		if ( width < height ){
+			id_tv_error.setText(R.string.error_width_short);
+			return false;
+		}
 		
 		return false;
 	}
@@ -169,9 +175,9 @@ public class DisplayTest extends Activity implements OnClickListener {
 				}
 			}
 		}
-		result[0] = minIdx;
-		result[1] = minRemainder;
-		result[2] = minQuotient;
+		result[INDEX] = minIdx;
+		result[REMAINDER] = minRemainder;
+		result[QUATIENT] = minQuotient;
 	}
 	
 	private void getMatrixMax(int[] result){
@@ -192,105 +198,25 @@ public class DisplayTest extends Activity implements OnClickListener {
 				}
 			}
 		}
-		result[0] = maxIdx;
-		result[1] = maxRemainder;
-		result[2] = maxQuotient;
+		result[INDEX] = maxIdx;
+		result[REMAINDER] = maxRemainder;
+		result[QUATIENT] = maxQuotient;
 	}
 	
-	private int getSelectedMinIndex(){
-		int minIdx = 0;
-		for ( int i=0; i<mCellCount; i++ ){
-			if ( (Boolean)mCells[i].getTag() ){
-				minIdx = i;
-				break;
-			}
-		}
-		return minIdx;
-	}
-
-	private int getSelectedMaxIndex(){
-		int maxIdx = 0;
-		for ( int i=mCellCount-1; i>0; i--){
-			if ( (Boolean)mCells[i].getTag() ){
-				maxIdx = i;
-				break;
-			}
-		}
-		return maxIdx;
-	}
-	
-	private int getSelectedMinRemainder(){
-		int minRemainder = mCols;
-		for ( int i=0; i<mCellCount; i++ ){
-			if ( (Boolean)mCells[i].getTag() ){
-if ( minRemainder > i % mCols ){
-					minRemainder = i % mCols;
-				}
-			}
-		}
-		return minRemainder;
-	}
-
-	private int getSelectedMaxRemainder(){
-		int maxRemainder = 0;
-		for ( int i=mCellCount-1; i>0; i--){
-			if ( (Boolean)mCells[i].getTag() ){
-				if ( maxRemainder < i % mCols ){
-					maxRemainder = i % mCols;
-				}
-			}
-		}
-		return maxRemainder; 
-	}
-	
-	private int getSelectedMinQuotient(){
-		int minQuotient = mCols;
-		for ( int i=0; i<mCellCount; i++ ){
-			if ( (Boolean)mCells[i].getTag() ){
-				if ( minQuotient > i / mCols ){
-					minQuotient = i / mCols;
-				}
-			}
-		}
-		return minQuotient;
-	}
-
-	private int getSelectedMaxQuotient(){
-		int maxQuotient = 0;
-		for ( int i=mCellCount-1; i>0; i--){
-			if ( (Boolean)mCells[i].getTag() ){
-				if ( maxQuotient < i / mCols ){
-					maxQuotient = i / mCols;
-				}
-			}
-		}
-		return maxQuotient; 
-	}
-	
-	private boolean isSquare(){
+	private boolean isSquare(int[] matrixMin, int[] matrixMax){
 		boolean result = true;
-		int minIdx = getSelectedMinIndex();
-		int maxIdx = getSelectedMaxIndex();
 		
-		int minCol = getSelectedMinRemainder();
-		int maxCol = getSelectedMaxRemainder();
-		
-		Log.d("jiho", "minIdx : "+minIdx);
-		Log.d("jiho", "maxIdx : "+maxIdx);
-		Log.d("jiho", "minCol : "+minCol);
-		Log.d("jiho", "maxCol : "+maxCol);
-
-		if ( minIdx % mCols > minCol ){
+		if ( matrixMin[INDEX] % mCols > matrixMin[REMAINDER] ){
 			return false;
 		}
 		
-		if ( maxIdx % mCols < maxCol ){
+		if ( matrixMax[INDEX] % mCols < matrixMax[REMAINDER] ){
 			return false;
 		}
 		
 		
-		for ( int i=minIdx; i<maxIdx; i++ ){
-			if ( i % mCols >= minCol && i % mCols <= maxCol ){
+		for ( int i=matrixMin[INDEX]; i<matrixMax[INDEX]; i++ ){
+			if ( i % mCols >= matrixMin[REMAINDER] && i % mCols <= matrixMax[REMAINDER] ){
 				if ( (Boolean)mCells[i].getTag() == false ){
 					Log.d("jiho", "i : "+i);
 					return false;
@@ -299,4 +225,5 @@ if ( minRemainder > i % mCols ){
 		}
 		return result;
 	}
+	
 }

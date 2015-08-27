@@ -27,6 +27,10 @@
     <string name="menu_riding_list">Riding List</string>
     <string name="menu_setting">Setting</string>
     <string name="menu_display_test">Display</string>
+    <string name="display_button_add">ADD</string>
+    <string name="display_button_clear">CLEAR</string>
+    <string name="display_button_clear_all">CLEAR ALL</string>
+
     <string name="colon">:</string>
     <string name="error_not_square">selected region not square.</string>
     <string name="error_width_short">width should be longer or equal height.</string>

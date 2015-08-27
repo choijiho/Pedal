@@ -1,14 +1,21 @@
 package net.gringrid.pedal.activity;
 
 import net.gringrid.pedal.R;
+import net.gringrid.pedal.SharedData;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.view.View.OnClickListener;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
@@ -44,16 +51,31 @@ public class DisplayTest extends Activity implements OnClickListener {
 	TextView[] mCells = new TextView[mCellCount];
 	private int mWidth;
 	private int mHeight;
+	private int mCellWidth;
+	private int mCellHeight;
 	
 	final int INDEX = 0;
 	final int REMAINDER = 1;
 	final int QUATIENT = 2;
 	final int MATRIX_INFO_LENGTH = 3;
 
+	private String[] mDisplayListRiding;
+	private String[] mDisplayListSystem;
+	private int[] mMatrixMin = new int[MATRIX_INFO_LENGTH];
+	private int[] mMatrixMax = new int[MATRIX_INFO_LENGTH];
+	
+	private int mFirstCell = Integer.MAX_VALUE;
+	
+	final int TAG_KEY_INDEX = 0;
+	final int TAG_KEY_IS_SELECTED = 1;
+	
+	boolean mIsSquareSelected = false;
+	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
+	    requestWindowFeature(Window.FEATURE_NO_TITLE);
 	    setContentView(R.layout.activity_display_test);	
 	    setDisplayInfo();
 	    init();
@@ -65,10 +87,11 @@ public class DisplayTest extends Activity implements OnClickListener {
 		Display display = getWindowManager().getDefaultDisplay(); 
 		mWidth = display.getWidth();
 		mHeight = display.getHeight();
+		mCellWidth = mWidth / mCols;
+		mCellHeight = mWidth / mRows;
 		
 		Log.d("jiho", "mWidth : "+mWidth);
 		Log.d("jiho", "mHeight : "+mHeight);
-		
 	}
 
 	private void init() {
@@ -76,26 +99,39 @@ public class DisplayTest extends Activity implements OnClickListener {
 		for ( int i=0; i<8; i++ ){
 			int id = getResources().getIdentifier("id_ll_"+i, "id", getPackageName());
 			for ( int j=0; j<8; j++ ){
+				TagData tagData = new TagData(cellIdx);
 				TextView tv = createCell();
 				tv.setText(String.valueOf(cellIdx));
+				tv.setTag(tagData);
 				mCells[cellIdx++] = tv;
 				((LinearLayout)findViewById(id)).addView(tv);
 			}
 		}
+		mDisplayListRiding = getResources().getStringArray(R.array.display_list_riding);
+		mDisplayListSystem = getResources().getStringArray(R.array.display_list_system);
 	}
 	
 	private void registEvent() {
-		View view = findViewById(R.id.id_tv_add);
-		view.setOnClickListener(this);
+		
+		int [] setClickEventViewsList = {
+				R.id.id_tv_add
+				,R.id.id_tv_clear
+				,R.id.id_tv_clear_all
+				};
+		for ( int viewId : setClickEventViewsList ){
+			View view = findViewById( viewId );
+			view.setOnClickListener(this);
+		}
+		
 	}
 
 	private TextView createCell(){
+		
 		TextView tv = new TextView(this);
-		tv.setLayoutParams(new LayoutParams(mWidth/8, mWidth/8));
+		tv.setLayoutParams(new LayoutParams(mCellWidth, mCellHeight));
 		tv.setGravity(Gravity.CENTER);
 		tv.setBackgroundDrawable(getResources().getDrawable(R.drawable.stroke));
 		tv.setOnClickListener(this);
-		tv.setTag(false);
 		return tv;
 	}
 
@@ -103,17 +139,78 @@ public class DisplayTest extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		if ( v.getId() == R.id.id_tv_add ){
 			if ( checkValid() ){
-				
+				showDisplayList();
 			}
+		}else if( v.getId() == R.id.id_tv_clear ){
+			clearCell();
+
+		}else if( v.getId() == R.id.id_tv_clear_all ){
+			clearCell();
 		}else{
-			if ( (Boolean)v.getTag() == false ){
-				v.setTag(true);
-				v.setBackgroundColor(Color.LTGRAY);
+			int idx =  ((TagData)v.getTag()).index;
+			if ( mFirstCell == Integer.MAX_VALUE ){
+				mFirstCell = idx;
+				selectCell(v);
+			}else if ( idx == mFirstCell ){
+				Log.d("jiho", "debug2");
+				clearCell();
 			}else{
-				v.setTag(false);
-				v.setBackgroundDrawable(getResources().getDrawable(R.drawable.stroke));
+				Log.d("jiho", "debug3");
+				selectCell(v);
+				selectSquare();
 			}
 		}
+	}
+
+	private void showDisplayList() {
+		Log.d("jiho", "showDisplayList");
+		AlertDialog.Builder builder = new Builder(this);
+		builder.setItems(mDisplayListRiding, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// 입력값 저장
+				String[] displayList = getResources().getStringArray(R.array.display_list_all);
+				SharedData.getInstance(DisplayTest.this).insertGlobalData(displayList[which]+"_min", mMatrixMin[INDEX]);	
+				SharedData.getInstance(DisplayTest.this).insertGlobalData(displayList[which]+"_max", mMatrixMax[INDEX]);	
+
+				// TODO 해당영역 세팅
+				int areaWidth = (mMatrixMax[REMAINDER] - mMatrixMin[REMAINDER] + 1) * mCellWidth;
+				int areaHeight = (mMatrixMax[QUATIENT] - mMatrixMin[QUATIENT] + 1) * mCellHeight;
+				int marginTop = mMatrixMin[QUATIENT] * mCellHeight;
+				int marginLeft = mMatrixMin[REMAINDER] * mCellWidth;
+				
+				FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(areaWidth, areaHeight);
+				params.setMargins(marginLeft, marginTop, 0, 0);
+
+				TextView tv = new TextView(DisplayTest.this);	
+				tv.setBackgroundColor(Color.CYAN);
+				tv.setLayoutParams(params);
+				addContentView(tv, params);
+				
+				clearCell();
+			}
+		});
+		builder.show();
+		
+	}
+	
+	private void clearCell(){
+		for ( TextView view : mCells ){
+			deSelectCell(view);
+		}
+		mFirstCell = Integer.MAX_VALUE;
+		mIsSquareSelected = false;
+	}
+
+	private void deSelectCell(View view){
+		((TagData)view.getTag()).isSelected = false;
+		view.setBackgroundDrawable(getResources().getDrawable(R.drawable.stroke));
+	}
+
+	private void selectCell(View view){
+		((TagData)view.getTag()).isSelected = true;
+		view.setBackgroundColor(Color.LTGRAY);
 	}
 
 	private boolean checkValid() {
@@ -122,37 +219,34 @@ public class DisplayTest extends Activity implements OnClickListener {
 		TextView id_tv_error = (TextView)findViewById(R.id.id_tv_error);
 		id_tv_error.setText("");	
 
-		int[] matrixMin = new int[MATRIX_INFO_LENGTH];
-		int[] matrixMax = new int[MATRIX_INFO_LENGTH];
+		getMatrixMin(mMatrixMin);
+		getMatrixMax(mMatrixMax);
 		
-		getMatrixMin(matrixMin);
-		getMatrixMax(matrixMax);
-		
-		for(int min : matrixMin){
+		for(int min : mMatrixMin){
 			Log.d("jiho", "min : "+min);
 		}
 		
-		for(int max : matrixMax){
+		for(int max : mMatrixMax){
 			Log.d("jiho", "max : "+max);
 		}
 		
-		Log.d("jiho", "width : "+(matrixMax[REMAINDER] - matrixMin[REMAINDER]));
-		Log.d("jiho", "height : "+(matrixMax[QUATIENT] - matrixMin[QUATIENT]));
+		Log.d("jiho", "width : "+(mMatrixMax[REMAINDER] - mMatrixMin[REMAINDER]));
+		Log.d("jiho", "height : "+(mMatrixMax[QUATIENT] - mMatrixMin[QUATIENT]));
 		// 사각형여부 체크
-		if ( !isSquare(matrixMin, matrixMax) ){
+		if ( !isSquare() ){
 			id_tv_error.setText(R.string.error_not_square);
 			return false;
 		}
 		
 		// 가로가 세로길이 비교
-		int width = matrixMax[REMAINDER] - matrixMin[REMAINDER];
-		int height = matrixMax[QUATIENT] - matrixMin[QUATIENT];
-		if ( width < height ){
+		int width = mMatrixMax[REMAINDER] - mMatrixMin[REMAINDER];
+		int length = mMatrixMax[QUATIENT] - mMatrixMin[QUATIENT];
+		if ( width < length ){
 			id_tv_error.setText(R.string.error_width_short);
 			return false;
 		}
 		
-		return false;
+		return true;
 	}
 	
 	private void getMatrixMin(int[] result){
@@ -161,7 +255,7 @@ public class DisplayTest extends Activity implements OnClickListener {
 		int minQuotient = mCols;
 		
 		for ( int i=0; i<mCellCount; i++ ){
-			if ( (Boolean)mCells[i].getTag() ){
+			if ( ((TagData)mCells[i].getTag()).isSelected ){
 				if ( minIdx == mCellCount ){
 					minIdx = i;
 				}
@@ -176,6 +270,9 @@ public class DisplayTest extends Activity implements OnClickListener {
 		result[INDEX] = minIdx;
 		result[REMAINDER] = minRemainder;
 		result[QUATIENT] = minQuotient;
+		Log.d("jiho", "min[INDEX] : "+result[INDEX]);
+		Log.d("jiho", "min[REMAINDER] : "+result[REMAINDER]);
+		Log.d("jiho", "min[QUATIENT] : "+result[QUATIENT]);
 	}
 	
 	private void getMatrixMax(int[] result){
@@ -184,7 +281,7 @@ public class DisplayTest extends Activity implements OnClickListener {
 		int maxQuotient = 0;
 		
 		for ( int i=mCellCount-1; i>0; i--){
-			if ( (Boolean)mCells[i].getTag() ){
+			if ( ((TagData)mCells[i].getTag()).isSelected ){
 				if ( maxIdx == -1 ){
 					maxIdx = i;
 				}
@@ -199,20 +296,39 @@ public class DisplayTest extends Activity implements OnClickListener {
 		result[INDEX] = maxIdx;
 		result[REMAINDER] = maxRemainder;
 		result[QUATIENT] = maxQuotient;
+		Log.d("jiho", "max[INDEX] : "+result[INDEX]);
+		Log.d("jiho", "max[REMAINDER] : "+result[REMAINDER]);
+		Log.d("jiho", "max[QUATIENT] : "+result[QUATIENT]);
 	}
-	
-	private boolean isSquare(int[] matrixMin, int[] matrixMax){
-		if ( matrixMin[INDEX] % mCols > matrixMin[REMAINDER] ){
+
+	private void selectSquare(){
+		
+		getMatrixMin(mMatrixMin);
+		getMatrixMax(mMatrixMax);
+		
+		int minIndex = mCols * mMatrixMin[QUATIENT] + mMatrixMin[REMAINDER];
+		int maxIndex = mCols * mMatrixMax[QUATIENT] + mMatrixMax[REMAINDER];
+		
+		for ( int i=minIndex; i<=maxIndex; i++ ){
+			if ( i % mCols >= mMatrixMin[REMAINDER] && i % mCols <= mMatrixMax[REMAINDER] ){
+				selectCell(mCells[i]);
+			}
+		}
+		mIsSquareSelected = true;
+	}
+
+	private boolean isSquare(){
+		if ( mMatrixMin[INDEX] % mCols > mMatrixMin[REMAINDER] ){
 			return false;
 		}
 		
-		if ( matrixMax[INDEX] % mCols < matrixMax[REMAINDER] ){
+		if ( mMatrixMax[INDEX] % mCols < mMatrixMax[REMAINDER] ){
 			return false;
 		}
 		
-		for ( int i=matrixMin[INDEX]; i<matrixMax[INDEX]; i++ ){
-			if ( i % mCols >= matrixMin[REMAINDER] && i % mCols <= matrixMax[REMAINDER] ){
-				if ( (Boolean)mCells[i].getTag() == false ){
+		for ( int i=mMatrixMin[INDEX]; i<mMatrixMax[INDEX]; i++ ){
+			if ( i % mCols >= mMatrixMin[REMAINDER] && i % mCols <= mMatrixMax[REMAINDER] ){
+				if ( ((TagData)mCells[i].getTag()).isSelected == false ){
 					Log.d("jiho", "i : "+i);
 					return false;
 				}
@@ -221,4 +337,12 @@ public class DisplayTest extends Activity implements OnClickListener {
 		return true;
 	}
 	
+	class TagData{
+		public TagData(int index) {
+			this.index = index;
+			this.isSelected = false;
+		}
+		public int index;
+		public boolean isSelected;
+	}
 }

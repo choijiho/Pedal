@@ -1,5 +1,8 @@
 package net.gringrid.pedal.activity;
 
+import java.util.ArrayList;
+import java.util.Vector;
+
 import net.gringrid.pedal.R;
 import net.gringrid.pedal.SharedData;
 import android.app.Activity;
@@ -60,7 +63,6 @@ public class DisplayTest extends Activity implements OnClickListener {
 	final int MATRIX_INFO_LENGTH = 3;
 
 	private String[] mDisplayListRiding;
-	private String[] mDisplayListSystem;
 	private int[] mMatrixMin = new int[MATRIX_INFO_LENGTH];
 	private int[] mMatrixMax = new int[MATRIX_INFO_LENGTH];
 	
@@ -68,8 +70,6 @@ public class DisplayTest extends Activity implements OnClickListener {
 	
 	final int TAG_KEY_INDEX = 0;
 	final int TAG_KEY_IS_SELECTED = 1;
-	
-	boolean mIsSquareSelected = false;
 	
 	/** Called when the activity is first created. */
 	@Override
@@ -83,15 +83,11 @@ public class DisplayTest extends Activity implements OnClickListener {
 	}
 
 	private void setDisplayInfo() {
-		// TODO Auto-generated method stub
 		Display display = getWindowManager().getDefaultDisplay(); 
 		mWidth = display.getWidth();
 		mHeight = display.getHeight();
 		mCellWidth = mWidth / mCols;
 		mCellHeight = mWidth / mRows;
-		
-		Log.d("jiho", "mWidth : "+mWidth);
-		Log.d("jiho", "mHeight : "+mHeight);
 	}
 
 	private void init() {
@@ -107,8 +103,7 @@ public class DisplayTest extends Activity implements OnClickListener {
 				((LinearLayout)findViewById(id)).addView(tv);
 			}
 		}
-		mDisplayListRiding = getResources().getStringArray(R.array.display_list_riding);
-		mDisplayListSystem = getResources().getStringArray(R.array.display_list_system);
+		mDisplayListRiding = getResources().getStringArray(R.array.display_list);
 	}
 	
 	private void registEvent() {
@@ -124,9 +119,13 @@ public class DisplayTest extends Activity implements OnClickListener {
 		}
 		
 	}
+	
+	private void refresh(){
+		finish();
+		startActivity(getIntent());
+	}
 
 	private TextView createCell(){
-		
 		TextView tv = new TextView(this);
 		tv.setLayoutParams(new LayoutParams(mCellWidth, mCellHeight));
 		tv.setGravity(Gravity.CENTER);
@@ -137,29 +136,72 @@ public class DisplayTest extends Activity implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
+		
+		((TextView)findViewById(R.id.id_tv_error)).setText("");
+		
 		if ( v.getId() == R.id.id_tv_add ){
 			if ( checkValid() ){
 				showDisplayList();
 			}
 		}else if( v.getId() == R.id.id_tv_clear ){
-			clearCell();
+			deSelectAllCell();
 
 		}else if( v.getId() == R.id.id_tv_clear_all ){
-			clearCell();
+			refresh();
 		}else{
 			int idx =  ((TagData)v.getTag()).index;
-			if ( mFirstCell == Integer.MAX_VALUE ){
+			boolean isUsed = ((TagData)v.getTag()).isUsed;
+			int selectedCount = getSelectedCellCount();
+			// 현재 선택된 Cell이 아무것도 없으면 선택(색상은 다르게)
+			// 현재 선택된 Cell이 하나일경우
+			//   선택된 Cell 을 다시 선택할 경우 선택해제
+			//   다른 cell을 선택한경우
+			//		기존에 세팅된 영역이면 아무 반응도 하지 않음 > 에러메시지 출력
+			//		기존에 선택된 cell 과 선택한 cell의 사각형 영역을 모두 선택
+			// 현재 선택된 cell 이 하나 이상일경우
+			// 		처음 선택한 cell을 제외하고 모두 해재 + 처음선택한 cell과 선택한 cell의 사각형 영역을 모두 선택
+			
+			if ( isUsed ){
+				((TextView)findViewById(R.id.id_tv_error)).setText(R.string.error_used_cell);	
+				return;
+			}
+			
+			// 선택된 cell이 없는경우
+			if ( selectedCount == 0 ){
+				selectCell(v);
 				mFirstCell = idx;
-				selectCell(v);
-			}else if ( idx == mFirstCell ){
-				Log.d("jiho", "debug2");
-				clearCell();
-			}else{
-				Log.d("jiho", "debug3");
-				selectCell(v);
-				selectSquare();
+
+			// 선택된 cell 이 하나 있는경우
+			}else if ( selectedCount == 1 ){
+				if ( idx ==  mFirstCell ){
+					deSelectCell(v);
+					mFirstCell = Integer.MAX_VALUE;
+				}else{
+					selectCell(v);
+					selectSquare();
+				}
+			// 이미 선택된된 사각영역이 있는경우
+			}else if ( selectedCount > 1 ){
+				if ( idx == mFirstCell ){
+					deSelectAllCell();
+				}else{
+					deSelectAllCell();
+					selectCell(mFirstCell);
+					selectCell(v);
+					selectSquare();
+				}
 			}
 		}
+	}
+	
+	private int getSelectedCellCount(){
+		int result = 0;
+		for ( TextView tv : mCells ){
+			if ( ((TagData)tv.getTag()).isSelected ){
+				result++;
+			}
+		}
+		return result;
 	}
 
 	private void showDisplayList() {
@@ -184,23 +226,22 @@ public class DisplayTest extends Activity implements OnClickListener {
 				params.setMargins(marginLeft, marginTop, 0, 0);
 
 				TextView tv = new TextView(DisplayTest.this);	
+				tv.setText(mDisplayListRiding[which]);
 				tv.setBackgroundColor(Color.CYAN);
 				tv.setLayoutParams(params);
 				addContentView(tv, params);
-				
-				clearCell();
+				setUsedCell();
+				deSelectAllCell();
 			}
 		});
 		builder.show();
 		
 	}
 	
-	private void clearCell(){
+	private void deSelectAllCell(){
 		for ( TextView view : mCells ){
 			deSelectCell(view);
 		}
-		mFirstCell = Integer.MAX_VALUE;
-		mIsSquareSelected = false;
 	}
 
 	private void deSelectCell(View view){
@@ -212,6 +253,23 @@ public class DisplayTest extends Activity implements OnClickListener {
 		((TagData)view.getTag()).isSelected = true;
 		view.setBackgroundColor(Color.LTGRAY);
 	}
+	
+	private void selectCell(int idx){
+		for ( TextView tv : mCells ){
+			if ( ((TagData)tv.getTag()).index == idx ){
+				selectCell(tv);
+				return;
+			}
+		}
+	}
+	
+	private void setUsedCell(){
+		for ( TextView tv : mCells ){
+			if ( ((TagData)tv.getTag()).isSelected ){
+				((TagData)tv.getTag()).isUsed = true;
+			}
+		}
+	}
 
 	private boolean checkValid() {
 		//	세로가 가로보다 길 수 없다.
@@ -221,14 +279,6 @@ public class DisplayTest extends Activity implements OnClickListener {
 
 		getMatrixMin(mMatrixMin);
 		getMatrixMax(mMatrixMax);
-		
-		for(int min : mMatrixMin){
-			Log.d("jiho", "min : "+min);
-		}
-		
-		for(int max : mMatrixMax){
-			Log.d("jiho", "max : "+max);
-		}
 		
 		Log.d("jiho", "width : "+(mMatrixMax[REMAINDER] - mMatrixMin[REMAINDER]));
 		Log.d("jiho", "height : "+(mMatrixMax[QUATIENT] - mMatrixMin[QUATIENT]));
@@ -302,7 +352,8 @@ public class DisplayTest extends Activity implements OnClickListener {
 	}
 
 	private void selectSquare(){
-		
+		Vector<Integer> squareTarget = new Vector<Integer>();
+
 		getMatrixMin(mMatrixMin);
 		getMatrixMax(mMatrixMax);
 		
@@ -311,10 +362,23 @@ public class DisplayTest extends Activity implements OnClickListener {
 		
 		for ( int i=minIndex; i<=maxIndex; i++ ){
 			if ( i % mCols >= mMatrixMin[REMAINDER] && i % mCols <= mMatrixMax[REMAINDER] ){
-				selectCell(mCells[i]);
+				squareTarget.add(i);
 			}
 		}
-		mIsSquareSelected = true;
+		
+		// 선택해야 하는 영역에 이미 사용된 영역이 있는지 체크
+		for ( Integer targetIdx : squareTarget ){
+			if ( ((TagData)mCells[targetIdx].getTag()).isUsed ){
+				deSelectAllCell();
+				selectCell(mCells[mFirstCell]);
+				((TextView)findViewById(R.id.id_tv_error)).setText(R.string.error_used_cell);
+				return;
+			}
+		}
+
+		for ( int targetIdx : squareTarget ){
+			selectCell(mCells[targetIdx]);
+		}
 	}
 
 	private boolean isSquare(){
@@ -341,8 +405,10 @@ public class DisplayTest extends Activity implements OnClickListener {
 		public TagData(int index) {
 			this.index = index;
 			this.isSelected = false;
+			this.isUsed = false;
 		}
 		public int index;
 		public boolean isSelected;
+		public boolean isUsed;
 	}
 }

@@ -9,15 +9,14 @@
         <item>FRI</item>
         <item>SAT</item>
     </string-array>
-    <string-array name="display_list_riding">
+    <string-array name="display_list">
 		<item>Current Speed</item>
 		<item>Aerage Speed</item>
 		<item>Maximum Speed</item>
         <item>Distance</item>
+        <item>Altitude</item>
         <item>Travel Time</item>
         <item>Riding Time</item>
-    </string-array>
-	<string-array name="display_list_system">
 		<item>Present Time</item>
 		<item>Date</item>
 		<item>Battery</item>

@@ -98,7 +98,11 @@
             android:theme="@style/CustomTheme"
             >
         </activity>
-        
+        <activity android:name=".activity.DisplayResult"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomTheme"
+            >
+        </activity>
         
     </application>
 

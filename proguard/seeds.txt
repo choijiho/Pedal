@@ -4994,9 +4994,8 @@ android.support.v4.widget.ViewDragHelper$Callback: ViewDragHelper$Callback()
 net.gringrid.pedal.BuildConfig: BuildConfig()
 net.gringrid.pedal.PedalApplication: PedalApplication()
 net.gringrid.pedal.R: R()
+net.gringrid.pedal.R$array: int display_list
 net.gringrid.pedal.R$array: int display_list_all
-net.gringrid.pedal.R$array: int display_list_riding
-net.gringrid.pedal.R$array: int display_list_system
 net.gringrid.pedal.R$array: int week
 net.gringrid.pedal.R$array: R$array()
 net.gringrid.pedal.R$attr: int id_iv_back_visibility
@@ -5078,6 +5077,7 @@ net.gringrid.pedal.R$id: int id_tv_current_altitude
 net.gringrid.pedal.R$id: int id_tv_current_speed
 net.gringrid.pedal.R$id: int id_tv_data
 net.gringrid.pedal.R$id: int id_tv_day_info
+net.gringrid.pedal.R$id: int id_tv_display_result
 net.gringrid.pedal.R$id: int id_tv_display_test
 net.gringrid.pedal.R$id: int id_tv_distance
 net.gringrid.pedal.R$id: int id_tv_error
@@ -5097,6 +5097,7 @@ net.gringrid.pedal.R$id: int id_tv_strava_status
 net.gringrid.pedal.R$id: int id_tv_time
 net.gringrid.pedal.R$id: int id_wv
 net.gringrid.pedal.R$id: R$id()
+net.gringrid.pedal.R$layout: int activity_display_result
 net.gringrid.pedal.R$layout: int activity_display_test
 net.gringrid.pedal.R$layout: int activity_expandable_ride_list
 net.gringrid.pedal.R$layout: int activity_gps_log_list
@@ -5134,9 +5135,11 @@ net.gringrid.pedal.R$string: int display_button_add
 net.gringrid.pedal.R$string: int display_button_clear
 net.gringrid.pedal.R$string: int display_button_clear_all
 net.gringrid.pedal.R$string: int error_not_square
+net.gringrid.pedal.R$string: int error_used_cell
 net.gringrid.pedal.R$string: int error_width_short
 net.gringrid.pedal.R$string: int gps_disabled
 net.gringrid.pedal.R$string: int hello_world
+net.gringrid.pedal.R$string: int menu_display_result
 net.gringrid.pedal.R$string: int menu_display_test
 net.gringrid.pedal.R$string: int menu_riding
 net.gringrid.pedal.R$string: int menu_riding_list
@@ -5167,6 +5170,8 @@ net.gringrid.pedal.TextClock
 net.gringrid.pedal.TextClock: TextClock(android.content.Context)
 net.gringrid.pedal.TextClock: TextClock(android.content.Context,android.util.AttributeSet)
 net.gringrid.pedal.TextClock: TextClock(android.content.Context,android.util.AttributeSet,int)
+net.gringrid.pedal.activity.DisplayResult
+net.gringrid.pedal.activity.DisplayResult: DisplayResult()
 net.gringrid.pedal.activity.DisplayTest
 net.gringrid.pedal.activity.DisplayTest: DisplayTest()
 net.gringrid.pedal.activity.DisplayTest: void onClick(android.view.View)

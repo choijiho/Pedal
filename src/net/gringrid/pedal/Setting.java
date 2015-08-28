@@ -89,6 +89,27 @@ public class Setting {
 		SharedData.getInstance(mContext).setGlobalData(SHARED_KEY_DISPLAY_BATTERY_MIN, 6);
 		SharedData.getInstance(mContext).setGlobalData(SHARED_KEY_DISPLAY_BATTERY_MAX, 7);
 		SharedData.getInstance(mContext).commit();
-		
 	}
+	
+	public String displayInfoTostring(){
+		String result = "";
+		result += "SHARED_KEY_DISPLAY_CUR_SPEED_MIN : "+SharedData.getInstance(mContext).getGlobalDataInt(SHARED_KEY_DISPLAY_CUR_SPEED_MIN);
+		result += "SHARED_KEY_DISPLAY_CUR_SPEED_MAX : "+SharedData.getInstance(mContext).getGlobalDataInt(SHARED_KEY_DISPLAY_CUR_SPEED_MAX);
+		result += "SHARED_KEY_DISPLAY_AVG_SPEED_MIN : "+SharedData.getInstance(mContext).getGlobalDataInt(SHARED_KEY_DISPLAY_AVG_SPEED_MIN);
+		result += "SHARED_KEY_DISPLAY_AVG_SPEED_MAX : "+SharedData.getInstance(mContext).getGlobalDataInt(SHARED_KEY_DISPLAY_AVG_SPEED_MAX);
+		result += "SHARED_KEY_DISPLAY_ALTITUDE_MIN : "+SharedData.getInstance(mContext).getGlobalDataInt(SHARED_KEY_DISPLAY_ALTITUDE_MIN);
+		result += "SHARED_KEY_DISPLAY_ALTITUDE_MAX : "+SharedData.getInstance(mContext).getGlobalDataInt(SHARED_KEY_DISPLAY_ALTITUDE_MAX);
+		result += "SHARED_KEY_DISPLAY_DISTANCE_MIN : "+SharedData.getInstance(mContext).getGlobalDataInt(SHARED_KEY_DISPLAY_DISTANCE_MIN);
+		result += "SHARED_KEY_DISPLAY_DISTANCE_MAX : "+SharedData.getInstance(mContext).getGlobalDataInt(SHARED_KEY_DISPLAY_DISTANCE_MAX);
+		result += "SHARED_KEY_DISPLAY_TRAVEL_TIME_MIN : "+SharedData.getInstance(mContext).getGlobalDataInt(SHARED_KEY_DISPLAY_TRAVEL_TIME_MIN);
+		result += "SHARED_KEY_DISPLAY_TRAVEL_TIME_MAX : "+SharedData.getInstance(mContext).getGlobalDataInt(SHARED_KEY_DISPLAY_TRAVEL_TIME_MAX);
+		result += "SHARED_KEY_DISPLAY_DATE_MIN : "+SharedData.getInstance(mContext).getGlobalDataInt(SHARED_KEY_DISPLAY_DATE_MIN);
+		result += "SHARED_KEY_DISPLAY_DATE_MAX : "+SharedData.getInstance(mContext).getGlobalDataInt(SHARED_KEY_DISPLAY_DATE_MAX);
+		result += "SHARED_KEY_DISPLAY_PRESENT_TIME_MIN : "+SharedData.getInstance(mContext).getGlobalDataInt(SHARED_KEY_DISPLAY_PRESENT_TIME_MIN);
+		result += "SHARED_KEY_DISPLAY_PRESENT_TIME_MAX : "+SharedData.getInstance(mContext).getGlobalDataInt(SHARED_KEY_DISPLAY_PRESENT_TIME_MAX);
+		result += "SHARED_KEY_DISPLAY_BATTERY_MIN : "+SharedData.getInstance(mContext).getGlobalDataInt(SHARED_KEY_DISPLAY_BATTERY_MIN);
+		result += "SHARED_KEY_DISPLAY_BATTERY_MAX : "+SharedData.getInstance(mContext).getGlobalDataInt(SHARED_KEY_DISPLAY_BATTERY_MAX);
+		return result;
+	}
+	
 }

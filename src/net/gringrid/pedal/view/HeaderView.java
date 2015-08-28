@@ -1,6 +1,7 @@
 package net.gringrid.pedal.view;
 
 import net.gringrid.pedal.R;
+import net.gringrid.pedal.activity.DisplayResult;
 import net.gringrid.pedal.activity.DisplayTest;
 import net.gringrid.pedal.activity.ExpandableRidingListActivity;
 import net.gringrid.pedal.activity.RidingActivity;
@@ -62,6 +63,7 @@ public class HeaderView extends FrameLayout implements OnClickListener{
 				,R.id.id_tv_riding_list
 				,R.id.id_tv_setting
 				,R.id.id_tv_display_test
+				,R.id.id_tv_display_result
 				};
 		for ( int viewId : setClickEventViewsList ){
 			View view = findViewById( viewId );
@@ -96,6 +98,11 @@ public class HeaderView extends FrameLayout implements OnClickListener{
 			
 		case R.id.id_tv_display_test:
 			intent = new Intent(mContext, DisplayTest.class);
+			break;
+			
+		case R.id.id_tv_display_result:
+			intent = new Intent(mContext, DisplayResult.class);
+			break;
 			
 		default:
 			break;

@@ -84,6 +84,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/menu_display_test" />
+            
+            <TextView
+                android:id="@+id/id_tv_display_result"
+                style="@style/menu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/menu_display_result" />
+            
         </LinearLayout>
     </RelativeLayout>
     <!-- Menu end -->

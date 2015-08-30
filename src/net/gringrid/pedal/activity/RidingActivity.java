@@ -322,8 +322,10 @@ public class RidingActivity extends Activity implements OnClickListener, Locatio
 	}
 	
 	private void reset(){
-		RidingInfoUtility ridingInfoUtility = new RidingInfoUtility(RidingActivity.this);
-		ridingInfoUtility.saveRidingInfo(mRideId);
+		if ( mRideId != Long.MAX_VALUE ){
+			RidingInfoUtility ridingInfoUtility = new RidingInfoUtility(RidingActivity.this);
+			ridingInfoUtility.saveRidingInfo(mRideId);
+		}
 		pausePedal();
 		stopCadenceAlarm();
 		mTravelTime = 0;

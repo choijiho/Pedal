@@ -3,14 +3,19 @@ package net.gringrid.pedal.activity;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import net.gringrid.pedal.DisplayInfoManager;
 import net.gringrid.pedal.R;
+import net.gringrid.pedal.Setting;
 import net.gringrid.pedal.SharedData;
+import net.gringrid.pedal.db.vo.DisplayVO;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -48,14 +53,9 @@ public class DisplayTest extends Activity implements OnClickListener {
 //		시간, 날짜 배터리는 세로 한줄 가능 나머지는 2줄 이상
 //	폰트크기
 //	정렬
-	final int mCols = 8;
-	final int mRows = 8;
-	final int mCellCount = mCols*mRows;
-	TextView[] mCells = new TextView[mCellCount];
-	private int mWidth;
-	private int mHeight;
-	private int mCellWidth;
-	private int mCellHeight;
+	int mCellCount;
+	TextView[] mCells;
+	DisplayInfoManager mDisplayInfoManager;
 	
 	final int INDEX = 0;
 	final int REMAINDER = 1;
@@ -70,6 +70,10 @@ public class DisplayTest extends Activity implements OnClickListener {
 	
 	final int TAG_KEY_INDEX = 0;
 	final int TAG_KEY_IS_SELECTED = 1;
+	private int mCellWidth;
+	private int mCellHeight;
+	private int mCols;
+	private int mRows;
 	
 	/** Called when the activity is first created. */
 	@Override
@@ -77,31 +81,29 @@ public class DisplayTest extends Activity implements OnClickListener {
 	    super.onCreate(savedInstanceState);
 	    requestWindowFeature(Window.FEATURE_NO_TITLE);
 	    setContentView(R.layout.activity_display_test);	
-	    setDisplayInfo();
 	    init();
 	    registEvent();
 	}
 
-	private void setDisplayInfo() {
-		Display display = getWindowManager().getDefaultDisplay(); 
-		mWidth = display.getWidth();
-		mHeight = display.getHeight();
-		mCellWidth = mWidth / mCols;
-		mCellHeight = mWidth / mRows;
-	}
-
 	private void init() {
-		int cellIdx = 0;
-		for ( int i=0; i<8; i++ ){
-			int id = getResources().getIdentifier("id_ll_"+i, "id", getPackageName());
-			for ( int j=0; j<8; j++ ){
-				TagData tagData = new TagData(cellIdx);
-				TextView tv = createCell();
-				tv.setText(String.valueOf(cellIdx));
-				tv.setTag(tagData);
-				mCells[cellIdx++] = tv;
-				((LinearLayout)findViewById(id)).addView(tv);
-			}
+		mDisplayInfoManager = DisplayInfoManager.getInstance(this);
+		mCols = DisplayInfoManager.CELL_COLS;
+		mRows = DisplayInfoManager.CELL_ROWS;
+		mCellCount = mCols * mRows;
+		mCells = new TextView[mCellCount];
+		
+		mCellWidth = mDisplayInfoManager.getCellWidth();
+		mCellHeight = mDisplayInfoManager.getCellHeight();
+		
+		for ( int i=0; i<mCellCount; i++ ){
+			TagData tagData = new TagData(i);
+			TextView tv = createCell();
+			tv.setText(String.valueOf(i));
+			tv.setTag(tagData);
+			mCells[i] = tv;
+
+			int id = getResources().getIdentifier("id_ll_"+(i/mCols), "id", getPackageName());
+			((LinearLayout)findViewById(id)).addView(tv);
 		}
 		mDisplayListRiding = getResources().getStringArray(R.array.display_list);
 	}
@@ -213,14 +215,21 @@ public class DisplayTest extends Activity implements OnClickListener {
 			public void onClick(DialogInterface dialog, int which) {
 				// 입력값 저장
 				String[] displayList = getResources().getStringArray(R.array.display_list_all);
-				SharedData.getInstance(DisplayTest.this).insertGlobalData(displayList[which]+"_min", mMatrixMin[INDEX]);	
-				SharedData.getInstance(DisplayTest.this).insertGlobalData(displayList[which]+"_max", mMatrixMax[INDEX]);	
-
+				
+				DisplayVO vo = new DisplayVO();
+				vo.itemName = displayList[which];
+				vo.minIndex = mMatrixMin[INDEX];
+				vo.maxIndex = mMatrixMax[INDEX];
+				
+				Setting setting = new Setting(DisplayTest.this);
+				setting.setDisplayInfo(vo);
+				
 				// TODO 해당영역 세팅
 				int areaWidth = (mMatrixMax[REMAINDER] - mMatrixMin[REMAINDER] + 1) * mCellWidth;
 				int areaHeight = (mMatrixMax[QUATIENT] - mMatrixMin[QUATIENT] + 1) * mCellHeight;
 				int marginTop = mMatrixMin[QUATIENT] * mCellHeight;
 				int marginLeft = mMatrixMin[REMAINDER] * mCellWidth;
+				
 				
 				FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(areaWidth, areaHeight);
 				params.setMargins(marginLeft, marginTop, 0, 0);
@@ -230,6 +239,7 @@ public class DisplayTest extends Activity implements OnClickListener {
 				tv.setBackgroundColor(Color.CYAN);
 				tv.setLayoutParams(params);
 				addContentView(tv, params);
+				
 				setUsedCell();
 				deSelectAllCell();
 			}

@@ -22,16 +22,16 @@
 		<item>Battery</item>
     </string-array>
 	<string-array name="display_list_all">
-		<item>display_cur_speed</item>
-		<item>display_avg_speed</item>
-		<item>display_max_speed</item>
-		<item>display_altitude</item>
-		<item>display_distance</item>
-		<item>display_travel_time</item>
-		<item>display_riding_time</item>
-		<item>display_present_time</item>
-		<item>display_date</item>
-		<item>display_battery</item>
+		<item>cur_speed</item>
+		<item>avg_speed</item>
+		<item>max_speed</item>
+		<item>altitude</item>
+		<item>distance</item>
+		<item>travel_time</item>
+		<item>riding_time</item>
+		<item>present_time</item>
+		<item>date</item>
+		<item>battery</item>
 	</string-array>
 </resources>
 

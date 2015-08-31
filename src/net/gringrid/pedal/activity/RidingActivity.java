@@ -145,6 +145,9 @@ public class RidingActivity extends Activity implements OnClickListener, Locatio
 	
 	private void loadSetting(){
 		mSetting = new Setting(this);
+		// TODO TEST 
+		mSetting.initSetting();
+		
 		if ( SharedData.getInstance(this).getGlobalDataBoolean(Setting.SHARED_KEY_INITIAL_SETTING) == false ){
 			mSetting.initSetting();
 		}

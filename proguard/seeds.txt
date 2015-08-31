@@ -5172,6 +5172,7 @@ net.gringrid.pedal.TextClock: TextClock(android.content.Context,android.util.Att
 net.gringrid.pedal.TextClock: TextClock(android.content.Context,android.util.AttributeSet,int)
 net.gringrid.pedal.activity.DisplayResult
 net.gringrid.pedal.activity.DisplayResult: DisplayResult()
+net.gringrid.pedal.activity.DisplayResult: void onClick(android.view.View)
 net.gringrid.pedal.activity.DisplayTest
 net.gringrid.pedal.activity.DisplayTest: DisplayTest()
 net.gringrid.pedal.activity.DisplayTest: void onClick(android.view.View)
@@ -5200,6 +5201,7 @@ net.gringrid.pedal.activity.StravaAPITestActivity: void onClick(android.view.Vie
 net.gringrid.pedal.db.AbstractMasterDao: AbstractMasterDao()
 net.gringrid.pedal.db.GpsLogDao: GpsLogDao()
 net.gringrid.pedal.db.RideDao: RideDao()
+net.gringrid.pedal.db.vo.DisplayVO: DisplayVO()
 net.gringrid.pedal.db.vo.GpsLogVO: GpsLogVO()
 net.gringrid.pedal.db.vo.RideVO: RideVO()
 net.gringrid.pedal.view.HeaderView

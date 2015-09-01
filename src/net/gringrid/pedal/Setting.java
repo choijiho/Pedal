@@ -1,5 +1,7 @@
 package net.gringrid.pedal;
 
+import java.lang.Character.UnicodeBlock;
+
 import net.gringrid.pedal.db.vo.DisplayVO;
 import android.content.Context;
 import android.util.Log;
@@ -31,6 +33,9 @@ public class Setting {
 	public static final String SHARED_KEY_DISPLAY_ITEM_FONT_SIZE = "display_item_font_size";
 	public static final String SHARED_KEY_DISPLAY_UNIT_FONT_SIZE = "display_unit_font_size";
 	
+	private final int DEFAULT_TITLE_FONT_SIZE = 13;
+	private final int DEFAULT_ITEM_FONT_SIZE = 20;
+	private final int DEFAULT_UNIT_FONT_SIZE = 11;
 	
 //	public static final String SHARED_KEY_DISPLAY_CUR_SPEED_MIN		= "display_cur_speed_min";
 //	public static final String SHARED_KEY_DISPLAY_CUR_SPEED_MAX 	= "display_cur_speed_max";
@@ -159,14 +164,14 @@ public class Setting {
 		return result;
 	}
 	
-	public void setDisplayInfo(DisplayVO info){
-		String suffix = "_"+info.itemName;
-		SharedData.getInstance(mContext).setGlobalData(SHARED_KEY_DISPLAY_ITEM_NAME+suffix, info.itemName);
-		SharedData.getInstance(mContext).setGlobalData(SHARED_KEY_DISPLAY_MIN_INDEX+suffix, info.minIndex);
-		SharedData.getInstance(mContext).setGlobalData(SHARED_KEY_DISPLAY_MAX_INDEX+suffix, info.maxIndex);
-		SharedData.getInstance(mContext).setGlobalData(SHARED_KEY_DISPLAY_TITLE_FONT_SIZE+suffix, info.titleFontSize);
-		SharedData.getInstance(mContext).setGlobalData(SHARED_KEY_DISPLAY_ITEM_FONT_SIZE+suffix, info.itemFontSize);
-		SharedData.getInstance(mContext).setGlobalData(SHARED_KEY_DISPLAY_UNIT_FONT_SIZE+suffix, info.unitFontSize);
+	public void setDisplayInfo(DisplayVO item){
+		String suffix = "_"+item.itemName;
+		SharedData.getInstance(mContext).setGlobalData(SHARED_KEY_DISPLAY_ITEM_NAME+suffix, item.itemName);
+		SharedData.getInstance(mContext).setGlobalData(SHARED_KEY_DISPLAY_MIN_INDEX+suffix, item.minIndex);
+		SharedData.getInstance(mContext).setGlobalData(SHARED_KEY_DISPLAY_MAX_INDEX+suffix, item.maxIndex);
+		SharedData.getInstance(mContext).setGlobalData(SHARED_KEY_DISPLAY_TITLE_FONT_SIZE+suffix, item.titleFontSize);
+		SharedData.getInstance(mContext).setGlobalData(SHARED_KEY_DISPLAY_ITEM_FONT_SIZE+suffix, item.itemFontSize);
+		SharedData.getInstance(mContext).setGlobalData(SHARED_KEY_DISPLAY_UNIT_FONT_SIZE+suffix, item.unitFontSize);
 		SharedData.getInstance(mContext).commit();
 	}
 	
@@ -201,4 +206,13 @@ public class Setting {
 		}
 	}
 	
+	public void clearDisplayInfo(DisplayVO item){
+		item.minIndex = 0;
+		item.maxIndex = 0;
+		item.titleFontSize = DEFAULT_TITLE_FONT_SIZE;
+		item.itemFontSize = DEFAULT_ITEM_FONT_SIZE;
+		item.unitFontSize = DEFAULT_UNIT_FONT_SIZE;
+		
+		setDisplayInfo(item);
+	}
 }

@@ -14,6 +14,8 @@ public class DisplayVO {
 	public int left;
 	public int right;
 	public int bottom;
+	
+	public boolean isSelected;
 
 	public void debug(){
 		Log.d("jiho", itemName+" : ("+minIndex+", "+maxIndex+")");

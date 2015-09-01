@@ -5030,6 +5030,8 @@ net.gringrid.pedal.R$drawable: int ic_settings_white_48dp
 net.gringrid.pedal.R$drawable: int ic_stop_white_48dp
 net.gringrid.pedal.R$drawable: int ic_volume_up_white_48dp
 net.gringrid.pedal.R$drawable: int ic_watch_white_24dp
+net.gringrid.pedal.R$drawable: int item_selected
+net.gringrid.pedal.R$drawable: int item_unselected
 net.gringrid.pedal.R$drawable: int stroke
 net.gringrid.pedal.R$drawable: R$drawable()
 net.gringrid.pedal.R$id: int id_bt_check_upload_status

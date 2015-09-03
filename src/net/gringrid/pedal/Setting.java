@@ -97,7 +97,7 @@ public class Setting {
 	
 	public void displayInitSetting(){
 		
-		String[] displayList = mContext.getResources().getStringArray(R.array.display_list_all);
+		String[] displayList = mContext.getResources().getStringArray(R.array.riding_infomation_list);
 		
 		for ( String item : displayList ){
 			DisplayVO vo = new DisplayVO();
@@ -197,7 +197,7 @@ public class Setting {
 	
 	public void debugDisplayInfo(){
 		DisplayVO vo = null;
-		String[] list = mContext.getResources().getStringArray(R.array.display_list);
+		String[] list = mContext.getResources().getStringArray(R.array.riding_infomation_list);
 		for ( String item : list ){
 			vo = getDisplayInfo(item);
 //			Log.d("jiho", vo.itemName+" : ("+vo.minIndex+", "+vo.maxIndex+")");

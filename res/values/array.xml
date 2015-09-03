@@ -9,7 +9,7 @@
         <item>FRI</item>
         <item>SAT</item>
     </string-array>
-    <string-array name="display_list">
+    <string-array name="riding_infomation_list">
 		<item>Current Speed</item>
 		<item>Aerage Speed</item>
 		<item>Maximum Speed</item>
@@ -21,17 +21,6 @@
 		<item>Date</item>
 		<item>Battery</item>
     </string-array>
-	<string-array name="display_list_all">
-		<item>cur_speed</item>
-		<item>avg_speed</item>
-		<item>max_speed</item>
-		<item>altitude</item>
-		<item>distance</item>
-		<item>travel_time</item>
-		<item>riding_time</item>
-		<item>present_time</item>
-		<item>date</item>
-		<item>battery</item>
-	</string-array>
+
 </resources>
 

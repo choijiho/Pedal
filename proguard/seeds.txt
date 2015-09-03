@@ -4994,8 +4994,7 @@ android.support.v4.widget.ViewDragHelper$Callback: ViewDragHelper$Callback()
 net.gringrid.pedal.BuildConfig: BuildConfig()
 net.gringrid.pedal.PedalApplication: PedalApplication()
 net.gringrid.pedal.R: R()
-net.gringrid.pedal.R$array: int display_list
-net.gringrid.pedal.R$array: int display_list_all
+net.gringrid.pedal.R$array: int riding_infomation_list
 net.gringrid.pedal.R$array: int week
 net.gringrid.pedal.R$array: R$array()
 net.gringrid.pedal.R$attr: int id_iv_back_visibility
@@ -5045,6 +5044,7 @@ net.gringrid.pedal.R$id: int id_chk_save_gps
 net.gringrid.pedal.R$id: int id_cm
 net.gringrid.pedal.R$id: int id_dc
 net.gringrid.pedal.R$id: int id_fl_base
+net.gringrid.pedal.R$id: int id_fl_riding_info_area
 net.gringrid.pedal.R$id: int id_iv_back
 net.gringrid.pedal.R$id: int id_iv_cadence_alarm
 net.gringrid.pedal.R$id: int id_iv_gps_enable

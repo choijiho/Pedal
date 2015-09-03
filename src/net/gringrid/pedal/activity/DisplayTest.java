@@ -105,7 +105,7 @@ public class DisplayTest extends Activity implements OnClickListener {
 			int id = getResources().getIdentifier("id_ll_"+(i/mCols), "id", getPackageName());
 			((LinearLayout)findViewById(id)).addView(tv);
 		}
-		mDisplayListRiding = getResources().getStringArray(R.array.display_list);
+		mDisplayListRiding = getResources().getStringArray(R.array.riding_infomation_list);
 	}
 	
 	private void registEvent() {
@@ -214,7 +214,7 @@ public class DisplayTest extends Activity implements OnClickListener {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				// 입력값 저장
-				String[] displayList = getResources().getStringArray(R.array.display_list_all);
+				String[] displayList = getResources().getStringArray(R.array.riding_infomation_list);
 				
 				DisplayVO vo = new DisplayVO();
 				vo.itemName = displayList[which];

@@ -1,5 +1,10 @@
 package net.gringrid.pedal.activity;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Vector;
 
 import net.gringrid.pedal.DisplayInfoManager;
@@ -25,22 +30,33 @@ import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
 
 public class DisplayResult extends Activity implements OnClickListener{
-	
-	private Vector<TextView> mDisplayItems;
-	private FrameLayout id_fl_base;
+	/**
+	 * Riding information items
+	 */
+	private Vector<TextView> mRidingInfoViews;
+	/**
+	 * Riding information display area
+	 */
+	private FrameLayout id_fl_riding_info_area;
+
+	/**************************************************************************
+	 * CELL Values
+	 *************************************************************************/
 	private int mCellCount = DisplayInfoManager.CELL_COLS * DisplayInfoManager.CELL_ROWS;
 	private TextView[] mCells;
-	private OnClickListener cellListener;
-	private int mFirstCell = Integer.MAX_VALUE;
+	private OnClickListener cellOnClickListener;
+	private int mFirstSelectedCell = Integer.MAX_VALUE;
+	private int mCols;
+	private int mRows;
+	
+	
 	final int INDEX = 0;
-	final int REMAINDER = 1;
-	final int QUATIENT = 2;
+	final int LEFT_MARGIN  = 1;
+	final int TOP_MARGIN = 2;
 	final int MATRIX_INFO_LENGTH = 3;
 	private int[] mMatrixMin = new int[MATRIX_INFO_LENGTH];
 	private int[] mMatrixMax = new int[MATRIX_INFO_LENGTH];
-	private int mCols;
-	private int mRows;
-	private String[] mDisplayListRiding;
+	private String[] mRidingInfoList;
 	
 
 	/** Called when the activity is first created. */
@@ -54,6 +70,68 @@ public class DisplayResult extends Activity implements OnClickListener{
 	    executeDisplay();
 	}
 	
+
+	private void init() {
+		mRidingInfoViews = new Vector<TextView>();
+		mRidingInfoList = getResources().getStringArray(R.array.riding_infomation_list);
+		id_fl_riding_info_area = (FrameLayout)findViewById(R.id.id_fl_riding_info_area);
+		id_fl_riding_info_area.setLayoutParams(new LinearLayout.LayoutParams(DisplayInfoManager.getInstance(this).width, DisplayInfoManager.getInstance(this).width));
+		mCells = new TextView[mCellCount];
+		mCols = DisplayInfoManager.CELL_COLS;
+		mRows = DisplayInfoManager.CELL_ROWS;
+		
+		cellOnClickListener = new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				((TextView)findViewById(R.id.id_tv_error)).setText("");
+				TagData tagData = (TagData)v.getTag();
+				int idx =  tagData.index;
+				boolean isUsed = tagData.isUsed;
+				int selectedCount = getSelectedCellCount();
+				
+				
+				// 이미 사용되고 있는 cell인경우 
+				if ( isUsed ){
+					((TextView)findViewById(R.id.id_tv_error)).setText(R.string.error_used_cell);	
+					return;
+				}
+
+				// 선택된 cell이 없는경우
+				if ( selectedCount == 0 ){
+					// TODO 색상 별도 표시
+					selectCell(v);
+					mFirstSelectedCell = idx;
+
+				// 선택된 cell 이 하나 있는경우
+				}else if ( selectedCount == 1 ){
+					if ( idx ==  mFirstSelectedCell ){
+						deSelectCell(v);
+						mFirstSelectedCell = Integer.MAX_VALUE;
+					}else{
+						// 첫번째 cell과 선택한 Cell의 사각형 영역 선택
+						selectCell(v);
+						selectSquare();
+					}
+
+				// 이미 선택된 사각영역이 있는경우
+				}else if ( selectedCount > 1 ){
+					// 첫번째 선택한 cell 일경우 전부 선택 해제
+					if ( idx == mFirstSelectedCell ){
+						deSelectAllCell();
+					}else{
+					// 첫번째 cell과 선택한 cell의 사각형 영역 선택
+						deSelectAllCell();
+						selectCell(mFirstSelectedCell);
+						selectCell(v);
+						selectSquare();
+					}
+				}
+			}
+		};
+	}
+
 	private void registEvent() {
 		int [] setClickEventViewsList = {
 				R.id.id_tv_add
@@ -64,87 +142,27 @@ public class DisplayResult extends Activity implements OnClickListener{
 			View view = findViewById( viewId );
 			view.setOnClickListener(this);
 		}
-		
-	}
-
-	private void init() {
-		mDisplayItems = new Vector<TextView>();
-		mDisplayListRiding = getResources().getStringArray(R.array.display_list);
-		id_fl_base = (FrameLayout)findViewById(R.id.id_fl_base);
-		id_fl_base.setLayoutParams(new LinearLayout.LayoutParams(DisplayInfoManager.getInstance(this).width, DisplayInfoManager.getInstance(this).width));
-		mCells = new TextView[mCellCount];
-		mCols = DisplayInfoManager.CELL_COLS;
-		mRows = DisplayInfoManager.CELL_ROWS;
-		
-		cellListener = new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				((TextView)findViewById(R.id.id_tv_error)).setText("");
-				int idx =  ((TagData)v.getTag()).index;
-				boolean isUsed = ((TagData)v.getTag()).isUsed;
-				int selectedCount = getSelectedCellCount();
-				// 현재 선택된 Cell이 아무것도 없으면 선택(색상은 다르게)
-				// 현재 선택된 Cell이 하나일경우
-				//   선택된 Cell 을 다시 선택할 경우 선택해제
-				//   다른 cell을 선택한경우
-				//		기존에 세팅된 영역이면 아무 반응도 하지 않음 > 에러메시지 출력
-				//		기존에 선택된 cell 과 선택한 cell의 사각형 영역을 모두 선택
-				// 현재 선택된 cell 이 하나 이상일경우
-				// 		처음 선택한 cell을 제외하고 모두 해재 + 처음선택한 cell과 선택한 cell의 사각형 영역을 모두 선택
-				
-				if ( isUsed ){
-					((TextView)findViewById(R.id.id_tv_error)).setText(R.string.error_used_cell);	
-					return;
-				}
-				
-				// 선택된 cell이 없는경우
-				if ( selectedCount == 0 ){
-					selectCell(v);
-					mFirstCell = idx;
-
-				// 선택된 cell 이 하나 있는경우
-				}else if ( selectedCount == 1 ){
-					if ( idx ==  mFirstCell ){
-						deSelectCell(v);
-						mFirstCell = Integer.MAX_VALUE;
-					}else{
-						selectCell(v);
-						selectSquare();
-					}
-				// 이미 선택된된 사각영역이 있는경우
-				}else if ( selectedCount > 1 ){
-					if ( idx == mFirstCell ){
-						deSelectAllCell();
-					}else{
-						deSelectAllCell();
-						selectCell(mFirstCell);
-						selectCell(v);
-						selectSquare();
-					}
-				}
-			}
-		};
 	}
 	
 	private void executeDisplay(){
-		// Base Line을 그린다.
-		drawGrid();
+		// Base cell을 그린다.
+		drawBaseCells();
 		
-		// 이미 세팅된 Item을 그린다.
+		// Riding information을 그린다. 
 		DisplayVO vo = null;
 		Setting setting = new Setting(this);
-		String[] list = getResources().getStringArray(R.array.display_list_all);
+		String[] list = getResources().getStringArray(R.array.riding_infomation_list);
 		setting.debugDisplayInfo();
 
 		for ( String item : list ){
 			vo = setting.getDisplayInfo(item);
-			drawItems(vo);
+			drawRidingItems(vo);
+			// TODO DEBUG
 			vo.debug();
 		}
 	}
 	
-	private void drawGrid() {
+	private void drawBaseCells() {
 		int cellWidth = DisplayInfoManager.getInstance(this).getCellWidth();
 		int cellHeight = DisplayInfoManager.getInstance(this).getCellHeight();
 
@@ -153,7 +171,7 @@ public class DisplayResult extends Activity implements OnClickListener{
 			TextView tv = createCell(i);
 			tv.setText(String.valueOf(i));
 			tv.setTag(tagData);
-			tv.setOnClickListener(cellListener);
+			tv.setOnClickListener(cellOnClickListener);
 			mCells[i] = tv;
 			
 			int leftMargin = cellWidth * (i % DisplayInfoManager.CELL_COLS);
@@ -165,7 +183,7 @@ public class DisplayResult extends Activity implements OnClickListener{
 		}
 	}
 
-	private void drawItems(DisplayVO vo){
+	private void drawRidingItems(DisplayVO vo){
 		if ( vo.minIndex == vo.maxIndex ){
 			return;
 		}
@@ -187,7 +205,7 @@ public class DisplayResult extends Activity implements OnClickListener{
 				itemToggle(v);
 			}
 		});
-		mDisplayItems.add(tv);
+		mRidingInfoViews.add(tv);
 		addContentView(tv, params);
 		// 사용된 셀로 설정
 		setUsedValue(vo.minIndex, vo.maxIndex, true);
@@ -205,7 +223,7 @@ public class DisplayResult extends Activity implements OnClickListener{
 		DisplayVO vo = (DisplayVO)v.getTag();
 		boolean isActionSelect = !vo.isSelected;
 
-		for ( TextView innerTv : mDisplayItems ){
+		for ( TextView innerTv : mRidingInfoViews ){
 			DisplayVO innerVO = (DisplayVO)innerTv.getTag();
 			innerVO.isSelected = false;
 			innerTv.setBackgroundDrawable(getResources().getDrawable(R.drawable.item_unselected));
@@ -236,12 +254,12 @@ public class DisplayResult extends Activity implements OnClickListener{
 	private void showDisplayList() {
 		Log.d("jiho", "showDisplayList");
 		AlertDialog.Builder builder = new Builder(this);
-		builder.setItems(mDisplayListRiding, new DialogInterface.OnClickListener() {
+		builder.setItems(mRidingInfoList, new DialogInterface.OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				// 입력값 저장
-				String[] displayList = getResources().getStringArray(R.array.display_list_all);
+				String[] displayList = getResources().getStringArray(R.array.riding_infomation_list);
 				
 				DisplayVO vo = new DisplayVO();
 				vo.itemName = displayList[which];
@@ -251,9 +269,9 @@ public class DisplayResult extends Activity implements OnClickListener{
 				Setting setting = new Setting(DisplayResult.this);
 				setting.setDisplayInfo(vo);
 				vo = setting.getDisplayInfo(vo.itemName);
-				drawItems(vo);
+				drawRidingItems(vo);
 				setUsedValue(vo.minIndex, vo.maxIndex, true);
-				mFirstCell = Integer.MAX_VALUE;
+				mFirstSelectedCell = Integer.MAX_VALUE;
 				deSelectAllCell();
 			}
 		});
@@ -270,12 +288,12 @@ public class DisplayResult extends Activity implements OnClickListener{
 		getMatrixMin(mMatrixMin);
 		getMatrixMax(mMatrixMax);
 		
-		Log.d("jiho", "width : "+(mMatrixMax[REMAINDER] - mMatrixMin[REMAINDER]));
-		Log.d("jiho", "height : "+(mMatrixMax[QUATIENT] - mMatrixMin[QUATIENT]));
+		Log.d("jiho", "width : "+(mMatrixMax[LEFT_MARGIN] - mMatrixMin[LEFT_MARGIN]));
+		Log.d("jiho", "height : "+(mMatrixMax[TOP_MARGIN] - mMatrixMin[TOP_MARGIN]));
 		
 		// 가로가 세로길이 비교
-		int width = mMatrixMax[REMAINDER] - mMatrixMin[REMAINDER];
-		int length = mMatrixMax[QUATIENT] - mMatrixMin[QUATIENT];
+		int width = mMatrixMax[LEFT_MARGIN] - mMatrixMin[LEFT_MARGIN];
+		int length = mMatrixMax[TOP_MARGIN] - mMatrixMin[TOP_MARGIN];
 		if ( width < length ){
 			id_tv_error.setText(R.string.error_width_short);
 			return false;
@@ -285,7 +303,7 @@ public class DisplayResult extends Activity implements OnClickListener{
 	}
 	
 	private void deleteItem() {
-		for ( TextView tv : mDisplayItems ){
+		for ( TextView tv : mRidingInfoViews ){
 			DisplayVO vo = (DisplayVO)tv.getTag();
 			if ( vo.isSelected ){
 				((ViewGroup)tv.getParent()).removeView(tv);
@@ -335,16 +353,19 @@ public class DisplayResult extends Activity implements OnClickListener{
 	}
 
 	private void selectSquare(){
+		// TODO DEBUG
+		getCellInfo();
+		
 		Vector<Integer> squareTarget = new Vector<Integer>();
 
 		getMatrixMin(mMatrixMin);
 		getMatrixMax(mMatrixMax);
 		
-		int minIndex = mCols * mMatrixMin[QUATIENT] + mMatrixMin[REMAINDER];
-		int maxIndex = mCols * mMatrixMax[QUATIENT] + mMatrixMax[REMAINDER];
+		int minIndex = mCols * mMatrixMin[TOP_MARGIN] + mMatrixMin[LEFT_MARGIN];
+		int maxIndex = mCols * mMatrixMax[TOP_MARGIN] + mMatrixMax[LEFT_MARGIN];
 		
 		for ( int i=minIndex; i<=maxIndex; i++ ){
-			if ( i % mCols >= mMatrixMin[REMAINDER] && i % mCols <= mMatrixMax[REMAINDER] ){
+			if ( i % mCols >= mMatrixMin[LEFT_MARGIN] && i % mCols <= mMatrixMax[LEFT_MARGIN] ){
 				squareTarget.add(i);
 			}
 		}
@@ -353,7 +374,7 @@ public class DisplayResult extends Activity implements OnClickListener{
 		for ( Integer targetIdx : squareTarget ){
 			if ( ((TagData)mCells[targetIdx].getTag()).isUsed ){
 				deSelectAllCell();
-				selectCell(mCells[mFirstCell]);
+				selectCell(mCells[mFirstSelectedCell]);
 				((TextView)findViewById(R.id.id_tv_error)).setText(R.string.error_used_cell);
 				return;
 			}
@@ -381,31 +402,50 @@ public class DisplayResult extends Activity implements OnClickListener{
 			}
 		}
 	}
-	
+
+	private void getCellInfo(){
+
+		String selectedIndex = "";
+		String usedIndex = "";
+
+		for ( TextView tv : mCells ){
+			TagData tagData = (TagData)tv.getTag();
+			if ( tagData.isSelected ){
+				selectedIndex += "["+tagData.index+"]";
+			}
+			if ( tagData.isUsed){
+				usedIndex += "["+tagData.index+"]";
+			}
+		}
+
+		Log.d("jiho", "SELECTED CELL INDEX : "+selectedIndex);
+		Log.d("jiho", "USED CELL INDEX : "+usedIndex);
+	}
+
 	private void getMatrixMin(int[] result){
 		int minIdx = mCellCount;
-		int minRemainder = mCols;
-		int minQuotient = mCols;
+		int minLeftMargin = mCols;
+		int minTopMargin = mRows;
 		
 		for ( int i=0; i<mCellCount; i++ ){
 			if ( ((TagData)mCells[i].getTag()).isSelected ){
 				if ( minIdx == mCellCount ){
 					minIdx = i;
 				}
-				if ( minRemainder > i % mCols ){
-					minRemainder = i % mCols;
+				if ( minLeftMargin > i % mCols ){
+					minLeftMargin = i % mCols;
 				}
-				if ( minQuotient > i / mCols ){
-					minQuotient = i / mCols;
+				if ( minTopMargin > i / mRows){
+					minTopMargin = i / mRows;
 				}
 			}
 		}
 		result[INDEX] = minIdx;
-		result[REMAINDER] = minRemainder;
-		result[QUATIENT] = minQuotient;
+		result[LEFT_MARGIN] = minLeftMargin;
+		result[TOP_MARGIN] = minTopMargin;
 		Log.d("jiho", "min[INDEX] : "+result[INDEX]);
-		Log.d("jiho", "min[REMAINDER] : "+result[REMAINDER]);
-		Log.d("jiho", "min[QUATIENT] : "+result[QUATIENT]);
+		Log.d("jiho", "min[LEFT_MARGIN] : "+result[LEFT_MARGIN]);
+		Log.d("jiho", "min[TOP_MARGIN] : "+result[TOP_MARGIN]);
 	}
 	
 	private void getMatrixMax(int[] result){
@@ -421,17 +461,17 @@ public class DisplayResult extends Activity implements OnClickListener{
 				if ( maxRemainder < i % mCols ){
 					maxRemainder = i % mCols;
 				}
-				if ( maxQuotient < i / mCols ){
-					maxQuotient = i / mCols;
+				if ( maxQuotient < i / mRows ){
+					maxQuotient = i / mRows;
 				}
 			}
 		}
 		result[INDEX] = maxIdx;
-		result[REMAINDER] = maxRemainder;
-		result[QUATIENT] = maxQuotient;
+		result[LEFT_MARGIN] = maxRemainder;
+		result[TOP_MARGIN] = maxQuotient;
 		Log.d("jiho", "max[INDEX] : "+result[INDEX]);
-		Log.d("jiho", "max[REMAINDER] : "+result[REMAINDER]);
-		Log.d("jiho", "max[QUATIENT] : "+result[QUATIENT]);
+		Log.d("jiho", "max[LEFT_MARGIN] : "+result[LEFT_MARGIN]);
+		Log.d("jiho", "max[TOP_MARGIN] : "+result[TOP_MARGIN]);
 	}
 	
 	class TagData{

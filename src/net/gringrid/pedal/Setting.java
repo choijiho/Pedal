@@ -5,6 +5,7 @@ import java.lang.Character.UnicodeBlock;
 import net.gringrid.pedal.db.vo.DisplayVO;
 import android.content.Context;
 import android.util.Log;
+import android.widget.SeekBar;
 
 public class Setting {
 
@@ -32,6 +33,11 @@ public class Setting {
 	public static final String SHARED_KEY_DISPLAY_TITLE_FONT_SIZE = "display_title_font_size";
 	public static final String SHARED_KEY_DISPLAY_ITEM_FONT_SIZE = "display_item_font_size";
 	public static final String SHARED_KEY_DISPLAY_UNIT_FONT_SIZE = "display_unit_font_size";
+	
+	public static final String SHARED_KEY_GEAR_TIRES = "gear_tires";
+	public static final String SHARED_KEY_GEAR_CHAINRING = "gear_chainring";
+	public static final String SHARED_KEY_GEAR_SPROCKET = "gear_sprocket";
+	public static final String SHARED_KEY_GEAR_CADENCE = "gear_cadence";
 	
 	private final int DEFAULT_TITLE_FONT_SIZE = 13;
 	private final int DEFAULT_ITEM_FONT_SIZE = 20;

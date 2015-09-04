@@ -5068,11 +5068,17 @@ net.gringrid.pedal.R$id: int id_ll_detail_info
 net.gringrid.pedal.R$id: int id_ll_head
 net.gringrid.pedal.R$id: int id_ll_menu
 net.gringrid.pedal.R$id: int id_lv_list
+net.gringrid.pedal.R$id: int id_sb_cadence
+net.gringrid.pedal.R$id: int id_sb_chainring
+net.gringrid.pedal.R$id: int id_sb_spped
+net.gringrid.pedal.R$id: int id_sb_sprocket
 net.gringrid.pedal.R$id: int id_sv_log
 net.gringrid.pedal.R$id: int id_tv_add
 net.gringrid.pedal.R$id: int id_tv_altitude
 net.gringrid.pedal.R$id: int id_tv_avg_speed
 net.gringrid.pedal.R$id: int id_tv_battery_status
+net.gringrid.pedal.R$id: int id_tv_cadence
+net.gringrid.pedal.R$id: int id_tv_chainring
 net.gringrid.pedal.R$id: int id_tv_clear
 net.gringrid.pedal.R$id: int id_tv_clear_all
 net.gringrid.pedal.R$id: int id_tv_current_altitude
@@ -5083,6 +5089,7 @@ net.gringrid.pedal.R$id: int id_tv_display_result
 net.gringrid.pedal.R$id: int id_tv_display_test
 net.gringrid.pedal.R$id: int id_tv_distance
 net.gringrid.pedal.R$id: int id_tv_error
+net.gringrid.pedal.R$id: int id_tv_gear
 net.gringrid.pedal.R$id: int id_tv_log
 net.gringrid.pedal.R$id: int id_tv_max_speed
 net.gringrid.pedal.R$id: int id_tv_name
@@ -5092,16 +5099,20 @@ net.gringrid.pedal.R$id: int id_tv_riding
 net.gringrid.pedal.R$id: int id_tv_riding_list
 net.gringrid.pedal.R$id: int id_tv_setting
 net.gringrid.pedal.R$id: int id_tv_speed
+net.gringrid.pedal.R$id: int id_tv_sprocket
 net.gringrid.pedal.R$id: int id_tv_start_date
 net.gringrid.pedal.R$id: int id_tv_start_time
 net.gringrid.pedal.R$id: int id_tv_strava
 net.gringrid.pedal.R$id: int id_tv_strava_status
 net.gringrid.pedal.R$id: int id_tv_time
+net.gringrid.pedal.R$id: int id_tv_tire_circumference
+net.gringrid.pedal.R$id: int id_tv_tires
 net.gringrid.pedal.R$id: int id_wv
 net.gringrid.pedal.R$id: R$id()
 net.gringrid.pedal.R$layout: int activity_display_result
 net.gringrid.pedal.R$layout: int activity_display_test
 net.gringrid.pedal.R$layout: int activity_expandable_ride_list
+net.gringrid.pedal.R$layout: int activity_gear
 net.gringrid.pedal.R$layout: int activity_gps_log_list
 net.gringrid.pedal.R$layout: int activity_home
 net.gringrid.pedal.R$layout: int activity_popup_browser
@@ -5143,6 +5154,7 @@ net.gringrid.pedal.R$string: int gps_disabled
 net.gringrid.pedal.R$string: int hello_world
 net.gringrid.pedal.R$string: int menu_display_result
 net.gringrid.pedal.R$string: int menu_display_test
+net.gringrid.pedal.R$string: int menu_gear
 net.gringrid.pedal.R$string: int menu_riding
 net.gringrid.pedal.R$string: int menu_riding_list
 net.gringrid.pedal.R$string: int menu_setting
@@ -5150,10 +5162,15 @@ net.gringrid.pedal.R$string: int progress_loading
 net.gringrid.pedal.R$string: int ride_info_default
 net.gringrid.pedal.R$string: int title_altitude
 net.gringrid.pedal.R$string: int title_avg_speed
+net.gringrid.pedal.R$string: int title_cadence
+net.gringrid.pedal.R$string: int title_chainring
 net.gringrid.pedal.R$string: int title_distance
 net.gringrid.pedal.R$string: int title_max_speed
 net.gringrid.pedal.R$string: int title_speed
+net.gringrid.pedal.R$string: int title_sprocket
 net.gringrid.pedal.R$string: int title_strava_status
+net.gringrid.pedal.R$string: int title_tire_circumference
+net.gringrid.pedal.R$string: int title_tires
 net.gringrid.pedal.R$string: int title_travel_time
 net.gringrid.pedal.R$string: int unit_km
 net.gringrid.pedal.R$string: int unit_kmh
@@ -5180,6 +5197,8 @@ net.gringrid.pedal.activity.DisplayTest: DisplayTest()
 net.gringrid.pedal.activity.DisplayTest: void onClick(android.view.View)
 net.gringrid.pedal.activity.ExpandableRidingListActivity
 net.gringrid.pedal.activity.ExpandableRidingListActivity: ExpandableRidingListActivity()
+net.gringrid.pedal.activity.GearActivity
+net.gringrid.pedal.activity.GearActivity: GearActivity()
 net.gringrid.pedal.activity.GpsLogListActivity
 net.gringrid.pedal.activity.GpsLogListActivity: GpsLogListActivity()
 net.gringrid.pedal.activity.HomeActivity

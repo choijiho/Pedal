@@ -11,6 +11,12 @@
     <string name="title_distance">DISTANCE</string>
     <string name="title_travel_time">TRAVEL TIME</string>
     <string name="title_strava_status">STRAVA</string>
+    <string name="title_tires">TIRES</string>
+    <string name="title_tire_circumference">TIRE CIRCUMFERENCE</string>
+    <string name="title_chainring">CHAINRING</string>
+    <string name="title_sprocket">SPROCKET</string>
+    <string name="title_cadence">CADENCE</string>
+
     <string name="unit_kmh">KM/H</string>
     <string name="unit_m">M</string>
     <string name="unit_km">KM</string>
@@ -28,6 +34,7 @@
     <string name="menu_setting">Setting</string>
     <string name="menu_display_test">Display</string>
     <string name="menu_display_result">Display Result</string>
+    <string name="menu_gear">Gear</string>
     <string name="display_button_add">ADD</string>
     <string name="display_button_clear">CLEAR</string>
     <string name="display_button_clear_all">CLEAR ALL</string>

@@ -34,7 +34,8 @@ public class Setting {
 	public static final String SHARED_KEY_DISPLAY_ITEM_FONT_SIZE = "display_item_font_size";
 	public static final String SHARED_KEY_DISPLAY_UNIT_FONT_SIZE = "display_unit_font_size";
 	
-	public static final String SHARED_KEY_GEAR_TIRES = "gear_tires";
+
+	public static final String SHARED_KEY_GEAR_TIRES_INDEX = "gear_tires_index";
 	public static final String SHARED_KEY_GEAR_CHAINRING = "gear_chainring";
 	public static final String SHARED_KEY_GEAR_SPROCKET = "gear_sprocket";
 	public static final String SHARED_KEY_GEAR_CADENCE = "gear_cadence";
@@ -222,3 +223,7 @@ public class Setting {
 		setDisplayInfo(item);
 	}
 }
+
+
+
+

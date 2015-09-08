@@ -40,16 +40,29 @@ public class RidingInfoUtility {
 		float[] distanceResult = new float[3];
 		float tmpSpeed = 0;
 		
+		float tmpDistance = 0;
+		float tmpTime = 0;
+		
 		for ( GpsLogVO vo : gpsLogVOList){
 			if ( preVo != null ){
 				Location.distanceBetween(preVo.latitude, preVo.longitude, vo.latitude, vo.longitude, distanceResult);
-				tmpSpeed = distanceResult[0] / (vo.gpsTime - preVo.gpsTime) * 1000;
-				Log.d("jiho", "tmpSpeed : "+tmpSpeed);
-				if ( maxSpeed < tmpSpeed ) {
-					maxSpeed = tmpSpeed;
-					Log.d("jiho", "Max Speed : "+String.format("%.1f",maxSpeed));
-					
+//				tmpSpeed = distanceResult[0] / (vo.gpsTime - preVo.gpsTime) * 1000 * ;
+//				tmpSpeed = distanceResult[0] / ((vo.gpsTime - preVo.gpsTime) / 1000) * 3.6f;
+				
+				tmpTime += (vo.gpsTime - preVo.gpsTime) / 1000;
+				tmpDistance += distanceResult[0];
+				if ( tmpTime > 3 ){
+					tmpSpeed = tmpDistance / tmpTime * 3.6f;
+					if ( maxSpeed < tmpSpeed ) {
+						maxSpeed = tmpSpeed;
+						Log.d("jiho", "Max Speed : "+String.format("%.1f",maxSpeed));
+					}
+					tmpTime = 0;
+					tmpDistance = 0;
 				}
+					
+					
+				Log.d("jiho", "tmpSpeed : "+tmpSpeed+"distance : "+distanceResult[0]+", "+(vo.gpsTime - preVo.gpsTime));
 				if ( tmpSpeed > 0.2f ) {
 					totalTime += vo.gpsTime - preVo.gpsTime;
 				}

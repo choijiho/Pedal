@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string-array name="week">
+
+    <string-array name="week">
         <item>SUN</item>
         <item>MON</item>
         <item>TUE</item>
@@ -10,17 +11,158 @@
         <item>SAT</item>
     </string-array>
     <string-array name="riding_infomation_list">
-		<item>Current Speed</item>
-		<item>Aerage Speed</item>
-		<item>Maximum Speed</item>
+        <item>Current Speed</item>
+        <item>Aerage Speed</item>
+        <item>Maximum Speed</item>
         <item>Distance</item>
         <item>Altitude</item>
         <item>Travel Time</item>
         <item>Riding Time</item>
-		<item>Present Time</item>
-		<item>Date</item>
-		<item>Battery</item>
+        <item>Present Time</item>
+        <item>Date</item>
+        <item>Battery</item>
+    </string-array>
+    <string-array name="tire_circumference_name">
+        <item>[47&#8211;203] 12x1.75</item>
+        <item>[54&#8211;203] 12x1.95</item>
+        <item>[40&#8211;254] 14x1.50</item>
+        <item>[47&#8211;254] 14x1.75</item>
+        <item>[40&#8211;305] 16x1.50</item>
+        <item>[47&#8211;305] 16x1.75</item>
+        <item>[54&#8211;305] 16x2.00</item>
+        <item>[28&#8211;349] 16x1&#8211;1&#188;8</item>
+        <item>[37&#8211;349] 16x1&#8211;3/8</item>
+        <item>[32&#8211;369] 17x1&#8211;1&#188;4(369)</item>
+        <item>[40&#8211;355] 18x1.50</item>
+        <item>[47&#8211;355] 18x1.75</item>
+        <item>[32&#8211;406] 20x1.25</item>
+        <item>[35&#8211;406] 20x1.35</item>
+        <item>[40&#8211;406] 20x1.50</item>
+        <item>[47&#8211;406] 20X1.75</item>
+        <item>[50&#8211;406] 20x1.95</item>
+        <item>[28&#8211;451] 20x1&#8211;1&#188;8</item>
+        <item>[37&#8211;451] 20x1&#8211;3&#188;8</item>
+        <item>[37&#8211;501] 22x1&#8211;3&#188;8</item>
+        <item>[40&#8211;501] 22x1&#8211;1&#188;2</item>
+        <item>[47&#8211;507] 24x1.75</item>
+        <item>[50&#8211;507] 24x2.00</item>
+        <item>[54&#8211;507] 24x2.125</item>
+        <item>[25&#8211;520] 24x1(520)</item>
+        <item>[24x3/4] Tubuler</item>
+        <item>[28&#8211;540] 24x1&#8211;1&#188;8</item>
+        <item>[32&#8211;540] 24x1&#8211;1&#188;4</item>
+        <item>[25&#8211;559] 26x1(559)</item>
+        <item>[32&#8211;559] 26x1.25</item>
+        <item>[37&#8211;559] 26x1.40</item>
+        <item>[40&#8211;559] 26x1.50</item>
+        <item>[47&#8211;559] 26x1.75</item>
+        <item>[50&#8211;559] 26x1.95</item>
+        <item>[54&#8211;559] 26x2.10</item>
+        <item>[57&#8211;559] 26x2.125</item>
+        <item>[58&#8211;559] 26x2.35</item>
+        <item>[75&#8211;559] 26x3.00</item>
+        <item>[28&#8211;590] 26x1&#8211;1&#188;8</item>
+        <item>[37&#8211;590] 26x1&#8211;3&#188;8</item>
+        <item>[37&#8211;584] 26x1&#8211;1&#188;2</item>
+        <item>[650C  ] Tubuler 26x7&#188;8</item>
+        <item>[20&#8211;571] 650x20C</item>
+        <item>[23&#8211;571] 650x23C</item>
+        <item>[25&#8211;571] 650x25C 26x1(571)</item>
+        <item>[40&#8211;590] 650x38A</item>
+        <item>[40&#8211;584] 650x38B</item>
+        <item>[25&#8211;630] 27x1(630)</item>
+        <item>[28&#8211;630] 27x1&#8211;1&#188;8</item>
+        <item>[32&#8211;630] 27x1&#8211;1&#188;4</item>
+        <item>[37&#8211;630] 27x1&#8211;3&#188;8</item>
+        <item>[18&#8211;622] 700x18C</item>
+        <item>[19&#8211;622] 700x19C</item>
+        <item>[20&#8211;622] 700x20C</item>
+        <item>[23&#8211;622] 700x23C</item>
+        <item>[25&#8211;622] 700x25C</item>
+        <item>[28&#8211;622] 700x28C</item>
+        <item>[30&#8211;622] 700x30C</item>
+        <item>[32&#8211;622] 700x32C</item>
+        <item>[700C  ] Tubuler</item>
+        <item>[35&#8211;622] 700x35C</item>
+        <item>[38&#8211;622] 700x38C</item>
+        <item>[40&#8211;622] 700x40C</item>
+        <item>[42&#8211;622] 700x42C</item>
+        <item>[44&#8211;622] 700x44C</item>
+        <item>[45&#8211;622] 700x45C</item>
+        <item>[47&#8211;622] 700x47C</item>
+        <item>[54&#8211;622] 29x2.1</item>
+        <item>[60&#8211;622] 29x2.3</item>
+    </string-array>
+    <string-array name="tire_circumference_value">
+        <item>935</item>
+        <item>940</item>
+        <item>1020</item>
+        <item>1055</item>
+        <item>1185</item>
+        <item>1195</item>
+        <item>1245</item>
+        <item>1290</item>
+        <item>1300</item>
+        <item>1340</item>
+        <item>1340</item>
+        <item>1350</item>
+        <item>1450</item>
+        <item>1460</item>
+        <item>1490</item>
+        <item>1515</item>
+        <item>1565</item>
+        <item>1545</item>
+        <item>1615</item>
+        <item>1770</item>
+        <item>1785</item>
+        <item>1890</item>
+        <item>1925</item>
+        <item>1965</item>
+        <item>1753</item>
+        <item>1785</item>
+        <item>1795</item>
+        <item>1905</item>
+        <item>1913</item>
+        <item>1950</item>
+        <item>2005</item>
+        <item>2010</item>
+        <item>2023</item>
+        <item>2050</item>
+        <item>2068</item>
+        <item>2070</item>
+        <item>2083</item>
+        <item>2170</item>
+        <item>1970</item>
+        <item>2068</item>
+        <item>2100</item>
+        <item>1920</item>
+        <item>1938</item>
+        <item>1944</item>
+        <item>1952</item>
+        <item>2125</item>
+        <item>2105</item>
+        <item>2145</item>
+        <item>2155</item>
+        <item>2161</item>
+        <item>2169</item>
+        <item>2070</item>
+        <item>2080</item>
+        <item>2086</item>
+        <item>2096</item>
+        <item>2105</item>
+        <item>2136</item>
+        <item>2146</item>
+        <item>2155</item>
+        <item>2130</item>
+        <item>2168</item>
+        <item>2180</item>
+        <item>2200</item>
+        <item>2224</item>
+        <item>2235</item>
+        <item>2242</item>
+        <item>2268</item>
+        <item>2288</item>
+        <item>2326</item>
     </string-array>
 
 </resources>
-

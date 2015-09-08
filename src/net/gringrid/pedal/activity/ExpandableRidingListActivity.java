@@ -130,7 +130,7 @@ public class ExpandableRidingListActivity extends Activity{
 		@Override
 		protected void onPreExecute() {
 			mProgressDialog = new ProgressDialog(mContext);
-			mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+			mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 			mProgressDialog.setMessage(mContext.getResources().getString(R.string.progress_loading));
 			mProgressDialog.show();
 			mProgressDialog.setMax(100);

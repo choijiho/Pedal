@@ -4995,6 +4995,8 @@ net.gringrid.pedal.BuildConfig: BuildConfig()
 net.gringrid.pedal.PedalApplication: PedalApplication()
 net.gringrid.pedal.R: R()
 net.gringrid.pedal.R$array: int riding_infomation_list
+net.gringrid.pedal.R$array: int tire_circumference_name
+net.gringrid.pedal.R$array: int tire_circumference_value
 net.gringrid.pedal.R$array: int week
 net.gringrid.pedal.R$array: R$array()
 net.gringrid.pedal.R$attr: int id_iv_back_visibility
@@ -5106,6 +5108,7 @@ net.gringrid.pedal.R$id: int id_tv_strava
 net.gringrid.pedal.R$id: int id_tv_strava_status
 net.gringrid.pedal.R$id: int id_tv_time
 net.gringrid.pedal.R$id: int id_tv_tire_circumference
+net.gringrid.pedal.R$id: int id_tv_tire_circumference_unit
 net.gringrid.pedal.R$id: int id_tv_tires
 net.gringrid.pedal.R$id: int id_wv
 net.gringrid.pedal.R$id: R$id()
@@ -5175,6 +5178,7 @@ net.gringrid.pedal.R$string: int title_travel_time
 net.gringrid.pedal.R$string: int unit_km
 net.gringrid.pedal.R$string: int unit_kmh
 net.gringrid.pedal.R$string: int unit_m
+net.gringrid.pedal.R$string: int unit_mm
 net.gringrid.pedal.R$string: R$string()
 net.gringrid.pedal.R$style: int CustomTheme
 net.gringrid.pedal.R$style: int content
@@ -5199,6 +5203,7 @@ net.gringrid.pedal.activity.ExpandableRidingListActivity
 net.gringrid.pedal.activity.ExpandableRidingListActivity: ExpandableRidingListActivity()
 net.gringrid.pedal.activity.GearActivity
 net.gringrid.pedal.activity.GearActivity: GearActivity()
+net.gringrid.pedal.activity.GearActivity: void onClick(android.view.View)
 net.gringrid.pedal.activity.GpsLogListActivity
 net.gringrid.pedal.activity.GpsLogListActivity: GpsLogListActivity()
 net.gringrid.pedal.activity.HomeActivity

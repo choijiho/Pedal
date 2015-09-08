@@ -1,16 +1,10 @@
 package net.gringrid.pedal.activity;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 import java.util.Vector;
 
 import net.gringrid.pedal.DisplayInfoManager;
 import net.gringrid.pedal.R;
 import net.gringrid.pedal.Setting;
-import net.gringrid.pedal.activity.DisplayTest.TagData;
 import net.gringrid.pedal.db.vo.DisplayVO;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -19,15 +13,16 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Gravity;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.LinearLayout.LayoutParams;
 
 public class DisplayResult extends Activity implements OnClickListener{
 	/**
@@ -84,7 +79,7 @@ public class DisplayResult extends Activity implements OnClickListener{
 			
 			@Override
 			public void onClick(View v) {
-				
+
 				((TextView)findViewById(R.id.id_tv_error)).setText("");
 				TagData tagData = (TagData)v.getTag();
 				int idx =  tagData.index;
@@ -163,15 +158,49 @@ public class DisplayResult extends Activity implements OnClickListener{
 	}
 	
 	private void drawBaseCells() {
-		int cellWidth = DisplayInfoManager.getInstance(this).getCellWidth();
-		int cellHeight = DisplayInfoManager.getInstance(this).getCellHeight();
-
+		
+		final int cellWidth = DisplayInfoManager.getInstance(this).getCellWidth();
+		final int cellHeight = DisplayInfoManager.getInstance(this).getCellHeight();
+		
 		for ( int i=0; i<mCellCount; i++ ){
 			TagData tagData = new TagData(i);
 			TextView tv = createCell(i);
 			tv.setText(String.valueOf(i));
 			tv.setTag(tagData);
-			tv.setOnClickListener(cellOnClickListener);
+//			tv.setOnClickListener(cellOnClickListener);
+			
+			tv.setOnTouchListener(new OnTouchListener() {
+				
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					// x, y 좌표로 현재 cell의 위치를 알아내야 함
+					float col = event.getRawX() / cellWidth;
+					float row = event.getRawY() / cellHeight - 1;
+					
+					int idx = (int)row * mCols + (int)col;
+					switch (event.getAction()) {
+					case MotionEvent.ACTION_DOWN:
+						deSelectAllCell();
+						selectCell(v);
+						mFirstSelectedCell = idx;	
+						break;
+						
+					case MotionEvent.ACTION_MOVE:
+						if ( idx > mCellCount ) break;
+						
+						Log.d("jiho", "col : "+col+", row : "+row+", idx : "+idx);
+						deSelectAllCell();
+						selectCell(mFirstSelectedCell);
+						selectCell(mCells[idx]);
+						selectSquare();
+						break;
+
+					default:
+						break;
+					}
+					return false;
+				}
+			});
 			mCells[i] = tv;
 			
 			int leftMargin = cellWidth * (i % DisplayInfoManager.CELL_COLS);
@@ -472,6 +501,15 @@ public class DisplayResult extends Activity implements OnClickListener{
 		Log.d("jiho", "max[INDEX] : "+result[INDEX]);
 		Log.d("jiho", "max[LEFT_MARGIN] : "+result[LEFT_MARGIN]);
 		Log.d("jiho", "max[TOP_MARGIN] : "+result[TOP_MARGIN]);
+	}
+	
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		if ( event.getAction() == MotionEvent.ACTION_MOVE ){
+			
+		}
+		// TODO Auto-generated method stub
+		return super.onTouchEvent(event);
 	}
 	
 	class TagData{

@@ -1,5 +1,7 @@
 package net.gringrid.pedal.db.vo;
 
+import android.text.TextUtils;
+
 public class RideVO {
 
 	public static final String PRIMARY_KEY 	= "primaryKey";
@@ -25,6 +27,7 @@ public class RideVO {
 	public String avgSpeed;
 	public String maxSpeed;
 	public String altitude;
+	
 	public String stravaId;
 	
 	/**
@@ -33,5 +36,29 @@ public class RideVO {
 	public String stravaStatus;
 	
 	public boolean isShowDetail = false;
-	
+
+	public boolean isValidData(){
+		if ( TextUtils.isEmpty(name) || name.equals("null") ){
+			return false;
+		}
+		if ( TextUtils.isEmpty(ridingTime) || ridingTime.equals("null") ){
+			return false;
+		}
+		if ( TextUtils.isEmpty(distance) || distance.equals("null") ){
+			return false;
+		}
+		if ( TextUtils.isEmpty(avgSpeed) || avgSpeed.equals("null") ){
+			return false;
+		}
+		if ( TextUtils.isEmpty(maxSpeed) || maxSpeed.equals("null") ){
+			return false;
+		}
+		if ( TextUtils.isEmpty(altitude) || altitude.equals("null") ){
+			return false;
+		}
+		if (startTime == 0 || endTime == 0){
+			return false;
+		}
+		return true;
+	}
 }

@@ -1,6 +1,7 @@
 package net.gringrid.pedal.activity;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONException;
@@ -70,13 +71,14 @@ public class ExpandableRidingListActivity extends Activity{
 		
 		for ( RideVO vo : mRideVOList ){
 //			if ( TextUtils.isEmpty(vo.maxSpeed) || vo.maxSpeed.equals("null") ){
-				String[] results = new String[RidingInfoUtility.INDEX_LENGTH];
+				ArrayList<String> detailInfo = new ArrayList<String>();
 				RidingInfoUtility ridingInfoUtility = new RidingInfoUtility(this);
-				ridingInfoUtility.calculateRideInfo(vo.primaryKey, results);
-				vo.avgSpeed = results[RidingInfoUtility.INDEX_AVG_SPEED];
-				vo.distance = results[RidingInfoUtility.INDEX_DISTANCE];
-				vo.maxSpeed = results[RidingInfoUtility.INDEX_MAX_SPEED];
-				vo.ridingTime = results[RidingInfoUtility.INDEX_TIME];
+				detailInfo = ridingInfoUtility.calculateRideInfo(vo.primaryKey);
+				
+				vo.avgSpeed = detailInfo.get(RidingInfoUtility.INDEX_AVG_SPEED);
+				vo.distance = detailInfo.get(RidingInfoUtility.INDEX_DISTANCE);
+				vo.maxSpeed = detailInfo.get(RidingInfoUtility.INDEX_MAX_SPEED);
+				vo.ridingTime = detailInfo.get(RidingInfoUtility.INDEX_RIDING_TIME);
 				int result = mRideDao.update(vo);
 				Log.d("jiho", "update result = "+result);
 			}

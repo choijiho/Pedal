@@ -33,14 +33,23 @@
         </activity>
         <!-- HOME END -->
 
-        <!-- SETTING START -->
+        <!-- RIDING START -->
         <activity 
             android:name="net.gringrid.pedal.activity.RidingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/CustomTheme"
             >
         </activity>
-        <!-- SETTING END -->
+        <!-- RIDING END -->
+
+        <!-- RIDING START -->
+        <activity 
+            android:name="net.gringrid.pedal.activity.RidingActivityNew"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomTheme"
+            >
+        </activity>
+        <!-- RIDING END -->
 
         <!-- SETTING START -->
         <activity 

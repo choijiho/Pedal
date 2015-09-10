@@ -1,0 +1,86 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res/net.gringrid.pedal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="net.gringrid.pedal.activity.RidingActivityNew" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" 
+        style="@style/content"
+        >
+
+	    <FrameLayout
+		    android:id="@+id/id_fl_riding_info_area"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" 
+	        >
+	        
+	    </FrameLayout>
+
+
+        <!-- BIKE ICON START -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/id_iv_play"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_play_circle_outline_white_48dp" />
+
+            <ImageView
+                android:id="@+id/id_iv_pause"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:src="@drawable/ic_pause_white_48dp" />
+
+            <ImageView
+                android:id="@+id/id_iv_stop"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:src="@drawable/ic_stop_white_48dp" />
+        </LinearLayout>
+        <!-- BIKE ICON END -->
+
+
+        <!-- CADENCE ICON START -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/id_iv_cadence_alarm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_notifications_active_white_48dp" />
+        </LinearLayout>
+        <!-- CADENCE ICON END -->
+
+    </LinearLayout>
+
+    <net.gringrid.pedal.view.HeaderView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:id_iv_back_visibility="visible" />
+
+</FrameLayout>

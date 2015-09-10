@@ -1,6 +1,7 @@
 package net.gringrid.pedal;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import net.gringrid.pedal.db.DBHelper;
@@ -15,12 +16,20 @@ import android.util.Log;
 public class RidingInfoUtility {
 
 	Context mContext;
-	public static final int INDEX_LENGTH = 4;
-	public static final int INDEX_DISTANCE = 0;
-	public static final int INDEX_TIME = 1;
-	public static final int INDEX_AVG_SPEED = 2;
-	public static final int INDEX_MAX_SPEED = 3;	
+
+	// array.xml   riding_infomation_list 와 synch 되어야 한다.
+	public static final int INDEX_CURRENT_SPPED = 0;
+	public static final int INDEX_AVG_SPEED = 1;
+	public static final int INDEX_MAX_SPEED = 2;
+	public static final int INDEX_DISTANCE = 3;
+	public static final int INDEX_ALTITUDE = 4;
+	public static final int INDEX_TRAVEL_TIME = 5;
+	public static final int INDEX_RIDING_TIME = 6;
+	public static final int INDEX_PRESENT_TIME = 7;
+	public static final int INDEX_DATE = 8;
+	public static final int INDEX_BATTERY = 9;
 	
+
 	public RidingInfoUtility( Context context ) {
 		mContext = context;
 	}
@@ -28,7 +37,8 @@ public class RidingInfoUtility {
 	/**
 	 * Riding Time
 	 */
-	public void calculateRideInfo(long parentId, String results[]){
+	public ArrayList<String> calculateRideInfo(long parentId){
+		ArrayList<String> rideInfo = new ArrayList<String>();
 		GpsLogDao gpsLogDao = GpsLogDao.getInstance(DBHelper.getInstance(mContext));
 		List<GpsLogVO> gpsLogVOList = gpsLogDao.findWithParentId(parentId);
 		GpsLogVO preVo = null;
@@ -78,37 +88,39 @@ public class RidingInfoUtility {
 		Log.d("jiho", "totalDistance : "+totalDistance);
 
 		String printAvgSpeed = String.format("%.1f", avgSpeed);
-		String printTime = String.valueOf(totalTime);
+		String printRidingTime = String.valueOf(totalTime);
 		String printDistance = String.format("%.2f", totalDistance / 1000);
 		String printMaxSpeed = String.format("%.1f", maxSpeed);
 
-		results[INDEX_DISTANCE] = printDistance;
-		results[INDEX_TIME] = printTime;
-		results[INDEX_AVG_SPEED] = printAvgSpeed;
-		results[INDEX_MAX_SPEED] = printMaxSpeed;
+		rideInfo.add(INDEX_DISTANCE, printDistance);
+		rideInfo.add(INDEX_RIDING_TIME, printRidingTime);
+		rideInfo.add(INDEX_AVG_SPEED, printAvgSpeed);
+		rideInfo.add(INDEX_MAX_SPEED, printMaxSpeed);
+
+		return rideInfo;
 	}
 	
 	public void saveRidingInfo(long parentId){
-		
 		RideDao dao = RideDao.getInstance(DBHelper.getInstance(mContext));
 		RideVO vo = dao.find((int)parentId);
-		String[] results = new String[RidingInfoUtility.INDEX_LENGTH];
-		calculateRideInfo(vo.primaryKey, results);
-		vo.avgSpeed = results[RidingInfoUtility.INDEX_AVG_SPEED];
-		vo.distance = results[RidingInfoUtility.INDEX_DISTANCE];
-		vo.maxSpeed = results[RidingInfoUtility.INDEX_MAX_SPEED];
-		vo.ridingTime = results[RidingInfoUtility.INDEX_TIME];
+		ArrayList<String> detailInfo = new ArrayList<String>();
+		detailInfo = calculateRideInfo(vo.primaryKey);
+		vo.avgSpeed = detailInfo.get(RidingInfoUtility.INDEX_AVG_SPEED);
+		vo.distance = detailInfo.get(RidingInfoUtility.INDEX_DISTANCE);
+		vo.maxSpeed = detailInfo.get(RidingInfoUtility.INDEX_MAX_SPEED);
+		vo.ridingTime = detailInfo.get(RidingInfoUtility.INDEX_RIDING_TIME);
 		int result = dao.update(vo);	
 	}
 
 	public void saveRidingInfo(RideVO vo){
 		RideDao dao = RideDao.getInstance(DBHelper.getInstance(mContext));
-		String[] results = new String[RidingInfoUtility.INDEX_LENGTH];
-		calculateRideInfo(vo.primaryKey, results);
-		vo.avgSpeed = results[RidingInfoUtility.INDEX_AVG_SPEED];
-		vo.distance = results[RidingInfoUtility.INDEX_DISTANCE];
-		vo.maxSpeed = results[RidingInfoUtility.INDEX_MAX_SPEED];
-		vo.ridingTime = results[RidingInfoUtility.INDEX_TIME];
+		String[] results = new String[4];
+		ArrayList<String> detailInfo = new ArrayList<String>();
+		detailInfo = calculateRideInfo(vo.primaryKey);
+		vo.avgSpeed = detailInfo.get(RidingInfoUtility.INDEX_AVG_SPEED);
+		vo.distance = detailInfo.get(RidingInfoUtility.INDEX_DISTANCE);
+		vo.maxSpeed = detailInfo.get(RidingInfoUtility.INDEX_MAX_SPEED);
+		vo.ridingTime = detailInfo.get(RidingInfoUtility.INDEX_RIDING_TIME);
 		int result = dao.update(vo);	
 	}
 }

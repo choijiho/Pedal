@@ -4,7 +4,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Vector;
 
+import net.gringrid.pedal.DisplayInfoManager;
 import net.gringrid.pedal.R;
 import net.gringrid.pedal.RidingInfoUtility;
 import net.gringrid.pedal.Setting;
@@ -12,6 +14,7 @@ import net.gringrid.pedal.SharedData;
 import net.gringrid.pedal.db.DBHelper;
 import net.gringrid.pedal.db.GpsLogDao;
 import net.gringrid.pedal.db.RideDao;
+import net.gringrid.pedal.db.vo.DisplayVO;
 import net.gringrid.pedal.db.vo.GpsLogVO;
 import net.gringrid.pedal.db.vo.RideVO;
 import android.app.Activity;
@@ -34,15 +37,33 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Chronometer;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class RidingActivity extends Activity implements OnClickListener, LocationListener{
+public class RidingActivityNew extends Activity implements OnClickListener, LocationListener{
 
 	final boolean DEBUG = false;
 	final boolean IS_LOG_PRINT = true;
 
+	/**
+	 * Riding information items
+	 */
+	private Vector<View> mRidingInfoViews;
+	/**
+	 * Riding information display area
+	 */
+	private FrameLayout id_fl_riding_info_area;
+	
+	private String[] mRidingInfoList;
+	
+	
+	
+	
+	
+	
 	final int STATE_RIDING = 0x00;
 	final int STATE_STOP = 0x01;
 	int STATE;
@@ -50,7 +71,6 @@ public class RidingActivity extends Activity implements OnClickListener, Locatio
 	/**
 	 * 현재속도, 평균속도, 누적거리, 누적시간, 현재시간, 배터리 상태
 	 */
-	private Context context;
 	
 	/**
 	 * View
@@ -116,7 +136,7 @@ public class RidingActivity extends Activity implements OnClickListener, Locatio
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		setContentView(R.layout.activity_riding);
+		setContentView(R.layout.activity_riding_new);
 		initView();
 		registEvent();
 		initLocation();
@@ -178,7 +198,12 @@ public class RidingActivity extends Activity implements OnClickListener, Locatio
 	}
 
 	private void initView(){
-		context = getApplicationContext();
+		mRidingInfoViews = new Vector<View>();
+		mRidingInfoList = getResources().getStringArray(R.array.riding_infomation_list);
+		id_fl_riding_info_area = (FrameLayout)findViewById(R.id.id_fl_riding_info_area);
+		id_fl_riding_info_area.setLayoutParams(new LinearLayout.LayoutParams(DisplayInfoManager.getInstance(this).width, DisplayInfoManager.getInstance(this).width));
+		
+		
 		id_tv_current_speed = (TextView)findViewById(R.id.id_tv_current_speed);
 		id_tv_avg_speed = (TextView)findViewById(R.id.id_tv_avg_speed);
 		id_tv_current_altitude = (TextView)findViewById(R.id.id_tv_current_altitude);
@@ -190,7 +215,7 @@ public class RidingActivity extends Activity implements OnClickListener, Locatio
 		findViewById(R.id.id_iv_cadence_alarm).setTag(R.drawable.ic_notifications_off_white_48dp);
 		
 		IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-		Intent batteryStatus = context.registerReceiver(null, ifilter);
+		Intent batteryStatus = this.registerReceiver(null, ifilter);
 		int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
 		int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
 
@@ -204,6 +229,47 @@ public class RidingActivity extends Activity implements OnClickListener, Locatio
 		}else{
 			findViewById(R.id.id_sv_log).setVisibility(View.GONE);
 		}
+		
+		executeDisplay();
+		
+		
+	}
+	
+	private void executeDisplay(){
+		
+		// Riding information을 그린다. 
+		DisplayVO vo = null;
+		Setting setting = new Setting(this);
+		String[] list = getResources().getStringArray(R.array.riding_infomation_list);
+		setting.debugDisplayInfo();
+
+		for ( String item : list ){
+			vo = setting.getDisplayInfo(item);
+			drawRidingItems(vo);
+			// TODO DEBUG
+			vo.debug();
+		}
+	}
+	
+	private void drawRidingItems(DisplayVO vo){
+		if ( vo.minIndex == vo.maxIndex ){
+			return;
+		}
+		
+		int itemWidth = vo.right - vo.left;
+		int itemHeight = vo.bottom - vo.top;
+		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(itemWidth, itemHeight);
+		params.setMargins(vo.left, vo.top, 0, 0);
+
+		TextView tv = new TextView(this);	
+		tv.setText(vo.itemName);
+		tv.setTag(vo);
+		tv.setBackgroundDrawable(getResources().getDrawable(R.drawable.item_unselected));
+		tv.setLayoutParams(params);
+
+		mRidingInfoViews.add(tv);
+		addContentView(tv, params);
+		
 	}
 	
 	private void setDayInfo() {
@@ -247,6 +313,7 @@ public class RidingActivity extends Activity implements OnClickListener, Locatio
 			ArrayList<String> detailInfo = new ArrayList<String>();
 			RidingInfoUtility ridingInfoUtility = new RidingInfoUtility(this);
 			detailInfo = ridingInfoUtility.calculateRideInfo(mRideId);
+	
 			mMoveTime = Long.parseLong(detailInfo.get(RidingInfoUtility.INDEX_RIDING_TIME));
 			mTotalDistance = Float.parseFloat(detailInfo.get(RidingInfoUtility.INDEX_DISTANCE));
 		}
@@ -326,7 +393,7 @@ public class RidingActivity extends Activity implements OnClickListener, Locatio
 	
 	private void reset(){
 		if ( mRideId != Long.MAX_VALUE ){
-			RidingInfoUtility ridingInfoUtility = new RidingInfoUtility(RidingActivity.this);
+			RidingInfoUtility ridingInfoUtility = new RidingInfoUtility(RidingActivityNew.this);
 			ridingInfoUtility.saveRidingInfo(mRideId);
 		}
 		pausePedal();
@@ -340,7 +407,7 @@ public class RidingActivity extends Activity implements OnClickListener, Locatio
 		id_tv_distance.setText("000");
 		mRideDao = null;
 		mRideId = Long.MAX_VALUE;
-		SharedData.getInstance(RidingActivity.this).insertGlobalData(Setting.SHARED_KEY_RIDING_ID, mRideId);
+		SharedData.getInstance(RidingActivityNew.this).insertGlobalData(Setting.SHARED_KEY_RIDING_ID, mRideId);
 	}
 	
 	@Override

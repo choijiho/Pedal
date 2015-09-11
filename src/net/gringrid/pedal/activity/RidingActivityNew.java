@@ -233,6 +233,7 @@ public class RidingActivityNew extends Activity implements OnClickListener, Loca
 		executeDisplay();
 		
 		
+		
 	}
 	
 	private void executeDisplay(){
@@ -269,9 +270,20 @@ public class RidingActivityNew extends Activity implements OnClickListener, Loca
 
 		mRidingInfoViews.add(tv);
 		addContentView(tv, params);
-		
+		setViewVariableFromRidingInvfoViews();
 	}
 	
+	private void setViewVariableFromRidingInvfoViews() {
+		for ( View view : mRidingInfoViews ){
+			DisplayVO vo = ((DisplayVO)view.getTag());
+			if ( vo.itemName.equals(mRidingInfoList[DisplayInfoManager.INDEX_CURRENT_SPPED]) ){
+				id_tv_current_speed = (TextView)view;
+			}
+		}
+		// TODO Auto-generated method stub
+		
+	}
+
 	private void setDayInfo() {
 		Calendar calendar = Calendar.getInstance(); 
 		int months = calendar.get(Calendar.MONTH) + 1;
@@ -314,8 +326,8 @@ public class RidingActivityNew extends Activity implements OnClickListener, Loca
 			RidingInfoUtility ridingInfoUtility = new RidingInfoUtility(this);
 			detailInfo = ridingInfoUtility.calculateRideInfo(mRideId);
 	
-			mMoveTime = Long.parseLong(detailInfo.get(RidingInfoUtility.INDEX_RIDING_TIME));
-			mTotalDistance = Float.parseFloat(detailInfo.get(RidingInfoUtility.INDEX_DISTANCE));
+			mMoveTime = Long.parseLong(detailInfo.get(DisplayInfoManager.INDEX_RIDING_TIME));
+			mTotalDistance = Float.parseFloat(detailInfo.get(DisplayInfoManager.INDEX_DISTANCE));
 		}
 
 		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 2, this);

@@ -15,10 +15,11 @@ public class DisplayVO {
 	public int right;
 	public int bottom;
 	
+	public String viewType;
 	public boolean isSelected;
 
 	public void debug(){
-		Log.d("jiho", itemName+" : ("+minIndex+", "+maxIndex+")");
+		Log.d("jiho", itemName+" : ("+minIndex+", "+maxIndex+", "+viewType+")");
 		Log.d("jiho", itemName+" : ("+left+", "+top+", "+right+", "+bottom+")");
 		Log.d("jiho", itemName+" : ("+titleFontSize+", "+itemFontSize+", "+unitFontSize+")");
 	}

@@ -7,16 +7,27 @@ import android.view.Display;
 
 public class DisplayInfoManager {
 	private static Context mContext;
-
+	
+	public static final int INDEX_CURRENT_SPPED = 0;
+	public static final int INDEX_AVG_SPEED = 1;
+	public static final int INDEX_MAX_SPEED = 2;
+	public static final int INDEX_DISTANCE = 3;
+	public static final int INDEX_ALTITUDE = 4;
+	public static final int INDEX_TRAVEL_TIME = 5;
+	public static final int INDEX_RIDING_TIME = 6;
+	public static final int INDEX_PRESENT_TIME = 7;
+	public static final int INDEX_DATE = 8;
+	public static final int INDEX_BATTERY = 9;
+	
+	
 	public int width;
 	public int height;
 	private int cellWidth;
 	private int cellHeight;
 	public static final int CELL_COLS = 8;
 	public static final int CELL_ROWS = 8;
-	
+	private String[] ridingInfoList;
 	private static DisplayInfoManager instance;
-	
 	private DisplayInfoManager(){
 		init();
 	}
@@ -37,6 +48,7 @@ public class DisplayInfoManager {
 
 		cellWidth = width / CELL_COLS;
 		cellHeight = height / CELL_ROWS;
+		ridingInfoList = mContext.getResources().getStringArray(R.array.riding_infomation_list);
 	}
 	
 	public int getCellWidth(){
@@ -45,6 +57,15 @@ public class DisplayInfoManager {
 
 	public int getCellHeight(){
 		return cellHeight;
+	}
+	
+	public String getViewType(String itemName){
+		// TODO
+		return "";
+	}
+	
+	public String[] getRidingInfoList(){
+		return ridingInfoList;
 	}
 
 

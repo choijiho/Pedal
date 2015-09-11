@@ -7,6 +7,7 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import net.gringrid.pedal.DisplayInfoManager;
 import net.gringrid.pedal.R;
 import net.gringrid.pedal.RidingInfoUtility;
 import net.gringrid.pedal.StravaTasks;
@@ -75,10 +76,10 @@ public class ExpandableRidingListActivity extends Activity{
 				RidingInfoUtility ridingInfoUtility = new RidingInfoUtility(this);
 				detailInfo = ridingInfoUtility.calculateRideInfo(vo.primaryKey);
 				
-				vo.avgSpeed = detailInfo.get(RidingInfoUtility.INDEX_AVG_SPEED);
-				vo.distance = detailInfo.get(RidingInfoUtility.INDEX_DISTANCE);
-				vo.maxSpeed = detailInfo.get(RidingInfoUtility.INDEX_MAX_SPEED);
-				vo.ridingTime = detailInfo.get(RidingInfoUtility.INDEX_RIDING_TIME);
+				vo.avgSpeed = detailInfo.get(DisplayInfoManager.INDEX_AVG_SPEED);
+				vo.distance = detailInfo.get(DisplayInfoManager.INDEX_DISTANCE);
+				vo.maxSpeed = detailInfo.get(DisplayInfoManager.INDEX_MAX_SPEED);
+				vo.ridingTime = detailInfo.get(DisplayInfoManager.INDEX_RIDING_TIME);
 				int result = mRideDao.update(vo);
 				Log.d("jiho", "update result = "+result);
 			}

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import net.gringrid.pedal.DisplayInfoManager;
 import net.gringrid.pedal.R;
 import net.gringrid.pedal.RidingInfoUtility;
 import net.gringrid.pedal.Setting;
@@ -247,8 +248,8 @@ public class RidingActivity extends Activity implements OnClickListener, Locatio
 			ArrayList<String> detailInfo = new ArrayList<String>();
 			RidingInfoUtility ridingInfoUtility = new RidingInfoUtility(this);
 			detailInfo = ridingInfoUtility.calculateRideInfo(mRideId);
-			mMoveTime = Long.parseLong(detailInfo.get(RidingInfoUtility.INDEX_RIDING_TIME));
-			mTotalDistance = Float.parseFloat(detailInfo.get(RidingInfoUtility.INDEX_DISTANCE));
+			mMoveTime = Long.parseLong(detailInfo.get(DisplayInfoManager.INDEX_RIDING_TIME));
+			mTotalDistance = Float.parseFloat(detailInfo.get(DisplayInfoManager.INDEX_DISTANCE));
 		}
 
 		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 2, this);

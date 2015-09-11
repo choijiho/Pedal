@@ -18,17 +18,7 @@ public class RidingInfoUtility {
 	Context mContext;
 
 	// array.xml   riding_infomation_list 와 synch 되어야 한다.
-	public static final int INDEX_CURRENT_SPPED = 0;
-	public static final int INDEX_AVG_SPEED = 1;
-	public static final int INDEX_MAX_SPEED = 2;
-	public static final int INDEX_DISTANCE = 3;
-	public static final int INDEX_ALTITUDE = 4;
-	public static final int INDEX_TRAVEL_TIME = 5;
-	public static final int INDEX_RIDING_TIME = 6;
-	public static final int INDEX_PRESENT_TIME = 7;
-	public static final int INDEX_DATE = 8;
-	public static final int INDEX_BATTERY = 9;
-	
+
 
 	public RidingInfoUtility( Context context ) {
 		mContext = context;
@@ -92,10 +82,10 @@ public class RidingInfoUtility {
 		String printDistance = String.format("%.2f", totalDistance / 1000);
 		String printMaxSpeed = String.format("%.1f", maxSpeed);
 
-		rideInfo.add(INDEX_DISTANCE, printDistance);
-		rideInfo.add(INDEX_RIDING_TIME, printRidingTime);
-		rideInfo.add(INDEX_AVG_SPEED, printAvgSpeed);
-		rideInfo.add(INDEX_MAX_SPEED, printMaxSpeed);
+		rideInfo.add(DisplayInfoManager.INDEX_DISTANCE, printDistance);
+		rideInfo.add(DisplayInfoManager.INDEX_RIDING_TIME, printRidingTime);
+		rideInfo.add(DisplayInfoManager.INDEX_AVG_SPEED, printAvgSpeed);
+		rideInfo.add(DisplayInfoManager.INDEX_MAX_SPEED, printMaxSpeed);
 
 		return rideInfo;
 	}
@@ -105,10 +95,10 @@ public class RidingInfoUtility {
 		RideVO vo = dao.find((int)parentId);
 		ArrayList<String> detailInfo = new ArrayList<String>();
 		detailInfo = calculateRideInfo(vo.primaryKey);
-		vo.avgSpeed = detailInfo.get(RidingInfoUtility.INDEX_AVG_SPEED);
-		vo.distance = detailInfo.get(RidingInfoUtility.INDEX_DISTANCE);
-		vo.maxSpeed = detailInfo.get(RidingInfoUtility.INDEX_MAX_SPEED);
-		vo.ridingTime = detailInfo.get(RidingInfoUtility.INDEX_RIDING_TIME);
+		vo.avgSpeed = detailInfo.get(DisplayInfoManager.INDEX_AVG_SPEED);
+		vo.distance = detailInfo.get(DisplayInfoManager.INDEX_DISTANCE);
+		vo.maxSpeed = detailInfo.get(DisplayInfoManager.INDEX_MAX_SPEED);
+		vo.ridingTime = detailInfo.get(DisplayInfoManager.INDEX_RIDING_TIME);
 		int result = dao.update(vo);	
 	}
 
@@ -117,10 +107,10 @@ public class RidingInfoUtility {
 		String[] results = new String[4];
 		ArrayList<String> detailInfo = new ArrayList<String>();
 		detailInfo = calculateRideInfo(vo.primaryKey);
-		vo.avgSpeed = detailInfo.get(RidingInfoUtility.INDEX_AVG_SPEED);
-		vo.distance = detailInfo.get(RidingInfoUtility.INDEX_DISTANCE);
-		vo.maxSpeed = detailInfo.get(RidingInfoUtility.INDEX_MAX_SPEED);
-		vo.ridingTime = detailInfo.get(RidingInfoUtility.INDEX_RIDING_TIME);
+		vo.avgSpeed = detailInfo.get(DisplayInfoManager.INDEX_AVG_SPEED);
+		vo.distance = detailInfo.get(DisplayInfoManager.INDEX_DISTANCE);
+		vo.maxSpeed = detailInfo.get(DisplayInfoManager.INDEX_MAX_SPEED);
+		vo.ridingTime = detailInfo.get(DisplayInfoManager.INDEX_RIDING_TIME);
 		int result = dao.update(vo);	
 	}
 }

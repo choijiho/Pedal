@@ -231,9 +231,6 @@ public class RidingActivityNew extends Activity implements OnClickListener, Loca
 		}
 		
 		executeDisplay();
-		
-		
-		
 	}
 	
 	private void executeDisplay(){
@@ -262,6 +259,8 @@ public class RidingActivityNew extends Activity implements OnClickListener, Loca
 		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(itemWidth, itemHeight);
 		params.setMargins(vo.left, vo.top, 0, 0);
 
+		// TODO FACTORY 
+		
 		TextView tv = new TextView(this);	
 		tv.setText(vo.itemName);
 		tv.setTag(vo);

@@ -98,6 +98,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/menu_gear" />
+
+            <TextView
+                android:id="@+id/id_tv_riding_new"
+                style="@style/menu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/menu_riding_new" />
             
         </LinearLayout>
     </RelativeLayout>

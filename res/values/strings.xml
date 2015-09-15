@@ -36,6 +36,7 @@
     <string name="menu_display_test">Display</string>
     <string name="menu_display_result">Display Result</string>
     <string name="menu_gear">Gear</string>
+    <string name="menu_riding_new">Riding New</string>
     <string name="display_button_add">ADD</string>
     <string name="display_button_clear">CLEAR</string>
     <string name="display_button_clear_all">CLEAR ALL</string>

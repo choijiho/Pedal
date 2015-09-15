@@ -19,6 +19,8 @@ public class DisplayInfoManager {
 	public static final int INDEX_DATE = 8;
 	public static final int INDEX_BATTERY = 9;
 	
+	public static final int[] ItemTextViewList = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+	public static final int[] ItemChronometerList = {7};
 	
 	public int width;
 	public int height;

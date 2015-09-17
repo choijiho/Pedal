@@ -1,13 +1,30 @@
 package net.gringrid.pedal;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import net.gringrid.pedal.db.vo.DisplayVO;
+
 import android.content.Context;
 import android.view.View;
 
 public abstract class ItemFactory {
-	public final View create(String itemName, Context context){
-		View view = createView(itemName);
-		return view;
+	
+	private static Map<String, ItemFactory> factorys = 
+		Collections.unmodifiableMap(new HashMap<String, ItemFactory>(){{
+		{
+			put("TextView", new ItemTextView());
+			put("Chronometer", new ItemChronometerView());
+		}
+	}});
+
+	public static View createView(DisplayVO vo){
+		ItemFactory factory = factorys.get(vo.viewType);
+		return factory.create(vo);
+		
 	}
 
-	public abstract View createView(String itemName);
+	public abstract View create(DisplayVO vo);
+	
 }

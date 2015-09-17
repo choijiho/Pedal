@@ -1,6 +1,9 @@
 package net.gringrid.pedal.db.vo;
 
+import net.gringrid.pedal.R;
 import android.util.Log;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 public class DisplayVO {
 	public String itemName;
@@ -15,8 +18,11 @@ public class DisplayVO {
 	public int right;
 	public int bottom;
 	
-	public String viewType;
 	public boolean isSelected;
+	
+	// Draw Information
+	public String viewType;
+	public FrameLayout.LayoutParams params;
 
 	public void debug(){
 		Log.d("jiho", itemName+" : ("+minIndex+", "+maxIndex+", "+viewType+")");

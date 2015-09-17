@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.Vector;
 
 import net.gringrid.pedal.DisplayInfoManager;
+import net.gringrid.pedal.ItemFactory;
 import net.gringrid.pedal.R;
 import net.gringrid.pedal.RidingInfoUtility;
 import net.gringrid.pedal.Setting;
@@ -200,6 +201,7 @@ public class RidingActivityNew extends Activity implements OnClickListener, Loca
 	private void initView(){
 		mRidingInfoViews = new Vector<View>();
 		mRidingInfoList = getResources().getStringArray(R.array.riding_infomation_list);
+		
 		id_fl_riding_info_area = (FrameLayout)findViewById(R.id.id_fl_riding_info_area);
 		id_fl_riding_info_area.setLayoutParams(new LinearLayout.LayoutParams(DisplayInfoManager.getInstance(this).width, DisplayInfoManager.getInstance(this).width));
 		
@@ -256,19 +258,21 @@ public class RidingActivityNew extends Activity implements OnClickListener, Loca
 		
 		int itemWidth = vo.right - vo.left;
 		int itemHeight = vo.bottom - vo.top;
-		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(itemWidth, itemHeight);
-		params.setMargins(vo.left, vo.top, 0, 0);
-
+		vo.params = new FrameLayout.LayoutParams(itemWidth, itemHeight);
+		vo.params.setMargins(vo.left, vo.top, 0, 0);
+		vo.viewType = mRidingInfoList[0];
 		// TODO FACTORY 
-		
-		TextView tv = new TextView(this);	
-		tv.setText(vo.itemName);
-		tv.setTag(vo);
-		tv.setBackgroundDrawable(getResources().getDrawable(R.drawable.item_unselected));
-		tv.setLayoutParams(params);
+		View itemView = ItemFactory.createView(vo);
 
-		mRidingInfoViews.add(tv);
-		addContentView(tv, params);
+		
+//		TextView tv = new TextView(this);	
+//		tv.setText(vo.itemName);
+//		tv.setTag(vo);
+//		tv.setBackgroundDrawable(getResources().getDrawable(R.drawable.item_unselected));
+//		tv.setLayoutParams(params);
+
+		mRidingInfoViews.add(itemView);
+		addContentView(itemView, vo.params);
 		setViewVariableFromRidingInvfoViews();
 	}
 	

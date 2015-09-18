@@ -296,6 +296,7 @@ public class DisplayResult extends Activity implements OnClickListener{
 				vo.maxIndex = mMatrixMax[INDEX];
 				
 				Setting setting = new Setting(DisplayResult.this);
+				vo.isUsed = true;
 				setting.setDisplayInfo(vo);
 				vo = setting.getDisplayInfo(vo.itemName);
 				drawRidingItems(vo);

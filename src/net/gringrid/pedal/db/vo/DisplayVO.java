@@ -19,6 +19,7 @@ public class DisplayVO {
 	public int bottom;
 	
 	public boolean isSelected;
+	public boolean isUsed;
 	
 	// Draw Information
 	public String viewType;
@@ -27,6 +28,6 @@ public class DisplayVO {
 	public void debug(){
 		Log.d("jiho", itemName+" : ("+minIndex+", "+maxIndex+", "+viewType+")");
 		Log.d("jiho", itemName+" : ("+left+", "+top+", "+right+", "+bottom+")");
-		Log.d("jiho", itemName+" : ("+titleFontSize+", "+itemFontSize+", "+unitFontSize+")");
+		Log.d("jiho", itemName+" : ("+titleFontSize+", "+itemFontSize+", "+unitFontSize+","+isUsed+")");
 	}
 }

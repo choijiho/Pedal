@@ -14,17 +14,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" 
-        style="@style/content"
-        >
+        style="@style/content">
 
-	    <FrameLayout
-		    android:id="@+id/id_fl_riding_info_area"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content" 
-	        >
-	        
-	    </FrameLayout>
-
+        <FrameLayout
+            android:id="@+id/id_fl_riding_info_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            >
+        </FrameLayout>
 
         <!-- BIKE ICON START -->
 
@@ -33,6 +30,14 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/id_iv_gps_enable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_location_off_white_48dp"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/id_iv_play"

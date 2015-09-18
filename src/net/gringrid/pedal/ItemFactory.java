@@ -19,12 +19,12 @@ public abstract class ItemFactory {
 		}
 	}});
 
-	public static View createView(DisplayVO vo){
+	public static View createView(Context context, DisplayVO vo){
 		ItemFactory factory = factorys.get(vo.viewType);
-		return factory.create(vo);
+		return factory.create(context, vo);
 		
 	}
 
-	public abstract View create(DisplayVO vo);
+	public abstract View create(Context context, DisplayVO vo);
 	
 }

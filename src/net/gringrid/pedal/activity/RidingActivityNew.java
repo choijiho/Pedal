@@ -59,10 +59,7 @@ public class RidingActivityNew extends Activity implements OnClickListener, Loca
 	private FrameLayout id_fl_riding_info_area;
 	
 	private String[] mRidingInfoList;
-	
-	
-	
-	
+	private String[] mRidingInfoViewTypeList;
 	
 	
 	final int STATE_RIDING = 0x00;
@@ -142,8 +139,8 @@ public class RidingActivityNew extends Activity implements OnClickListener, Loca
 		registEvent();
 		initLocation();
 		loadSetting();
-		this.registerReceiver(mBR, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-		this.registerReceiver(mBR, new IntentFilter(Intent.ACTION_DATE_CHANGED));
+//		this.registerReceiver(mBR, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+//		this.registerReceiver(mBR, new IntentFilter(Intent.ACTION_DATE_CHANGED));
 	}
 	
 	@Override
@@ -161,14 +158,14 @@ public class RidingActivityNew extends Activity implements OnClickListener, Loca
 	@Override
 	protected void onDestroy() {
 		reset();
-		this.unregisterReceiver(mBR);
+//		this.unregisterReceiver(mBR);
 		super.onDestroy();
 	}
 	
 	private void loadSetting(){
 		mSetting = new Setting(this);
 		// TODO TEST 
-		mSetting.initSetting();
+//		mSetting.initSetting();
 		
 		if ( SharedData.getInstance(this).getGlobalDataBoolean(Setting.SHARED_KEY_INITIAL_SETTING) == false ){
 			mSetting.initSetting();
@@ -201,36 +198,37 @@ public class RidingActivityNew extends Activity implements OnClickListener, Loca
 	private void initView(){
 		mRidingInfoViews = new Vector<View>();
 		mRidingInfoList = getResources().getStringArray(R.array.riding_infomation_list);
+		mRidingInfoViewTypeList = getResources().getStringArray(R.array.riding_infomation_view_type);
 		
 		id_fl_riding_info_area = (FrameLayout)findViewById(R.id.id_fl_riding_info_area);
 		id_fl_riding_info_area.setLayoutParams(new LinearLayout.LayoutParams(DisplayInfoManager.getInstance(this).width, DisplayInfoManager.getInstance(this).width));
 		
 		
-		id_tv_current_speed = (TextView)findViewById(R.id.id_tv_current_speed);
-		id_tv_avg_speed = (TextView)findViewById(R.id.id_tv_avg_speed);
-		id_tv_current_altitude = (TextView)findViewById(R.id.id_tv_current_altitude);
-		id_tv_distance = (TextView)findViewById(R.id.id_tv_distance);
-		id_tv_battery_status = (TextView)findViewById(R.id.id_tv_battery_status);
-		id_cm = (Chronometer)findViewById(R.id.id_cm);
+//		id_tv_current_speed = (TextView)findViewById(R.id.id_tv_current_speed);
+//		id_tv_avg_speed = (TextView)findViewById(R.id.id_tv_avg_speed);
+//		id_tv_current_altitude = (TextView)findViewById(R.id.id_tv_current_altitude);
+//		id_tv_distance = (TextView)findViewById(R.id.id_tv_distance);
+//		id_tv_battery_status = (TextView)findViewById(R.id.id_tv_battery_status);
+//		id_cm = (Chronometer)findViewById(R.id.id_cm);
 		
 		// Toggle 기본값
 		findViewById(R.id.id_iv_cadence_alarm).setTag(R.drawable.ic_notifications_off_white_48dp);
 		
-		IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-		Intent batteryStatus = this.registerReceiver(null, ifilter);
-		int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-		int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-
-		float batteryPct = level / (float)scale;
-		id_tv_battery_status.setText(String.format("%.0f", batteryPct));
+//		IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+//		Intent batteryStatus = this.registerReceiver(null, ifilter);
+//		int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+//		int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+//
+//		float batteryPct = level / (float)scale;
+//		id_tv_battery_status.setText(String.format("%.0f", batteryPct));
 		
-		setDayInfo();
+//		setDayInfo();
 		
-		if ( IS_LOG_PRINT ){
-			findViewById(R.id.id_sv_log).setVisibility(View.VISIBLE);
-		}else{
-			findViewById(R.id.id_sv_log).setVisibility(View.GONE);
-		}
+//		if ( IS_LOG_PRINT ){
+//			findViewById(R.id.id_sv_log).setVisibility(View.VISIBLE);
+//		}else{
+//			findViewById(R.id.id_sv_log).setVisibility(View.GONE);
+//		}
 		
 		executeDisplay();
 	}
@@ -240,18 +238,20 @@ public class RidingActivityNew extends Activity implements OnClickListener, Loca
 		// Riding information을 그린다. 
 		DisplayVO vo = null;
 		Setting setting = new Setting(this);
-		String[] list = getResources().getStringArray(R.array.riding_infomation_list);
 		setting.debugDisplayInfo();
 
-		for ( String item : list ){
+		for ( String item : mRidingInfoList){
 			vo = setting.getDisplayInfo(item);
-			drawRidingItems(vo);
-			// TODO DEBUG
-			vo.debug();
+			if ( vo.isUsed ){
+				drawRidingItems(vo);
+				// TODO DEBUG
+				vo.debug();
+			}
 		}
 	}
 	
 	private void drawRidingItems(DisplayVO vo){
+		Log.d("jiho", "drawRidingItems "+vo.itemName);
 		if ( vo.minIndex == vo.maxIndex ){
 			return;
 		}
@@ -260,31 +260,25 @@ public class RidingActivityNew extends Activity implements OnClickListener, Loca
 		int itemHeight = vo.bottom - vo.top;
 		vo.params = new FrameLayout.LayoutParams(itemWidth, itemHeight);
 		vo.params.setMargins(vo.left, vo.top, 0, 0);
-		vo.viewType = mRidingInfoList[0];
-		// TODO FACTORY 
-		View itemView = ItemFactory.createView(vo);
-
 		
-//		TextView tv = new TextView(this);	
-//		tv.setText(vo.itemName);
-//		tv.setTag(vo);
-//		tv.setBackgroundDrawable(getResources().getDrawable(R.drawable.item_unselected));
-//		tv.setLayoutParams(params);
-
-		mRidingInfoViews.add(itemView);
-		addContentView(itemView, vo.params);
-		setViewVariableFromRidingInvfoViews();
-	}
-	
-	private void setViewVariableFromRidingInvfoViews() {
-		for ( View view : mRidingInfoViews ){
-			DisplayVO vo = ((DisplayVO)view.getTag());
-			if ( vo.itemName.equals(mRidingInfoList[DisplayInfoManager.INDEX_CURRENT_SPPED]) ){
-				id_tv_current_speed = (TextView)view;
+		int listIndex = 0;
+		for ( int i=0; i<mRidingInfoList.length; i++){
+			if ( vo.itemName.equals(mRidingInfoList[i]) ){
+				listIndex = i;
 			}
 		}
-		// TODO Auto-generated method stub
-		
+		vo.viewType = mRidingInfoViewTypeList[listIndex];
+		View itemView = ItemFactory.createView(this, vo);
+
+		mRidingInfoViews.add(itemView);
+		id_fl_riding_info_area.addView(itemView, vo.params);
+		setViewVariableFromRidingInvfoViews(itemView, vo);
+	}
+	
+	private void setViewVariableFromRidingInvfoViews(View view, DisplayVO vo) {
+		if ( vo.itemName.equals(mRidingInfoList[DisplayInfoManager.INDEX_CURRENT_SPPED])){
+				id_tv_current_speed = (TextView)view;
+		}
 	}
 
 	private void setDayInfo() {
@@ -350,8 +344,8 @@ public class RidingActivityNew extends Activity implements OnClickListener, Loca
 		findViewById(R.id.id_iv_play).setVisibility(View.VISIBLE);
 		findViewById(R.id.id_iv_pause).setVisibility(View.GONE);
 		findViewById(R.id.id_iv_stop).setVisibility(View.GONE);
-		mTravelTime = id_cm.getBase() - SystemClock.elapsedRealtime();
-		id_cm.stop();
+//		mTravelTime = id_cm.getBase() - SystemClock.elapsedRealtime();
+//		id_cm.stop();
 		mLocationManager.removeUpdates(this);
 	}
 
@@ -415,11 +409,11 @@ public class RidingActivityNew extends Activity implements OnClickListener, Loca
 		stopCadenceAlarm();
 		mTravelTime = 0;
 		mLastLocation = null;
-		id_cm.setBase(SystemClock.elapsedRealtime());
-		id_tv_current_speed.setText("00.0");
-		id_tv_avg_speed.setText("00.0");
-		id_tv_current_altitude.setText("000");
-		id_tv_distance.setText("000");
+//		id_cm.setBase(SystemClock.elapsedRealtime());
+//		id_tv_current_speed.setText("00.0");
+//		id_tv_avg_speed.setText("00.0");
+//		id_tv_current_altitude.setText("000");
+//		id_tv_distance.setText("000");
 		mRideDao = null;
 		mRideId = Long.MAX_VALUE;
 		SharedData.getInstance(RidingActivityNew.this).insertGlobalData(Setting.SHARED_KEY_RIDING_ID, mRideId);

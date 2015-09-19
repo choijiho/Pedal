@@ -55,14 +55,14 @@ public class RidingInfoUtility {
 					tmpSpeed = tmpDistance / tmpTime * 3.6f;
 					if ( maxSpeed < tmpSpeed ) {
 						maxSpeed = tmpSpeed;
-						Log.d("jiho", "Max Speed : "+String.format("%.1f",maxSpeed));
+//						Log.d("jiho", "Max Speed : "+String.format("%.1f",maxSpeed));
 					}
 					tmpTime = 0;
 					tmpDistance = 0;
 				}
 					
 					
-				Log.d("jiho", "tmpSpeed : "+tmpSpeed+"distance : "+distanceResult[0]+", "+(vo.gpsTime - preVo.gpsTime));
+//				Log.d("jiho", "tmpSpeed : "+tmpSpeed+"distance : "+distanceResult[0]+", "+(vo.gpsTime - preVo.gpsTime));
 				if ( tmpSpeed > 0.2f ) {
 					totalTime += vo.gpsTime - preVo.gpsTime;
 				}

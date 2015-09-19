@@ -4992,9 +4992,14 @@ android.support.v4.widget.SwipeRefreshLayout: void setDistanceToTriggerSync(int)
 android.support.v4.widget.ViewDragHelper$1: ViewDragHelper$1()
 android.support.v4.widget.ViewDragHelper$Callback: ViewDragHelper$Callback()
 net.gringrid.pedal.BuildConfig: BuildConfig()
+net.gringrid.pedal.ItemChronometerView: ItemChronometerView()
+net.gringrid.pedal.ItemFactory: ItemFactory()
+net.gringrid.pedal.ItemFactory$1: ItemFactory$1()
+net.gringrid.pedal.ItemTextView: ItemTextView()
 net.gringrid.pedal.PedalApplication: PedalApplication()
 net.gringrid.pedal.R: R()
 net.gringrid.pedal.R$array: int riding_infomation_list
+net.gringrid.pedal.R$array: int riding_infomation_view_type
 net.gringrid.pedal.R$array: int tire_circumference_name
 net.gringrid.pedal.R$array: int tire_circumference_value
 net.gringrid.pedal.R$array: int week
@@ -5099,6 +5104,7 @@ net.gringrid.pedal.R$id: int id_tv_response
 net.gringrid.pedal.R$id: int id_tv_ride_info
 net.gringrid.pedal.R$id: int id_tv_riding
 net.gringrid.pedal.R$id: int id_tv_riding_list
+net.gringrid.pedal.R$id: int id_tv_riding_new
 net.gringrid.pedal.R$id: int id_tv_setting
 net.gringrid.pedal.R$id: int id_tv_speed
 net.gringrid.pedal.R$id: int id_tv_sprocket
@@ -5122,6 +5128,7 @@ net.gringrid.pedal.R$layout: int activity_popup_browser
 net.gringrid.pedal.R$layout: int activity_riding
 net.gringrid.pedal.R$layout: int activity_riding_detail
 net.gringrid.pedal.R$layout: int activity_riding_list
+net.gringrid.pedal.R$layout: int activity_riding_new
 net.gringrid.pedal.R$layout: int activity_setting
 net.gringrid.pedal.R$layout: int activity_strava_api_test
 net.gringrid.pedal.R$layout: int header_view
@@ -5160,6 +5167,7 @@ net.gringrid.pedal.R$string: int menu_display_test
 net.gringrid.pedal.R$string: int menu_gear
 net.gringrid.pedal.R$string: int menu_riding
 net.gringrid.pedal.R$string: int menu_riding_list
+net.gringrid.pedal.R$string: int menu_riding_new
 net.gringrid.pedal.R$string: int menu_setting
 net.gringrid.pedal.R$string: int progress_loading
 net.gringrid.pedal.R$string: int ride_info_default
@@ -5214,6 +5222,9 @@ net.gringrid.pedal.activity.PopupBrowserActivity: PopupBrowserActivity()
 net.gringrid.pedal.activity.RidingActivity
 net.gringrid.pedal.activity.RidingActivity: RidingActivity()
 net.gringrid.pedal.activity.RidingActivity: void onClick(android.view.View)
+net.gringrid.pedal.activity.RidingActivityNew
+net.gringrid.pedal.activity.RidingActivityNew: RidingActivityNew()
+net.gringrid.pedal.activity.RidingActivityNew: void onClick(android.view.View)
 net.gringrid.pedal.activity.RidingDetailActivity
 net.gringrid.pedal.activity.RidingDetailActivity: RidingDetailActivity()
 net.gringrid.pedal.activity.RidingListActivity

@@ -33,6 +33,7 @@ public class Setting {
 	public static final String SHARED_KEY_DISPLAY_TITLE_FONT_SIZE = "display_title_font_size";
 	public static final String SHARED_KEY_DISPLAY_ITEM_FONT_SIZE = "display_item_font_size";
 	public static final String SHARED_KEY_DISPLAY_UNIT_FONT_SIZE = "display_unit_font_size";
+	public static final String SHARED_KEY_DISPLAY_IS_USED = "display_is_used";
 	
 
 	public static final String SHARED_KEY_GEAR_TIRES_INDEX = "gear_tires_index";
@@ -145,7 +146,7 @@ public class Setting {
 			vo.unitFontSize = 11;
 		
 			setDisplayInfo(vo);
-			vo.debug();
+//			vo.debug();
 			
 		}
 	}
@@ -179,6 +180,7 @@ public class Setting {
 		SharedData.getInstance(mContext).setGlobalData(SHARED_KEY_DISPLAY_TITLE_FONT_SIZE+suffix, item.titleFontSize);
 		SharedData.getInstance(mContext).setGlobalData(SHARED_KEY_DISPLAY_ITEM_FONT_SIZE+suffix, item.itemFontSize);
 		SharedData.getInstance(mContext).setGlobalData(SHARED_KEY_DISPLAY_UNIT_FONT_SIZE+suffix, item.unitFontSize);
+		SharedData.getInstance(mContext).setGlobalData(SHARED_KEY_DISPLAY_IS_USED+suffix, item.isUsed);
 		SharedData.getInstance(mContext).commit();
 	}
 	
@@ -199,6 +201,7 @@ public class Setting {
 		vo.top = vo.minIndex / DisplayInfoManager.CELL_ROWS * cellHeight;
 		vo.right = (vo.maxIndex % DisplayInfoManager.CELL_COLS + 1) * cellWidth;
 		vo.bottom = (vo.maxIndex / DisplayInfoManager.CELL_ROWS + 1) * cellHeight;
+		vo.isUsed = SharedData.getInstance(mContext).getGlobalDataBoolean(SHARED_KEY_DISPLAY_IS_USED+suffix);
 		return vo;
 	}
 	
@@ -219,6 +222,7 @@ public class Setting {
 		item.titleFontSize = DEFAULT_TITLE_FONT_SIZE;
 		item.itemFontSize = DEFAULT_ITEM_FONT_SIZE;
 		item.unitFontSize = DEFAULT_UNIT_FONT_SIZE;
+		item.isUsed = false;
 		
 		setDisplayInfo(item);
 	}

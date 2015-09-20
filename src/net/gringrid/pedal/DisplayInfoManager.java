@@ -7,7 +7,8 @@ import android.view.Display;
 
 public class DisplayInfoManager {
 	private static Context mContext;
-	
+
+	public static final int INDEX_LENGTH = 10;
 	public static final int INDEX_CURRENT_SPPED = 0;
 	public static final int INDEX_AVG_SPEED = 1;
 	public static final int INDEX_MAX_SPEED = 2;

@@ -29,6 +29,9 @@ public class RidingInfoUtility {
 	 */
 	public ArrayList<String> calculateRideInfo(long parentId){
 		ArrayList<String> rideInfo = new ArrayList<String>();
+		for (int i = 0; i < DisplayInfoManager.INDEX_LENGTH; i++) {
+			  rideInfo.add("");
+		}
 		GpsLogDao gpsLogDao = GpsLogDao.getInstance(DBHelper.getInstance(mContext));
 		List<GpsLogVO> gpsLogVOList = gpsLogDao.findWithParentId(parentId);
 		GpsLogVO preVo = null;

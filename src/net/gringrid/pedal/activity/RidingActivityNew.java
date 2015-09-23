@@ -277,7 +277,7 @@ public class RidingActivityNew extends Activity implements OnClickListener, Loca
 	
 	private void setViewVariableFromRidingInvfoViews(View view, DisplayVO vo) {
 		if ( vo.itemName.equals(mRidingInfoList[DisplayInfoManager.INDEX_CURRENT_SPPED])){
-				id_tv_current_speed = (TextView)view;
+//			id_tv_current_speed = (LinearLayout)view;
 		}
 	}
 
@@ -501,7 +501,6 @@ public class RidingActivityNew extends Activity implements OnClickListener, Loca
 				id_tv_log.setText(logText);
 				
 			}
-
 			if ( mIsSaveGps ){
 				GpsLogVO gpsLogVo = new GpsLogVO();
 				gpsLogVo.parentId = mRideId;

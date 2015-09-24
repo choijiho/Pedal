@@ -27,8 +27,8 @@ public class ItemView extends FrameLayout{
 		Log.d("jiho", "contentFontSize : "+data.contentFontSize);
 		Log.d("jiho", "unitFontSize : "+data.unitFontSize);
 		data.titleFontSize = 13;
-		data.contentFontSize = 20;
-		data.unitFontSize = 11;
+		data.contentFontSize = 55;
+		data.unitFontSize = 15;
 				
 		mContext = context;
 		setData(data);
@@ -65,27 +65,27 @@ public class ItemView extends FrameLayout{
 		mTitleView.setText(mVo.itemName);
 		mTitleView.setTextSize(mVo.titleFontSize);
 		mTitleView.setTag(mVo);
-		mTitleView.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.item_unselected));
-		mTitleView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));	
+		mTitleView.setBackgroundResource(R.drawable.item_unselected);
+		mTitleView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 	}
 	
 	private void drawContentView(){
 		mContentLayout = new LinearLayout(mContext);
 		mContentLayout.setOrientation(LinearLayout.HORIZONTAL);
-		mContentLayout.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.item_unselected));
+        mContentLayout.setBackgroundResource(R.drawable.item_unselected);
 		mContentLayout.setLayoutParams(new android.widget.LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0, 1f));
 		
 		mContentView = new TextView(mContext);
-		mContentView.setText(mVo.itemName);
+		mContentView.setText("00.0");
 		mContentView.setTextSize(mVo.contentFontSize);
-		mContentView.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.item_unselected));
-		mContentView.setLayoutParams(new android.widget.LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 7f));
+		mContentView.setBackgroundResource(R.drawable.item_unselected);
+		mContentView.setLayoutParams(new android.widget.LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 7f));
 		
 		mUnitView = new TextView(mContext);
-		mUnitView.setText(mVo.unit);
+		mUnitView.setText("km/h");
 		mUnitView.setTextSize(mVo.unitFontSize);
-		mUnitView.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.item_unselected));
-		mUnitView.setLayoutParams(new android.widget.LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 3f));
+        mUnitView.setBackgroundResource(R.drawable.item_unselected);
+		mUnitView.setLayoutParams(new android.widget.LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 3f));
 		
 		mContentLayout.addView(mContentView);
 		mContentLayout.addView(mUnitView);
@@ -97,6 +97,10 @@ public class ItemView extends FrameLayout{
 		int itemHeight = mVo.bottom - mVo.top;
 		mVo.params = new FrameLayout.LayoutParams(itemWidth, itemHeight);
 		mVo.params.setMargins(mVo.left, mVo.top, 0, 0);
+
+        Log.d("jiho", "itemwidth : " + itemWidth);
+        mContentView.setTextSize((float) (itemWidth / 5.5));
+        mUnitView.setTextSize((float) (itemWidth / 17));
 
 		mLayout.addView(mTitleView);
 		mLayout.addView(mContentLayout);

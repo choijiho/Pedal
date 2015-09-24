@@ -10,7 +10,7 @@ public class DisplayVO {
 	public int minIndex;
 	public int maxIndex;
 	public int titleFontSize;
-	public int itemFontSize;
+	public int contentFontSize;
 	public int unitFontSize;
 	
 	public int top;
@@ -23,11 +23,12 @@ public class DisplayVO {
 	
 	// Draw Information
 	public String viewType;
+	public String unit;
 	public FrameLayout.LayoutParams params;
 
 	public void debug(){
 		Log.d("jiho", itemName+" : ("+minIndex+", "+maxIndex+", "+viewType+")");
 		Log.d("jiho", itemName+" : ("+left+", "+top+", "+right+", "+bottom+")");
-		Log.d("jiho", itemName+" : ("+titleFontSize+", "+itemFontSize+", "+unitFontSize+","+isUsed+")");
+		Log.d("jiho", itemName+" : ("+titleFontSize+", "+contentFontSize+", "+unitFontSize+","+isUsed+")");
 	}
 }

@@ -147,7 +147,6 @@ public class DisplayResult extends Activity implements OnClickListener{
 		DisplayVO vo = null;
 		Setting setting = new Setting(this);
 		String[] list = getResources().getStringArray(R.array.riding_infomation_list);
-		setting.debugDisplayInfo();
 
 		for ( String item : list ){
 			vo = setting.getDisplayInfo(item);
@@ -294,10 +293,11 @@ public class DisplayResult extends Activity implements OnClickListener{
 				vo.itemName = displayList[which];
 				vo.minIndex = mMatrixMin[INDEX];
 				vo.maxIndex = mMatrixMax[INDEX];
-				
-				Setting setting = new Setting(DisplayResult.this);
 				vo.isUsed = true;
+
+				Setting setting = new Setting(DisplayResult.this);
 				setting.setDisplayInfo(vo);
+				
 				vo = setting.getDisplayInfo(vo.itemName);
 				drawRidingItems(vo);
 				setUsedValue(vo.minIndex, vo.maxIndex, true);

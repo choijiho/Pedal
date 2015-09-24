@@ -71,6 +71,11 @@ public class DisplayInfoManager {
 		return ridingInfoList;
 	}
 
+	
+	public float getFontSize(float width){
+		// TODO
+		return 0;
+	}
 
 	
 }

@@ -42,7 +42,7 @@ public class Setting {
 	public static final String SHARED_KEY_GEAR_CADENCE = "gear_cadence";
 	
 	private final int DEFAULT_TITLE_FONT_SIZE = 13;
-	private final int DEFAULT_ITEM_FONT_SIZE = 20;
+	private final int DEFAULT_CONTENT_FONT_SIZE = 20;
 	private final int DEFAULT_UNIT_FONT_SIZE = 11;
 	
 //	public static final String SHARED_KEY_DISPLAY_CUR_SPEED_MIN		= "display_cur_speed_min";
@@ -142,7 +142,7 @@ public class Setting {
 
 			// TODO 항목별 default
 			vo.titleFontSize = 13;
-			vo.itemFontSize = 20;
+			vo.contentFontSize = 20;
 			vo.unitFontSize = 11;
 		
 			setDisplayInfo(vo);
@@ -178,7 +178,7 @@ public class Setting {
 		SharedData.getInstance(mContext).setGlobalData(SHARED_KEY_DISPLAY_MIN_INDEX+suffix, item.minIndex);
 		SharedData.getInstance(mContext).setGlobalData(SHARED_KEY_DISPLAY_MAX_INDEX+suffix, item.maxIndex);
 		SharedData.getInstance(mContext).setGlobalData(SHARED_KEY_DISPLAY_TITLE_FONT_SIZE+suffix, item.titleFontSize);
-		SharedData.getInstance(mContext).setGlobalData(SHARED_KEY_DISPLAY_ITEM_FONT_SIZE+suffix, item.itemFontSize);
+		SharedData.getInstance(mContext).setGlobalData(SHARED_KEY_DISPLAY_ITEM_FONT_SIZE+suffix, item.contentFontSize);
 		SharedData.getInstance(mContext).setGlobalData(SHARED_KEY_DISPLAY_UNIT_FONT_SIZE+suffix, item.unitFontSize);
 		SharedData.getInstance(mContext).setGlobalData(SHARED_KEY_DISPLAY_IS_USED+suffix, item.isUsed);
 		SharedData.getInstance(mContext).commit();
@@ -195,7 +195,7 @@ public class Setting {
 		vo.minIndex = SharedData.getInstance(mContext).getGlobalDataInt(SHARED_KEY_DISPLAY_MIN_INDEX+suffix);
 		vo.maxIndex = SharedData.getInstance(mContext).getGlobalDataInt(SHARED_KEY_DISPLAY_MAX_INDEX+suffix);
 		vo.titleFontSize = SharedData.getInstance(mContext).getGlobalDataInt(SHARED_KEY_DISPLAY_TITLE_FONT_SIZE+suffix);
-		vo.itemFontSize = SharedData.getInstance(mContext).getGlobalDataInt(SHARED_KEY_DISPLAY_ITEM_FONT_SIZE+suffix);
+		vo.contentFontSize = SharedData.getInstance(mContext).getGlobalDataInt(SHARED_KEY_DISPLAY_ITEM_FONT_SIZE+suffix);
 		vo.unitFontSize = SharedData.getInstance(mContext).getGlobalDataInt(SHARED_KEY_DISPLAY_UNIT_FONT_SIZE+suffix);
 		vo.left = vo.minIndex % DisplayInfoManager.CELL_COLS * cellWidth;
 		vo.top = vo.minIndex / DisplayInfoManager.CELL_ROWS * cellHeight;
@@ -204,23 +204,12 @@ public class Setting {
 		vo.isUsed = SharedData.getInstance(mContext).getGlobalDataBoolean(SHARED_KEY_DISPLAY_IS_USED+suffix);
 		return vo;
 	}
-	
-	public void debugDisplayInfo(){
-		DisplayVO vo = null;
-		String[] list = mContext.getResources().getStringArray(R.array.riding_infomation_list);
-		for ( String item : list ){
-			vo = getDisplayInfo(item);
-//			Log.d("jiho", vo.itemName+" : ("+vo.minIndex+", "+vo.maxIndex+")");
-//			Log.d("jiho", vo.itemName+" : ("+vo.left+", "+vo.top+", "+vo.right+", "+vo.bottom+")");
-//			Log.d("jiho", vo.itemName+" : ("+vo.titleFontSize+", "+vo.itemFontSize+", "+vo.right+", "+vo.unitFontSize+")");
-		}
-	}
-	
+
 	public void clearDisplayInfo(DisplayVO item){
 		item.minIndex = 0;
 		item.maxIndex = 0;
 		item.titleFontSize = DEFAULT_TITLE_FONT_SIZE;
-		item.itemFontSize = DEFAULT_ITEM_FONT_SIZE;
+		item.contentFontSize = DEFAULT_CONTENT_FONT_SIZE;
 		item.unitFontSize = DEFAULT_UNIT_FONT_SIZE;
 		item.isUsed = false;
 		

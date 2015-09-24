@@ -18,21 +18,18 @@ import net.gringrid.pedal.db.RideDao;
 import net.gringrid.pedal.db.vo.DisplayVO;
 import net.gringrid.pedal.db.vo.GpsLogVO;
 import net.gringrid.pedal.db.vo.RideVO;
+import net.gringrid.pedal.view.ItemView;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.MediaPlayer;
-import android.os.BatteryManager;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -47,7 +44,7 @@ import android.widget.Toast;
 public class RidingActivityNew extends Activity implements OnClickListener, LocationListener{
 
 	final boolean DEBUG = false;
-	final boolean IS_LOG_PRINT = true;
+	final boolean IS_LOG_PRINT = false;
 
 	/**
 	 * Riding information items
@@ -67,16 +64,19 @@ public class RidingActivityNew extends Activity implements OnClickListener, Loca
 	int STATE;
 	
 	/**
-	 * 현재속도, 평균속도, 누적거리, 누적시간, 현재시간, 배터리 상태
-	 */
-	
-	/**
 	 * View
 	 */
-	private TextView id_tv_current_speed;
-	private TextView id_tv_avg_speed;
-	private TextView id_tv_current_altitude;
-	private TextView id_tv_distance;
+	private ItemView mItemViewCurrentSpeed;
+	private ItemView mItemViewAvgSpeed;
+	private ItemView mItemViewMaxSpeed;
+	private ItemView mItemViewDistance;
+	private ItemView mItemViewAltitude;
+	private ItemView mItemViewTravleTime;
+	private ItemView mItemViewRidingTime;
+	private ItemView mItemViewPresentTime;
+	private ItemView mItemViewDate;
+	private ItemView mItemViewBattery;
+	
 	private TextView id_tv_battery_status;
 	private Chronometer id_cm;
 
@@ -145,7 +145,9 @@ public class RidingActivityNew extends Activity implements OnClickListener, Loca
 	
 	@Override
 	protected void onResume() {
+		initView();
 		super.onResume();
+		
 	}
 	
 	@Override
@@ -202,14 +204,7 @@ public class RidingActivityNew extends Activity implements OnClickListener, Loca
 		
 		id_fl_riding_info_area = (FrameLayout)findViewById(R.id.id_fl_riding_info_area);
 		id_fl_riding_info_area.setLayoutParams(new LinearLayout.LayoutParams(DisplayInfoManager.getInstance(this).width, DisplayInfoManager.getInstance(this).width));
-		
-		
-//		id_tv_current_speed = (TextView)findViewById(R.id.id_tv_current_speed);
-//		id_tv_avg_speed = (TextView)findViewById(R.id.id_tv_avg_speed);
-//		id_tv_current_altitude = (TextView)findViewById(R.id.id_tv_current_altitude);
-//		id_tv_distance = (TextView)findViewById(R.id.id_tv_distance);
-//		id_tv_battery_status = (TextView)findViewById(R.id.id_tv_battery_status);
-//		id_cm = (Chronometer)findViewById(R.id.id_cm);
+		id_fl_riding_info_area.removeAllViews();
 		
 		// Toggle 기본값
 		findViewById(R.id.id_iv_cadence_alarm).setTag(R.drawable.ic_notifications_off_white_48dp);
@@ -238,28 +233,21 @@ public class RidingActivityNew extends Activity implements OnClickListener, Loca
 		// Riding information을 그린다. 
 		DisplayVO vo = null;
 		Setting setting = new Setting(this);
-		setting.debugDisplayInfo();
 
 		for ( String item : mRidingInfoList){
 			vo = setting.getDisplayInfo(item);
 			if ( vo.isUsed ){
 				drawRidingItems(vo);
 				// TODO DEBUG
-				vo.debug();
+//				vo.debug();
 			}
 		}
 	}
 	
 	private void drawRidingItems(DisplayVO vo){
-		Log.d("jiho", "drawRidingItems "+vo.itemName);
 		if ( vo.minIndex == vo.maxIndex ){
 			return;
 		}
-		
-		int itemWidth = vo.right - vo.left;
-		int itemHeight = vo.bottom - vo.top;
-		vo.params = new FrameLayout.LayoutParams(itemWidth, itemHeight);
-		vo.params.setMargins(vo.left, vo.top, 0, 0);
 		
 		int listIndex = 0;
 		for ( int i=0; i<mRidingInfoList.length; i++){
@@ -269,15 +257,35 @@ public class RidingActivityNew extends Activity implements OnClickListener, Loca
 		}
 		vo.viewType = mRidingInfoViewTypeList[listIndex];
 		View itemView = ItemFactory.createView(this, vo);
-
-		mRidingInfoViews.add(itemView);
-		id_fl_riding_info_area.addView(itemView, vo.params);
-		setViewVariableFromRidingInvfoViews(itemView, vo);
+		
+		if ( itemView != null ){
+			mRidingInfoViews.add(itemView);
+			id_fl_riding_info_area.addView(itemView, vo.params);
+			setViewVariableFromRidingInvfoViews(itemView, vo);
+		}
 	}
-	
+
 	private void setViewVariableFromRidingInvfoViews(View view, DisplayVO vo) {
 		if ( vo.itemName.equals(mRidingInfoList[DisplayInfoManager.INDEX_CURRENT_SPPED])){
-//			id_tv_current_speed = (LinearLayout)view;
+			mItemViewCurrentSpeed = (ItemView)view;
+		}else if ( vo.itemName.equals(mRidingInfoList[DisplayInfoManager.INDEX_AVG_SPEED])){
+			mItemViewAvgSpeed = (ItemView)view;
+		}else if ( vo.itemName.equals(mRidingInfoList[DisplayInfoManager.INDEX_MAX_SPEED])){
+			mItemViewMaxSpeed = (ItemView)view;
+		}else if ( vo.itemName.equals(mRidingInfoList[DisplayInfoManager.INDEX_DISTANCE])){
+			mItemViewDistance = (ItemView)view;
+		}else if ( vo.itemName.equals(mRidingInfoList[DisplayInfoManager.INDEX_ALTITUDE])){
+			mItemViewAltitude = (ItemView)view;
+		}else if ( vo.itemName.equals(mRidingInfoList[DisplayInfoManager.INDEX_TRAVEL_TIME])){
+			mItemViewTravleTime = (ItemView)view;
+		}else if ( vo.itemName.equals(mRidingInfoList[DisplayInfoManager.INDEX_RIDING_TIME])){
+			mItemViewRidingTime = (ItemView)view;
+		}else if ( vo.itemName.equals(mRidingInfoList[DisplayInfoManager.INDEX_PRESENT_TIME])){
+			mItemViewTravleTime = (ItemView)view;
+		}else if ( vo.itemName.equals(mRidingInfoList[DisplayInfoManager.INDEX_DATE])){
+			mItemViewDate = (ItemView)view;
+		}else if ( vo.itemName.equals(mRidingInfoList[DisplayInfoManager.INDEX_BATTERY])){
+			mItemViewBattery = (ItemView)view;
 		}
 	}
 
@@ -328,8 +336,8 @@ public class RidingActivityNew extends Activity implements OnClickListener, Loca
 		}
 
 		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 2, this);
-		id_cm.setBase(SystemClock.elapsedRealtime() + mTravelTime);
-		id_cm.start();
+//		id_cm.setBase(SystemClock.elapsedRealtime() + mTravelTime);
+//		id_cm.start();
 		if ( mRideId == Long.MAX_VALUE && mIsSaveGps && mRideDao == null ){
 			mRideDao = RideDao.getInstance(DBHelper.getInstance(this));
 			RideVO rideVo = new RideVO();
@@ -486,7 +494,8 @@ public class RidingActivityNew extends Activity implements OnClickListener, Loca
 				mMoveTime += gapTimeFromLastlocation;// += locationTime - mLastLocationTime;
 				mTotalDistance += distanceFromLastLocation;
 				mAvgSpeed = mTotalDistance / mMoveTime * 3.6f;
-				setRidingInfo(String.format("%.1f", mAvgSpeed), String.format("%.2f", mTotalDistance / 1000));
+				setItemContentValue(mItemViewAvgSpeed, String.format("%.1f", mAvgSpeed));
+				setItemContentValue(mItemViewDistance, String.format("%.2f", mTotalDistance / 1000));
 			}
 			if ( IS_LOG_PRINT ){
 				TextView id_tv_log = (TextView)findViewById(R.id.id_tv_log);
@@ -513,14 +522,15 @@ public class RidingActivityNew extends Activity implements OnClickListener, Loca
 		}
 		
 		mLastLocation = location;
-
-		id_tv_current_speed.setText(String.format("%.1f", locationSpeedKm));
-		id_tv_current_altitude.setText(String.valueOf(location.getAltitude()));
+		
+		setItemContentValue(mItemViewCurrentSpeed, String.format("%.1f", locationSpeedKm));
+		setItemContentValue(mItemViewAltitude, String.valueOf(location.getAltitude()));
 	}
 	
-	private void setRidingInfo(String avgSpeed, String distance){
-		id_tv_distance.setText(distance);
-		id_tv_avg_speed.setText(avgSpeed);
+	private void setItemContentValue(ItemView itemView, String value){
+		if ( itemView != null ){
+			itemView.setContent(value);
+		}
 	}
 
 	@Override

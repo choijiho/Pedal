@@ -20,6 +20,7 @@
             android:id="@+id/id_fl_riding_info_area"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" 
+            android:background="#003366"
             >
         </FrameLayout>
 

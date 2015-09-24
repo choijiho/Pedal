@@ -10,10 +10,11 @@ import android.view.View;
 
 public abstract class ItemFactory {
 
+	
 	private static Map<String, ItemFactory> factorys = 
 		Collections.unmodifiableMap(new HashMap<String, ItemFactory>(){{
 		{
-			put("TextView", new ItemTextView());
+			put("TextView", new ItemViewFactory());
 			put("Chronometer", new ItemChronometerView());
 		}
 	}});
